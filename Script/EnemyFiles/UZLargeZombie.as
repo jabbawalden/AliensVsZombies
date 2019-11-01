@@ -1,0 +1,4 @@
+class AUZLargeZombie : AActor
+{
+    
+}

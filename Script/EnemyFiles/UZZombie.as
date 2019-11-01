@@ -35,11 +35,6 @@ class AUZZombie : AActor
     UPROPERTY()
     TArray<AUZProtectionPoint> ProtectionPointArray;
 
-    //setting this in blueprints
-    //Not ideal, but had issues 180 degree turns with MakeFromX and needed to prioritize other tasks
-    UPROPERTY()
-    FRotator LookAtRotation;
-
     UPROPERTY()
     AActor TargetActor;
 
