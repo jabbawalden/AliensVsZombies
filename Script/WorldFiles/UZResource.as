@@ -3,13 +3,13 @@ import GameFiles.UZGameMode;
 class AUZResource : AActor
 {
     UPROPERTY(DefaultComponent, RootComponent)
-    USphereComponent SphereComp;
-    default SphereComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-    default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
-    default SphereComp.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    default SphereComp.SetSimulatePhysics(true);
+    UBoxComponent BoxComp;
+    default BoxComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    default BoxComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
+    default BoxComp.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    default BoxComp.SetSimulatePhysics(true);
 
-    UPROPERTY(DefaultComponent, Attach = SphereComp)
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
@@ -23,6 +23,9 @@ class AUZResource : AActor
 
     bool IsCollecting;
 
+    UPROPERTY()
+    float InterpSpeed = 11.5f;
+
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
@@ -31,24 +34,18 @@ class AUZResource : AActor
             if (TargetRef != nullptr)
             {
                 Print("TargetActor has been set", 0.f);
-                FVector NewLoc = FVector(TargetRef.GetActorLocation().X, TargetRef.GetActorLocation().Y, ActorLocation.Z + MovementSpeed * DeltaSeconds);
+                float LocXInterp = FMath::FInterpTo(ActorLocation.X, TargetRef.GetActorLocation().X, DeltaSeconds, InterpSpeed);
+                float LocYInterp = FMath::FInterpTo(ActorLocation.Y, TargetRef.GetActorLocation().Y, DeltaSeconds, InterpSpeed);
+                FVector NewLoc = FVector(LocXInterp, LocYInterp, ActorLocation.Z + MovementSpeed * DeltaSeconds);
+
                 SetActorLocation(NewLoc);
-                SphereComp.SetSimulatePhysics(false);
+                BoxComp.SetSimulatePhysics(false);
             }
         }
         else 
         {
-            SphereComp.SetSimulatePhysics(true);
+            BoxComp.SetSimulatePhysics(true);
         }
-
-        // if (TargetRef != nullptr)
-        // {
-        //     Print("Target ref here", 0.f);
-        // }
-        // else 
-        // {
-        //     Print("Target ref NULL", 0.f);
-        // }
     }
 
     UFUNCTION()

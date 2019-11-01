@@ -3,7 +3,7 @@ import GameFiles.UZGameMode;
 class UUZDealDamage : UActorComponent
 {
     UPROPERTY()
-    float Damage = 15.f;
+    float Damage = 12.f;
 
     UPROPERTY()
     float NewDMGTime;

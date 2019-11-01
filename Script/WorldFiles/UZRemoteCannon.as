@@ -91,7 +91,6 @@ class AUZRemoteCannon : AActor
     {
         if (OtherActor.Tags.Contains(n"Enemy"))
         {
-            Print("Enemy Detected", 5.f);
             EnemyArray.Add(OtherActor);
         }
     }
@@ -103,7 +102,6 @@ class AUZRemoteCannon : AActor
     {
         if (OtherActor.Tags.Contains(n"Enemy"))
         {
-            Print("Enemy Destroyed", 5.f);
             EnemyArray.Remove(OtherActor);
         }
     }

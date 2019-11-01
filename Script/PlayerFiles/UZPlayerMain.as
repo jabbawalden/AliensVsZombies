@@ -45,6 +45,8 @@ class AUZPlayerMain : APawn
     AUZCameraActor CameraObj;
 
     bool bIsActive = true;
+    bool bLaserOn;
+    bool bPullOn;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -131,13 +133,14 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void LaserCannonOn(FKey Key)
     {
-        if (bIsActive)
+        if (bIsActive && !bPullOn)
         {
             LaserBeamRef = SpawnActor(LaserBeamClass, ActorLocation);
             LaserBeam = Cast<AUZLaserBeam>(LaserBeamRef);
             if (LaserBeam != nullptr)
             {
                 LaserBeam.SetFollowTarget(this); 
+                bLaserOn = true;
             }
         }
     }
@@ -148,13 +151,14 @@ class AUZPlayerMain : APawn
         if (LaserBeam != nullptr && bIsActive)
         {
             LaserBeam.IsActive = false;
+            bLaserOn = false;
         }
     }
 
     UFUNCTION()
     void PullBeamOn(FKey Key)
     {
-        if (bIsActive)
+        if (bIsActive && !bLaserOn)
         {
             PullBeamRef = SpawnActor(PullBeamClass, ActorLocation);
             PullBeam = Cast<AUZPullBeam>(PullBeamRef);
@@ -162,6 +166,7 @@ class AUZPlayerMain : APawn
             if (PullBeam != nullptr)
             {
                 PullBeam.SetFollowTarget(this); 
+                bPullOn = true;
             }
         }
     }
@@ -172,6 +177,7 @@ class AUZPlayerMain : APawn
         if (PullBeam != nullptr && bIsActive)
         {
             PullBeam.IsActive = false;
+            bPullOn = false;
         }
     }
 
