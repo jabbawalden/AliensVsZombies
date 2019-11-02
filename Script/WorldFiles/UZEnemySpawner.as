@@ -8,6 +8,14 @@ class AUZEnemySpawner : AActor
 
     bool bCanSpawn = true;
 
+    UPROPERTY()
+    TSubclassOf<AActor> EnemySpawn1;
+    AActor EnemySpawn1Ref;
+
+    UPROPERTY()
+    TSubclassOf<AActor> EnemySpawn2;
+    AActor EnemySpawn2Ref;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -17,6 +25,12 @@ class AUZEnemySpawner : AActor
         {
             GameMode.EventEndGame.AddUFunction(this, n"EndSpawn");
         }
+    }
+
+    UFUNCTION()
+    void SpawnEnemy()
+    {
+        //with some chance to spawn enemy 2
     }
 
     UFUNCTION()

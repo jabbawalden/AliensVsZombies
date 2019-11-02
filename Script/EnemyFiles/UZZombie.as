@@ -1,4 +1,3 @@
-import WorldFiles.UZProtectionPoint;
 import Components.UZHealthComp;
 import GameFiles.UZGameMode;
 import Components.UZTraceCheckComp;
@@ -31,9 +30,6 @@ class AUZZombie : AActor
     int ResourceAmount = 3;
 
     AUZGameMode GameMode;
-
-    UPROPERTY()
-    TArray<AUZProtectionPoint> ProtectionPointArray;
 
     UPROPERTY()
     AActor TargetActor;

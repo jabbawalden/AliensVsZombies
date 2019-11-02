@@ -1,4 +1,6 @@
 import EnemyFiles.UZZombie;
+import Components.UZHealthComp;
+
 class AUZLaserBeam : AActor
 {
     UPROPERTY(DefaultComponent, RootComponent)
@@ -13,12 +15,15 @@ class AUZLaserBeam : AActor
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
     UPROPERTY()
-    TArray<AUZZombie> ZombieArray;
+    TArray<UUZHealthComp> ZombieArray;
 
     AActor TargetLocation;
 
     UPROPERTY()
-    float Damage = 2.f;
+    float Damage = 7.5f;
+
+    float NewDamageTime;
+    float DamageRate = 0.06f;
 
     bool IsActive = true;
 
@@ -34,7 +39,11 @@ class AUZLaserBeam : AActor
     {
         if (IsActive)
         {
-            DamageEnemies();
+            if (NewDamageTime <= Gameplay::TimeSeconds)
+            {
+                NewDamageTime = Gameplay::TimeSeconds + DamageRate;
+                DamageEnemies();
+            }
         }
         else
         {
@@ -53,7 +62,7 @@ class AUZLaserBeam : AActor
     {
         for (int i = 0; i < ZombieArray.Num(); i++)
         {
-            ZombieArray[i].HealthComp.DamageHealth(Damage);
+            ZombieArray[i].DamageHealth(Damage);
         }
     }
 
@@ -63,11 +72,11 @@ class AUZLaserBeam : AActor
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        AUZZombie ZombieTarget = Cast<AUZZombie>(OtherActor);
+        UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
 
-        if (ZombieTarget != nullptr)
+        if (HealthComp != nullptr)
         {
-            ZombieArray.Add(ZombieTarget);
+            ZombieArray.Add(HealthComp);
         }
     }
 
@@ -76,11 +85,11 @@ class AUZLaserBeam : AActor
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex) 
     {
-        AUZZombie ZombieTarget = Cast<AUZZombie>(OtherActor);
+        UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
 
-        if (ZombieTarget != nullptr)
+        if (HealthComp != nullptr)
         {
-            ZombieArray.Remove(ZombieTarget);
+            ZombieArray.Remove(HealthComp);
         }
     }
 
