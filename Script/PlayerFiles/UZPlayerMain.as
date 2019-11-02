@@ -4,6 +4,7 @@ import PlayerFiles.UZPullBeam;
 import GameFiles.UZGameMode;
 import WorldFiles.UZResource;
 import WorldFiles.UZRemoteCannon;
+import GameFiles.UZPlayerWidget;
 
 class AUZPlayerMain : APawn
 {
@@ -53,6 +54,9 @@ class AUZPlayerMain : APawn
     AActor RemoteCannonRef;
 
     UPROPERTY()
+    TSubclassOf<UUserWidget> MainWidget;
+
+    UPROPERTY()
     float SpawnTurretRate;
     float NewSpawnTurretTime; 
     float TurretCost = 50.f;
@@ -70,6 +74,11 @@ class AUZPlayerMain : APawn
         PlayerGameModeSetUp();
         PlayerCamSetup();
         PlayerInputSetup();
+
+        if (PlayerController != nullptr)
+        {
+            AddMainWidgetToHUD(PlayerController, MainWidget);
+        }
     }
 
     UFUNCTION()
@@ -116,12 +125,10 @@ class AUZPlayerMain : APawn
 
         if (GameMode != nullptr && GameMode.bGameEnded)
         {
-            Print("Start pressed", 5.f);
             Gameplay::OpenLevel(n"MainMap");
         }
         else if (GameMode != nullptr && GameMode.bGameNotStarted)
         {
-            Print("Start pressed", 5.f);
             GameMode.StartGame();
         }
     }
@@ -129,7 +136,6 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void MovePForward(float AxisValue)
     {
-        Print("" + AxisValue, 0.f);
         if (bIsActive)
         {
             AddMovementInput(ControlRotation.ForwardVector, AxisValue);
@@ -139,7 +145,6 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void MovePRight(float AxisValue)
     {
-        Print("" + AxisValue, 0.f);
         if (bIsActive)
         {
             AddMovementInput(ControlRotation.RightVector, AxisValue);         
@@ -149,7 +154,6 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void LaserCannonOn(FKey Key)
     {
-        Print("" + Key, 0.f);
         if (bIsActive && !bPullOn)
         {
             LaserBeamRef = SpawnActor(LaserBeamClass, ActorLocation);
@@ -175,7 +179,6 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PullBeamOn(FKey Key)
     {
-        Print("" + Key, 0.f);
         if (bIsActive && !bLaserOn)
         {
             PullBeamRef = SpawnActor(PullBeamClass, ActorLocation);
@@ -202,14 +205,10 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnTurret(FKey Key)
     {
-        Print("CALL BUILD TURRET", 5.f);
-
         if (GameMode != nullptr)
         {
             if (GameMode.Resources >= TurretCost)
             {
-                Print("We have enough Resources To Build", 5.f);
-
                 if (NewSpawnTurretTime <= Gameplay::TimeSeconds)
                 {
                     NewSpawnTurretTime = Gameplay::TimeSeconds + SpawnTurretRate;

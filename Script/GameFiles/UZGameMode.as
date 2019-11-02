@@ -34,8 +34,6 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        Print("Life = " + Life, 0.f);
-        Print("Resources = " + Resources, 0.f);
         SetNewSpawnRates();
 
         if (Life <= 0 && !bGameEnded)
@@ -74,12 +72,18 @@ class AUZGameMode : AGameModeBase
     }
 
     UFUNCTION()
+    float LifePercent()
+    {
+        float Percent = Life / MaxLife;
+        return Percent;
+    }
+
+    UFUNCTION()
     void SetNewSpawnRates()
     {
         if (NewIncreaseSpawnTime <= Gameplay::TimeSeconds)
         {
             NewIncreaseSpawnTime = Gameplay::TimeSeconds + IncreaseSpawnTimeRate;
-            Print("Spawntime rate increased", 5.f);
             EnemyMinSpawnTime /= 1.35f;
             EnemyMaxSpawnTime /= 1.35f;
         }

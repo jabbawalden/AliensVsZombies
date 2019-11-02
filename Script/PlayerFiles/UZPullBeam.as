@@ -27,11 +27,7 @@ class AUZPullBeam : AActor
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        if (IsActive)
-        {
-            SetActorLocation(PlayerRef.ActorLocation);
-        }
-        else
+        if (!IsActive)
         {
             DestroyActor();
         }
@@ -40,7 +36,7 @@ class AUZPullBeam : AActor
     UFUNCTION()
     void SetFollowTarget(AActor TargetActor)
     {
-        PlayerRef = TargetActor;
+        AttachToActor(TargetActor);
     }
 
     UFUNCTION()

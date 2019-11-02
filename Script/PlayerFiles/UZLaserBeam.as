@@ -34,7 +34,6 @@ class AUZLaserBeam : AActor
     {
         if (IsActive)
         {
-            SetActorLocation(TargetLocation.ActorLocation);
             DamageEnemies();
         }
         else
@@ -46,7 +45,7 @@ class AUZLaserBeam : AActor
     UFUNCTION()
     void SetFollowTarget(AActor TargetActor)
     {
-        TargetLocation = TargetActor;
+        AttachToActor(TargetActor);
     }
 
     UFUNCTION()
