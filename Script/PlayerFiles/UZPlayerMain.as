@@ -3,6 +3,7 @@ import PlayerFiles.UZLaserBeam;
 import PlayerFiles.UZPullBeam;
 import GameFiles.UZGameMode;
 import WorldFiles.UZResource;
+import WorldFiles.UZRemoteCannon;
 
 class AUZPlayerMain : APawn
 {
@@ -17,6 +18,9 @@ class AUZPlayerMain : APawn
 
     UPROPERTY(DefaultComponent, Attach = SceneComp)
     USphereComponent SphereCompResourceCatch;
+
+    UPROPERTY(DefaultComponent, Attach = SceneComp)
+    USceneComponent TurretSpawnOrigin;
 
     UPROPERTY(DefaultComponent)
     UFloatingPawnMovement FloatingPawnComp;
@@ -43,6 +47,14 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     TArray<AUZCameraActor> CameraArray;
     AUZCameraActor CameraObj;
+
+    UPROPERTY()
+    TSubclassOf<AActor> RemoteCannonClass;
+    AActor RemoteCannonRef;
+
+    UPROPERTY()
+    float SpawnObjTime;
+    float NewTime; 
 
     bool bIsActive = true;
     bool bLaserOn;
@@ -93,7 +105,8 @@ class AUZPlayerMain : APawn
         InputComp.BindAction(n"LaserCannon", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"LaserCannonOn"));
         InputComp.BindAction(n"LaserCannon", EInputEvent::IE_Released, FInputActionHandlerDynamicSignature(this, n"LaserCannonOff"));
         InputComp.BindAction(n"PullBeam", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"PullBeamOn"));
-        InputComp.BindAction(n"PullBeam", EInputEvent::IE_Released, FInputActionHandlerDynamicSignature(this, n"PullBeamOff"));     
+        InputComp.BindAction(n"PullBeam", EInputEvent::IE_Released, FInputActionHandlerDynamicSignature(this, n"PullBeamOff"));    
+        InputComp.BindAction(n"BuildTurret", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"SpawnTurret")); 
     }
 
     UFUNCTION()
@@ -179,6 +192,12 @@ class AUZPlayerMain : APawn
             PullBeam.IsActive = false;
             bPullOn = false;
         }
+    }
+
+    UFUNCTION()
+    void SpawnTurret(FKey Key)
+    {
+        RemoteCannonRef = SpawnActor(RemoteCannonClass, TurretSpawnOrigin.GetWorldLocation());
     }
 
     UFUNCTION()

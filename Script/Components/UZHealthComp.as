@@ -29,5 +29,6 @@ class UUZHealthComp : UActorComponent
     void DamageHealth(float Amount)
     {
         CurrentHealth -= Amount;
+        Print("" + CurrentHealth, 5.f);
     }
 }

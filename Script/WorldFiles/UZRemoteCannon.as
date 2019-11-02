@@ -1,5 +1,4 @@
 import Components.UZObjectRotation;
-import PlayerFiles.UZPlayerMain;
 import PlayerFiles.UZProjectile;
 import Components.UZShootComp;
 
@@ -53,7 +52,6 @@ class AUZRemoteCannon : AActor
     {
         ShootOriginArray.Add(ShootOrigin1);
         ShootOriginArray.Add(ShootOrigin2);
-
         SphereComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         SphereComp.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlap");
     }
@@ -99,7 +97,6 @@ class AUZRemoteCannon : AActor
             }
         }
     }
-
 
     UFUNCTION()
     void TriggerOnBeginOverlap(
