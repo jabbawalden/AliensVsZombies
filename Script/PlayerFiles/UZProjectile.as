@@ -55,11 +55,10 @@ class AUZProjectile : AActor
     {
         UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
 
-        if (HealthComp == nullptr)
-        return;
-
-        HealthComp.DamageHealth(Damage);
-
+        if (HealthComp != nullptr)
+        {
+            HealthComp.DamageHealth(Damage);
+        }
     }
 
 }
