@@ -1,6 +1,8 @@
 import Components.UZObjectRotation;
 import PlayerFiles.UZProjectile;
 import Components.UZShootComp;
+import Components.UZTraceCheckComp;
+import GameFiles.UZGameMode;
 
 class AUZRemoteCannon : AActor
 {
@@ -13,6 +15,7 @@ class AUZRemoteCannon : AActor
 
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     USphereComponent SphereComp;
+    default SphereComp.SphereRadius = 800.f; 
     default SphereComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
     default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
     default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
@@ -31,6 +34,11 @@ class AUZRemoteCannon : AActor
     UPROPERTY(DefaultComponent)
     UUZShootComp ShootComp;
 
+    UPROPERTY(DefaultComponent)
+    UUZTraceCheckComp TraceCheckComp;
+    default TraceCheckComp.SlamTraceDistance = 80.f; 
+    default TraceCheckComp.traceDirectionType = TraceDirection::Down; 
+
     UPROPERTY()
     AActor TargetActor;
 
@@ -38,6 +46,8 @@ class AUZRemoteCannon : AActor
     TArray<AActor> EnemyArray;
 
     AUZProjectile ProjectileCast;
+
+    AUZGameMode GameMode;
 
     UPROPERTY()
     FRotator LookAtRotation;
@@ -47,13 +57,23 @@ class AUZRemoteCannon : AActor
 
     int ShootTargetIndex;
 
+    bool bCanShoot = true;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
+
+        if (GameMode != nullptr)
+        {
+            GameMode.EventEndGame.AddUFunction(this, n"EndShoot");
+        }
+
         ShootOriginArray.Add(ShootOrigin1);
         ShootOriginArray.Add(ShootOrigin2);
         SphereComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         SphereComp.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlap");
+        BoxComp.SetSimulatePhysics(true);
     }
 
     UFUNCTION(BlueprintOverride)
@@ -62,9 +82,18 @@ class AUZRemoteCannon : AActor
         SetTarget();
         RotateTurret(DeltaSeconds);
 
-        if (EnemyArray.Num() > 0)
+        if (EnemyArray.Num() > 0 && bCanShoot)
         {
             ShootComp.FireProjectile(ShootOriginArray);
+        }
+
+        if (TraceCheckComp.bIsInRangeOfTarget)
+        {
+            BoxComp.SetSimulatePhysics(false);
+        }
+        else
+        {
+            Print("Remote Cannon Detecting Ground is: " + TraceCheckComp.bIsInRangeOfTarget, 0.f);
         }
     }
 
@@ -96,6 +125,12 @@ class AUZRemoteCannon : AActor
                 TargetActor = EnemyArray[i];
             }
         }
+    }
+
+    UFUNCTION()
+    void EndShoot()
+    {
+        bCanShoot = false;
     }
 
     UFUNCTION()

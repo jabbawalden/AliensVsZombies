@@ -38,8 +38,8 @@ class AUZPlayerMain : APawn
     AActor PullBeamRef;
     AUZPullBeam PullBeam;
 
-    UPROPERTY()
-    float MovementSpeed;
+    //UPROPERTY()
+    //float MovementSpeed = 1250.f;
 
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
@@ -53,8 +53,9 @@ class AUZPlayerMain : APawn
     AActor RemoteCannonRef;
 
     UPROPERTY()
-    float SpawnObjTime;
-    float NewTime; 
+    float SpawnTurretRate;
+    float NewSpawnTurretTime; 
+    float TurretCost = 50.f;
 
     bool bIsActive = true;
     bool bLaserOn;
@@ -128,6 +129,7 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void MovePForward(float AxisValue)
     {
+        Print("" + AxisValue, 0.f);
         if (bIsActive)
         {
             AddMovementInput(ControlRotation.ForwardVector, AxisValue);
@@ -137,6 +139,7 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void MovePRight(float AxisValue)
     {
+        Print("" + AxisValue, 0.f);
         if (bIsActive)
         {
             AddMovementInput(ControlRotation.RightVector, AxisValue);         
@@ -146,6 +149,7 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void LaserCannonOn(FKey Key)
     {
+        Print("" + Key, 0.f);
         if (bIsActive && !bPullOn)
         {
             LaserBeamRef = SpawnActor(LaserBeamClass, ActorLocation);
@@ -171,6 +175,7 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PullBeamOn(FKey Key)
     {
+        Print("" + Key, 0.f);
         if (bIsActive && !bLaserOn)
         {
             PullBeamRef = SpawnActor(PullBeamClass, ActorLocation);
@@ -197,7 +202,23 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnTurret(FKey Key)
     {
-        RemoteCannonRef = SpawnActor(RemoteCannonClass, TurretSpawnOrigin.GetWorldLocation());
+        Print("CALL BUILD TURRET", 5.f);
+
+        if (GameMode != nullptr)
+        {
+            if (GameMode.Resources >= TurretCost)
+            {
+                Print("We have enough Resources To Build", 5.f);
+
+                if (NewSpawnTurretTime <= Gameplay::TimeSeconds)
+                {
+                    NewSpawnTurretTime = Gameplay::TimeSeconds + SpawnTurretRate;
+                    RemoteCannonRef = SpawnActor(RemoteCannonClass, TurretSpawnOrigin.GetWorldLocation());
+                    GameMode.AddRemoveResources(-TurretCost); 
+                }    
+            }
+        }
+
     }
 
     UFUNCTION()

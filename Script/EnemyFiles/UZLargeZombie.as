@@ -16,4 +16,6 @@ class AUZLargeZombie : AActor
 
     UPROPERTY(DefaultComponent)
     UUZMovementComp MovementComp;
+
+    
 }
