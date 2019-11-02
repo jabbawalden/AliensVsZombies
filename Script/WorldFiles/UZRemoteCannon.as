@@ -1,5 +1,7 @@
 import Components.UZObjectRotation;
 import PlayerFiles.UZPlayerMain;
+import PlayerFiles.UZProjectile;
+import Components.UZShootComp;
 
 class AUZRemoteCannon : AActor
 {
@@ -16,24 +18,32 @@ class AUZRemoteCannon : AActor
     default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
     default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
+    USceneComponent ShootOrigin1;
+
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
+    USceneComponent ShootOrigin2;
+
+    TArray<USceneComponent> ShootOriginArray;
+
     UPROPERTY(DefaultComponent)
     UUZObjectRotation ObjectRotationComp;
 
-    UPROPERTY()
-    TSubclassOf<AActor> ProjectileClass;
-    AActor ProjectileReference;
+    UPROPERTY(DefaultComponent)
+    UUZShootComp ShootComp;
 
     UPROPERTY()
     AActor TargetActor;
-    
-    // TArray<AUZPlayerMain> PlayerTarget;
 
     UPROPERTY()
     TArray<AActor> EnemyArray;
 
+    AUZProjectile ProjectileCast;
+
     UPROPERTY()
     FRotator LookAtRotation;
 
+    UPROPERTY()
     float InterpSpeed = 2.5f;
 
     int ShootTargetIndex;
@@ -41,15 +51,40 @@ class AUZRemoteCannon : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        // AUZPlayerMain::GetAll(PlayerTarget);
-        // TargetActor = PlayerTarget[0];
+        ShootOriginArray.Add(ShootOrigin1);
+        ShootOriginArray.Add(ShootOrigin2);
+
         SphereComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         SphereComp.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlap");
-
     }
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
+    {
+        SetTarget();
+        RotateTurret(DeltaSeconds);
+
+        if (EnemyArray.Num() > 0)
+        {
+            ShootComp.FireProjectile(ShootOriginArray);
+        }
+    }
+
+    UFUNCTION()
+    void RotateTurret(float DeltaTime)
+    {
+        if (TargetActor != nullptr)
+        {
+            ObjectRotationComp.SetOwnerRotation(DeltaTime, TargetActor.ActorLocation); 
+        }
+        else
+        {
+            ObjectRotationComp.SetOwnerRotation(DeltaTime, FVector(0)); 
+        }
+    }
+
+    UFUNCTION()
+    void SetTarget()
     {
         float ClosestDistance = 15000.f;
 
@@ -60,28 +95,11 @@ class AUZRemoteCannon : AActor
             if(DistanceTo < ClosestDistance)
             {
                 ClosestDistance = DistanceTo;
-                // ShootTargetIndex = i;
-                // Print("" + ShootTargetIndex, 0.f);
                 TargetActor = EnemyArray[i];
             }
         }
-
-        if (TargetActor != nullptr)
-        {
-            ObjectRotationComp.SetOwnerRotation(DeltaSeconds, TargetActor.ActorLocation); 
-        }
-        else
-        {
-            ObjectRotationComp.SetOwnerRotation(DeltaSeconds, FVector(0)); 
-        }
-
     }
 
-    UFUNCTION()
-    void FireProjectile()
-    {
-
-    }
 
     UFUNCTION()
     void TriggerOnBeginOverlap(

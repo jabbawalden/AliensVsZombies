@@ -1,7 +1,7 @@
 class UUZObjectRotation : UActorComponent
 {
     UPROPERTY()
-    float InterpSpeed = 5.9f;
+    float InterpSpeed = 6.9f;
 
     UFUNCTION()
     void SetOwnerRotation(float DeltaTime, FVector TargetLocation)

@@ -9,9 +9,4 @@ class AUZProtectionPoint : AActor
     UPROPERTY(DefaultComponent, Attach = SphereComp)
     UStaticMeshComponent MeshComp;
 
-    //get game mode
-    AUZGameMode GameMode;
-
-    //When enemy enters, deduct points and check if above 0
-    //if not, call GameMode functions for end game
 }
