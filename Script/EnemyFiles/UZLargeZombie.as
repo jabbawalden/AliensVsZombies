@@ -3,8 +3,9 @@ import Components.UZTraceCheckComp;
 import Components.UZDealDamage;
 import Components.UZMovementComp;
 import GameFiles.UZGameMode;
+import EnemyFiles.UZZombieBaseClass;
 
-class AUZLargeZombie : AActor
+class AUZLargeZombie : AUZZombieBaseClass
 {
     UPROPERTY(DefaultComponent, RootComponent)
     UBoxComponent BoxComp;
@@ -13,18 +14,6 @@ class AUZLargeZombie : AActor
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-
-    UPROPERTY(DefaultComponent, Attach = BoxComp)
-    USceneComponent Spawn1;
-
-    UPROPERTY(DefaultComponent, Attach = BoxComp)
-    USceneComponent Spawn2;
-
-    UPROPERTY(DefaultComponent, Attach = BoxComp)
-    USceneComponent Spawn3;
-
-    UPROPERTY(DefaultComponent, Attach = BoxComp)
-    USceneComponent Spawn4;
 
     UPROPERTY(DefaultComponent)
     UUZHealthComp HealthComp;
@@ -37,6 +26,18 @@ class AUZLargeZombie : AActor
 
     UPROPERTY(DefaultComponent)
     UUZMovementComp MovementComp;
+
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
+    USceneComponent Spawn1;
+
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
+    USceneComponent Spawn2;
+
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
+    USceneComponent Spawn3;
+
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
+    USceneComponent Spawn4;
 
     AUZGameMode GameMode;
 

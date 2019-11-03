@@ -3,8 +3,9 @@ import GameFiles.UZGameMode;
 import Components.UZTraceCheckComp;
 import Components.UZDealDamage;
 import Components.UZMovementComp;
+import EnemyFiles.UZZombieBaseClass;
 
-class AUZZombie : AActor
+class AUZZombie : AUZZombieBaseClass
 {
     UPROPERTY(DefaultComponent, RootComponent)
     UCapsuleComponent CapsuleComp;
