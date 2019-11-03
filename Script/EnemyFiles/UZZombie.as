@@ -38,6 +38,7 @@ class AUZZombie : AUZZombieBaseClass
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        Super::BeginPlay(); 
         HealthComp.EventEnemyDeath.AddUFunction(this, n"ZombieDeathCall");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
