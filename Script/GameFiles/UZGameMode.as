@@ -35,7 +35,7 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Resources = 500;
+        Resources = 100;
         EventUpdateResources.Broadcast();
         EventUpdateLife.Broadcast();
     }

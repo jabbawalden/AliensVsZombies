@@ -38,13 +38,14 @@ class AUZResource : AActor
                 FVector NewLoc = FVector(LocXInterp, LocYInterp, ActorLocation.Z + MovementSpeed * DeltaSeconds);
 
                 SetActorLocation(NewLoc);
-                BoxComp.SetSimulatePhysics(false);
             }
         }
-        else 
-        {
-            BoxComp.SetSimulatePhysics(true);
-        }
+    }
+
+    UFUNCTION()
+    void SetPhysicsSimulation(bool bValue)
+    {
+        BoxComp.SetSimulatePhysics(bValue);
     }
 
     UFUNCTION()

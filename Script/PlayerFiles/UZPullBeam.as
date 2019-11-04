@@ -51,6 +51,7 @@ class AUZPullBeam : AActor
         {
             ResourceTarget.SetTargetReference(this);
             ResourceTarget.IsCollecting = true;
+            ResourceTarget.SetPhysicsSimulation(false);
         }
     }
 
@@ -64,6 +65,7 @@ class AUZPullBeam : AActor
         if (ResourceTarget != nullptr)
         {
             ResourceTarget.IsCollecting = false;
+            ResourceTarget.SetPhysicsSimulation(true);
         }
     }
 }

@@ -3,7 +3,7 @@ import PlayerFiles.UZLaserBeam;
 import PlayerFiles.UZPullBeam;
 import GameFiles.UZGameMode;
 import WorldFiles.UZResource;
-import WorldFiles.UZRemoteCannon;
+import PlayerFiles.UZRemoteCannon;
 import GameFiles.UZPlayerWidget;
 
 class AUZPlayerMain : APawn
@@ -64,6 +64,11 @@ class AUZPlayerMain : APawn
     bool bIsActive = true;
     bool bLaserOn;
     bool bPullOn;
+
+    UPROPERTY()
+    float XLocAllowedMovement = 3000.f;
+    UPROPERTY()
+    float YLocAllowedMovement = 3000.f;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -138,7 +143,10 @@ class AUZPlayerMain : APawn
     {
         if (bIsActive)
         {
-            AddMovementInput(ControlRotation.ForwardVector, AxisValue);
+            if (ActorLocation.X > -XLocAllowedMovement && AxisValue < 0)
+                AddMovementInput(ControlRotation.ForwardVector, AxisValue);
+            else if (ActorLocation.X < XLocAllowedMovement && AxisValue > 0)  
+                AddMovementInput(ControlRotation.ForwardVector, AxisValue);
         }
     }
 
@@ -147,7 +155,10 @@ class AUZPlayerMain : APawn
     {
         if (bIsActive)
         {
-            AddMovementInput(ControlRotation.RightVector, AxisValue);         
+            if (ActorLocation.Y > -YLocAllowedMovement && AxisValue < 0)
+                AddMovementInput(ControlRotation.RightVector, AxisValue); 
+            else if (ActorLocation.Y < YLocAllowedMovement && AxisValue > 0)  
+                AddMovementInput(ControlRotation.RightVector, AxisValue);       
         }
     }
 

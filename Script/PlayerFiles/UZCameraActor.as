@@ -22,6 +22,9 @@ class AUZCameraActor : AActor
     UPROPERTY()
     float XOffset = -134250.f;
 
+    UPROPERTY()
+    float LocationFollowMultiplier = 0.75f;
+
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
@@ -32,7 +35,7 @@ class AUZCameraActor : AActor
     void SetCameraLocation(float DeltaTime)
     {
         //but keep closer to the middle - reference the cube runner
-        FVector TargetLocation = FVector(PlayerRef.ActorLocation.X / 2.f, PlayerRef.ActorLocation.Y / 2.f, PlayerRef.ActorLocation.Z);
+        FVector TargetLocation = FVector(PlayerRef.ActorLocation.X * LocationFollowMultiplier, PlayerRef.ActorLocation.Y * LocationFollowMultiplier, PlayerRef.ActorLocation.Z);
 
         float XInterp = FMath::FInterpTo(TargetLocation.X, ActorLocation.X, DeltaTime, InterpSpeed);
         float YInterp = FMath::FInterpTo(TargetLocation.Y, ActorLocation.Y, DeltaTime, InterpSpeed);

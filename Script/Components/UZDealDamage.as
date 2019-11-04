@@ -12,16 +12,6 @@ class UUZDealDamage : UActorComponent
     UPROPERTY()
     float AttackRate = 0.35f;
 
-    // UFUNCTION()
-    // void DealProtectionPointDamage(AUZGameMode GameMode)
-    // {
-    //     if (NewDMGTime <= Gameplay::GetTimeSeconds())
-    //     {
-    //         NewDMGTime = Gameplay::GetTimeSeconds() + AttackRate;
-    //         GameMode.ReduceHealth(Damage);
-    //     }
-    // }
-
     UFUNCTION()
     void DealTargetDamage(UUZHealthComp THealthComp)
     {
