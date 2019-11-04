@@ -48,7 +48,8 @@ class AUZEnemySpawner : AActor
             switch(SpawnIndexChance)
             {
                 case 1:
-                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    //SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    SpawnEnemy(EnemySpawn2Ref, EnemySpawn2);
                     break;
                 case 2:
                     if (GameMode.bCanSpawnEnemy2)
@@ -56,18 +57,17 @@ class AUZEnemySpawner : AActor
                     break;
                 case 3:
                     if (GameMode.bCanSpawnEnemy3)
-                    Print("can spawn enemy 3", 5.f);
+                        SpawnEnemy(EnemySpawn2Ref, EnemySpawn2);
                     break;
             }
-
         }
     }
 
     UFUNCTION()
     void SpawnEnemy(AActor SpawnRef, TSubclassOf<AActor> SpawnClass)
     {
-        float XPosOffset = FMath::RandRange(0.f, MaxSpawnDistance);
-        float YPosOffset = FMath::RandRange(0.f, MaxSpawnDistance);
+        float XPosOffset = FMath::RandRange(-MaxSpawnDistance, MaxSpawnDistance);
+        float YPosOffset = FMath::RandRange(-MaxSpawnDistance, MaxSpawnDistance);
         SpawnRef = SpawnActor(SpawnClass, FVector(ActorLocation.X + XPosOffset, ActorLocation.Y + YPosOffset, ActorLocation.Z + 50.f));
     }
 
@@ -76,7 +76,6 @@ class AUZEnemySpawner : AActor
     void EndSpawn()
     {
         bCanSpawn = false;
-        Print("End Spawn Called", 5.f);
     }
     
 }

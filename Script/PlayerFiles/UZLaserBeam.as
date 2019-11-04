@@ -9,6 +9,7 @@ class AUZLaserBeam : AActor
     UPROPERTY(DefaultComponent, Attach = SceneComp)
     UBoxComponent BoxComp;
     default BoxComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    default BoxComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore);
 
     UPROPERTY(DefaultComponent, Attach = SceneComp)
     UStaticMeshComponent MeshComp;

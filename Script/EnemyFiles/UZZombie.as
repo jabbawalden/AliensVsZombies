@@ -16,7 +16,6 @@ class AUZZombie : AUZZombieBaseClass
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        // HealthComp.EventEnemyDeath.AddUFunction(this, n"EventCheck");
         HealthComp.EventDeath.AddUFunction(this, n"ZombieDeathCall");
         Super::BeginPlay(); 
     }
@@ -28,17 +27,10 @@ class AUZZombie : AUZZombieBaseClass
     }
 
     UFUNCTION()
-    void EventCheck()
-    {
-        Print("Calling enemy death", 5.f);
-    }
-
-    UFUNCTION()
     void ZombieDeathCall()
     {
         if (GameMode != nullptr)
         {
-            Print("Kill zombie", 5.f);
             GameMode.AddRemoveResources(ResourceAmount);
             DestroyActor();
         }

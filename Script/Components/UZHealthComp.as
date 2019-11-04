@@ -31,4 +31,11 @@ class UUZHealthComp : UActorComponent
         CurrentHealth -= Amount;
     }
 
+    UFUNCTION()
+    float GetHealthPercent()
+    {
+        float Percent = CurrentHealth / MaxHealth;
+        return Percent;
+    }
+
 }

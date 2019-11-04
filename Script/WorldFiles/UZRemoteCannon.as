@@ -15,6 +15,7 @@ class AUZRemoteCannon : AActor
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+    default MeshComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
     default MeshComp.SetCollisionObjectType(ECollisionChannel::ECC_Vehicle); 
 
     UPROPERTY(DefaultComponent, Attach = BoxComp)
@@ -51,7 +52,7 @@ class AUZRemoteCannon : AActor
 
     UPROPERTY(DefaultComponent)
     UUZTraceCheckComp TraceCheckComp;
-    default TraceCheckComp.SlamTraceDistance = 80.f; 
+    default TraceCheckComp.TraceDistance = 80.f; 
     default TraceCheckComp.traceDirectionType = TraceDirection::Down; 
 
     UPROPERTY()
@@ -86,21 +87,9 @@ class AUZRemoteCannon : AActor
             GameMode.EventEndGame.AddUFunction(this, n"EndShoot");
         }
 
-        ShootOriginArray.Add(ShootOrigin1);
-        ShootOriginArray.Add(ShootOrigin2);
-        SphereComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
-        SphereComp.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlap");
-        BoxComp.SetSimulatePhysics(true);
+        RemoteCannonSetup();
+        WidgetCompSetup();
 
-        // TurretWidget.
-
-        TurretWidgetClass = Cast<UUZTurretWidget>(TurretWidget); 
-        // TurretWidgetClass = UUZTurretWidget::Get(TurretWidget);
-
-        if (TurretWidgetClass != nullptr)
-        {
-            Print("Turret class found", 5.f);
-        }
     }
 
     UFUNCTION(BlueprintOverride)
@@ -108,8 +97,7 @@ class AUZRemoteCannon : AActor
     {
         SetTarget();
         RotateTurret(DeltaSeconds);
-
-        Print("" + HealthComp.CurrentHealth, 0.f);
+        TurretWidgetClass.UpdateLifeBar(HealthComp.GetHealthPercent());
 
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
@@ -122,16 +110,30 @@ class AUZRemoteCannon : AActor
         }
         else
         {
-            Print("Remote Cannon Detecting Ground is: " + TraceCheckComp.bIsInRangeOfTarget, 0.f);
+
         }
     }
 
-    // UFUNCTION(BlueprintEvent)
-    // UWidgetComponent GetWidgetClass()
-    // {
-    //     throw("You must use override GetWidgetClass from the widget blueprint to return the correct text widget.");
-    //     return nullptr;
-    // }
+    UFUNCTION()
+    void RemoteCannonSetup()
+    {
+        ShootOriginArray.Add(ShootOrigin1);
+        ShootOriginArray.Add(ShootOrigin2);
+        SphereComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
+        SphereComp.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlap");
+        BoxComp.SetSimulatePhysics(true);
+    }
+
+    UFUNCTION()
+    void WidgetCompSetup()
+    {
+        TurretWidgetClass = Cast<UUZTurretWidget>(TurretWidget.GetUserWidgetObject());
+
+        if (TurretWidgetClass != nullptr)
+        {
+            TurretWidgetClass.UpdateLifeBar(HealthComp.GetHealthPercent());
+        }
+    }
 
     UFUNCTION()
     void RotateTurret(float DeltaTime)
@@ -172,6 +174,16 @@ class AUZRemoteCannon : AActor
     UFUNCTION()
     void TurretDeath()
     {
+        //set target actor to final target again
+        for(int i = 0; i < EnemyArray.Num(); i++)
+        {
+            UUZMovementComp EnemyMoveComp = UUZMovementComp::Get(EnemyArray[i]);
+            if (EnemyMoveComp != nullptr)
+            {
+                EnemyMoveComp.SetTargetToFinal();
+            }
+        }
+
         DestroyActor();
     }
 

@@ -6,7 +6,7 @@ class UUZTraceCheckComp : UActorComponent
     TraceDirection traceDirectionType; 
 
     UPROPERTY()
-    float SlamTraceDistance = 90.f;
+    float TraceDistance = 90.f;
 
     bool bIsInRangeOfTarget;
 
@@ -27,11 +27,11 @@ class UUZTraceCheckComp : UActorComponent
         FVector EndLocation;
         
         if (traceDirectionType == TraceDirection::Up)
-            EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * SlamTraceDistance);
+            EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * TraceDistance);
         else if (traceDirectionType == TraceDirection::Down)
-            EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * -SlamTraceDistance);
+            EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * -TraceDistance);
         else if (traceDirectionType == TraceDirection::Forward)     
-            EndLocation = Owner.ActorLocation + (Owner.GetActorForwardVector() * SlamTraceDistance);
+            EndLocation = Owner.ActorLocation + (Owner.GetActorForwardVector() * TraceDistance);
 
 
         if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::None, Hit, true))

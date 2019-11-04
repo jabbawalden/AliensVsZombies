@@ -17,8 +17,10 @@ class AUZGameMode : AGameModeBase
     bool bGameEnded;
     bool bGameNotStarted = true;
 
-    float EnemyMinSpawnTime = 1.f;
-    float EnemyMaxSpawnTime = 2.5f;
+    float EnemyMinSpawnTime = 0.8f;
+    float EnemyMaxSpawnTime = 2.1f;
+
+    float SpawnIncreaseDivider = 1.1f;
 
     float IncreaseSpawnTimeRate = 10.f;
     float NewIncreaseSpawnTime;
@@ -92,8 +94,8 @@ class AUZGameMode : AGameModeBase
         if (NewIncreaseSpawnTime <= Gameplay::TimeSeconds)
         {
             NewIncreaseSpawnTime = Gameplay::TimeSeconds + IncreaseSpawnTimeRate;
-            EnemyMinSpawnTime /= 1.2f;
-            EnemyMaxSpawnTime /= 1.2f;
+            EnemyMinSpawnTime /= SpawnIncreaseDivider;
+            EnemyMaxSpawnTime /= SpawnIncreaseDivider;
             SpawnDifficulty++;
 
             if (SpawnDifficulty >= Enemy2SpawnDifficulty)

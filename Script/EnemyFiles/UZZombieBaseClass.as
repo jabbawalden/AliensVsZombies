@@ -8,9 +8,6 @@ class AUZZombieBaseClass : AActor
 {
     AUZGameMode GameMode;
 
-    UPROPERTY()
-    AActor TargetActor;
-
     UPROPERTY(DefaultComponent)
     UUZHealthComp HealthComp;
 
@@ -48,16 +45,9 @@ class AUZZombieBaseClass : AActor
         if (MovementComp.CurrentTarget != nullptr)
         {
             UUZHealthComp OtherHealthComp = UUZHealthComp::Get(MovementComp.CurrentTarget);
-
             if (OtherHealthComp != nullptr)
             {
-                Print("Detected turret and dealing damage", 0.f);
                 DamageComp.DealTargetDamage(OtherHealthComp); 
-            }
-
-            if (GameMode != nullptr && !GameMode.bGameEnded)
-            {
-                DamageComp.DealProtectionPointDamage(GameMode);
             }
         }
     }

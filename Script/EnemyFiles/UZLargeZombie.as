@@ -33,11 +33,6 @@ class AUZLargeZombie : AUZZombieBaseClass
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
         Super::BeginPlay();
-
-        if (MovementComp.CurrentTarget != nullptr)
-        {
-            TargetActor = MovementComp.CurrentTarget; 
-        }
     }
 
     UFUNCTION(BlueprintOverride)

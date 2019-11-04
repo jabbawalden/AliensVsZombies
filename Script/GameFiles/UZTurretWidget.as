@@ -14,5 +14,4 @@ class UUZTurretWidget : UUserWidget
         ProgressBar.Percent = TargetPercent;
     }
 
-
 }
