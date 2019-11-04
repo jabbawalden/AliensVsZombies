@@ -15,18 +15,6 @@ class AUZLargeZombie : AUZZombieBaseClass
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
-    UPROPERTY(DefaultComponent)
-    UUZHealthComp HealthComp;
-
-    UPROPERTY(DefaultComponent)
-    UUZTraceCheckComp TraceCheckComp;
-
-    UPROPERTY(DefaultComponent)
-    UUZDealDamage DamageComp;
-
-    UPROPERTY(DefaultComponent)
-    UUZMovementComp MovementComp;
-
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     USceneComponent Spawn1;
 
@@ -39,11 +27,6 @@ class AUZLargeZombie : AUZZombieBaseClass
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     USceneComponent Spawn4;
 
-    AUZGameMode GameMode;
-
-    UPROPERTY()
-    AActor TargetActor;
-
     UPROPERTY()
     TSubclassOf<AActor> ZombieClass;
     AActor ZombieRef;
@@ -54,6 +37,8 @@ class AUZLargeZombie : AUZZombieBaseClass
         HealthComp.EventEnemyDeath.AddUFunction(this, n"LargeZombieDeathCall");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
+        Super::BeginPlay();
+
         if (MovementComp.CurrentTarget != nullptr)
         {
             TargetActor = MovementComp.CurrentTarget; 
@@ -63,19 +48,7 @@ class AUZLargeZombie : AUZZombieBaseClass
     UFUNCTION(BlueprintOverride)
     void Tick (float DeltaSeconds)
     {
-        Print("" + HealthComp.CurrentHealth);
-        
-        if (!TraceCheckComp.bIsInRangeOfTarget)
-        {
-            MovementComp.MoveAI(DeltaSeconds); 
-        }
-        else if (GameMode != nullptr && TraceCheckComp.bIsInRangeOfTarget)
-        {
-            if (!GameMode.bGameEnded)
-            {
-                DamageComp.DealDamage(GameMode);
-            }
-        }
+        Super::Tick(DeltaSeconds);
     }
 
     UFUNCTION()

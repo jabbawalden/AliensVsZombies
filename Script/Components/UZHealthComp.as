@@ -30,4 +30,5 @@ class UUZHealthComp : UActorComponent
     {
         CurrentHealth -= Amount;
     }
+
 }
