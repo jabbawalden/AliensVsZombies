@@ -20,7 +20,7 @@ class UUZMovementComp : UActorComponent
     void BeginPlay()
     {
         GetFinalDestinationReferece();
-        CurrentTarget = FinalTarget; 
+        SetTargetToFinal();
     }
 
     UFUNCTION()
@@ -38,6 +38,12 @@ class UUZMovementComp : UActorComponent
     {
         AUZProtectionPoint::GetAll(ProtectionPointArray);
         FinalTarget = ProtectionPointArray[0]; 
+    }
+
+    UFUNCTION()
+    void SetTargetToFinal()
+    {
+        CurrentTarget = FinalTarget; 
     }
 
     UFUNCTION()

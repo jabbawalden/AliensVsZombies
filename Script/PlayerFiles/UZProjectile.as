@@ -5,6 +5,7 @@ class AUZProjectile : AActor
     UPROPERTY(DefaultComponent, RootComponent)
     USphereComponent SphereComp;
     default SphereComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Ignore); 
 
     UPROPERTY(DefaultComponent, Attach = SphereComp)
     UStaticMeshComponent MeshComp;
@@ -58,6 +59,7 @@ class AUZProjectile : AActor
         if (HealthComp != nullptr)
         {
             HealthComp.DamageHealth(Damage);
+            DestroyActor(); 
         }
     }
 

@@ -2,6 +2,7 @@ import Components.UZHealthComp;
 import Components.UZTraceCheckComp;
 import Components.UZDealDamage;
 import Components.UZMovementComp;
+import GameFiles.UZGameMode;
 
 class AUZZombieBaseClass : AActor
 {
@@ -26,13 +27,6 @@ class AUZZombieBaseClass : AActor
     void BeginPlay()
     {        
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
-
-        if (MovementComp.CurrentTarget != nullptr)
-        {
-            TargetActor = MovementComp.CurrentTarget; 
-        }
-
-        Print("Zombie base class detected", 5.f);
     }
 
     UFUNCTION(BlueprintOverride)
@@ -42,11 +36,28 @@ class AUZZombieBaseClass : AActor
         {
             MovementComp.MoveAI(DeltaSeconds); 
         }
-        else if (GameMode != nullptr && TraceCheckComp.bIsInRangeOfTarget)
+        else if (TraceCheckComp.bIsInRangeOfTarget)
         {
-            if (!GameMode.bGameEnded)
+            AttackBehaviour();
+        }
+    }
+
+    UFUNCTION()
+    void AttackBehaviour()
+    {
+        if (MovementComp.CurrentTarget != nullptr)
+        {
+            UUZHealthComp OtherHealthComp = UUZHealthComp::Get(MovementComp.CurrentTarget);
+
+            if (OtherHealthComp != nullptr)
             {
-                DamageComp.DealDamage(GameMode);
+                Print("Detected turret and dealing damage", 0.f);
+                DamageComp.DealTargetDamage(OtherHealthComp); 
+            }
+
+            if (GameMode != nullptr && !GameMode.bGameEnded)
+            {
+                DamageComp.DealProtectionPointDamage(GameMode);
             }
         }
     }

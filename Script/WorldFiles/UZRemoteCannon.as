@@ -3,6 +3,9 @@ import PlayerFiles.UZProjectile;
 import Components.UZShootComp;
 import Components.UZTraceCheckComp;
 import GameFiles.UZGameMode;
+import Components.UZHealthComp;
+import Components.UZMovementComp;
+import GameFiles.UZTurretWidget;
 
 class AUZRemoteCannon : AActor
 {
@@ -12,6 +15,7 @@ class AUZRemoteCannon : AActor
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+    default MeshComp.SetCollisionObjectType(ECollisionChannel::ECC_Vehicle); 
 
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     USphereComponent SphereComp;
@@ -19,12 +23,18 @@ class AUZRemoteCannon : AActor
     default SphereComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
     default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
     default SphereComp.SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+    default SphereComp.SetCollisionObjectType(ECollisionChannel::ECC_Vehicle); 
 
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     USceneComponent ShootOrigin1;
 
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     USceneComponent ShootOrigin2;
+
+    UPROPERTY(DefaultComponent, Attach = BoxComp)
+    UWidgetComponent TurretWidget;
+
+    UUZTurretWidget TurretWidgetClass;
 
     TArray<USceneComponent> ShootOriginArray;
 
@@ -33,6 +43,11 @@ class AUZRemoteCannon : AActor
 
     UPROPERTY(DefaultComponent)
     UUZShootComp ShootComp;
+
+    UPROPERTY(DefaultComponent)
+    UUZHealthComp HealthComp;
+
+    FUpdateLife EventUpdateLife;
 
     UPROPERTY(DefaultComponent)
     UUZTraceCheckComp TraceCheckComp;
@@ -62,6 +77,8 @@ class AUZRemoteCannon : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        HealthComp.EventDeath.AddUFunction(this, n"TurretDeath");
+
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
 
         if (GameMode != nullptr)
@@ -74,6 +91,16 @@ class AUZRemoteCannon : AActor
         SphereComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         SphereComp.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlap");
         BoxComp.SetSimulatePhysics(true);
+
+        // TurretWidget.
+
+        TurretWidgetClass = Cast<UUZTurretWidget>(TurretWidget); 
+        // TurretWidgetClass = UUZTurretWidget::Get(TurretWidget);
+
+        if (TurretWidgetClass != nullptr)
+        {
+            Print("Turret class found", 5.f);
+        }
     }
 
     UFUNCTION(BlueprintOverride)
@@ -81,6 +108,8 @@ class AUZRemoteCannon : AActor
     {
         SetTarget();
         RotateTurret(DeltaSeconds);
+
+        Print("" + HealthComp.CurrentHealth, 0.f);
 
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
@@ -96,6 +125,13 @@ class AUZRemoteCannon : AActor
             Print("Remote Cannon Detecting Ground is: " + TraceCheckComp.bIsInRangeOfTarget, 0.f);
         }
     }
+
+    // UFUNCTION(BlueprintEvent)
+    // UWidgetComponent GetWidgetClass()
+    // {
+    //     throw("You must use override GetWidgetClass from the widget blueprint to return the correct text widget.");
+    //     return nullptr;
+    // }
 
     UFUNCTION()
     void RotateTurret(float DeltaTime)
@@ -134,6 +170,12 @@ class AUZRemoteCannon : AActor
     }
 
     UFUNCTION()
+    void TurretDeath()
+    {
+        DestroyActor();
+    }
+
+    UFUNCTION()
     void TriggerOnBeginOverlap(
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
@@ -142,6 +184,12 @@ class AUZRemoteCannon : AActor
         if (OtherActor.Tags.Contains(n"Enemy"))
         {
             EnemyArray.Add(OtherActor);
+
+            UUZMovementComp EnemyMoveComp = UUZMovementComp::Get(OtherActor);
+            if (EnemyMoveComp != nullptr)
+            {
+                EnemyMoveComp.CurrentTarget = this; 
+            }
         }
     }
 
@@ -153,6 +201,12 @@ class AUZRemoteCannon : AActor
         if (OtherActor.Tags.Contains(n"Enemy"))
         {
             EnemyArray.Remove(OtherActor);
+
+            UUZMovementComp EnemyMoveComp = UUZMovementComp::Get(OtherActor);
+            if (EnemyMoveComp != nullptr)
+            {
+                EnemyMoveComp.SetTargetToFinal();
+            }
         }
     }
 }

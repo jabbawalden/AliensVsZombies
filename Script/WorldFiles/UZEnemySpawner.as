@@ -2,11 +2,13 @@ import GameFiles.UZGameMode;
 
 class AUZEnemySpawner : AActor
 {
-    float SpawnDistance = 120.f;
+    float MaxSpawnDistance = 800.f;
 
     AUZGameMode GameMode;
 
     bool bCanSpawn = true;
+
+    float NewSpawnTime;
 
     UPROPERTY()
     TSubclassOf<AActor> EnemySpawn1;
@@ -27,11 +29,48 @@ class AUZEnemySpawner : AActor
         }
     }
 
-    UFUNCTION()
-    void SpawnEnemy()
+    UFUNCTION(BlueprintOverride)
+    void Tick(float DeltaSeconds)
     {
-        //with some chance to spawn enemy 2
+        SpawnEnemyBehaviour();
     }
+
+    UFUNCTION()
+    void SpawnEnemyBehaviour()
+    {
+        if (NewSpawnTime <= Gameplay::TimeSeconds)
+        {
+            float NewRate = FMath::RandRange(GameMode.EnemyMinSpawnTime, GameMode.EnemyMaxSpawnTime);
+            NewSpawnTime = Gameplay::TimeSeconds + NewRate;
+
+            int SpawnIndexChance = FMath::RandRange(1, 3);
+
+            switch(SpawnIndexChance)
+            {
+                case 1:
+                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    break;
+                case 2:
+                    if (GameMode.bCanSpawnEnemy2)
+                    SpawnEnemy(EnemySpawn2Ref, EnemySpawn2);
+                    break;
+                case 3:
+                    if (GameMode.bCanSpawnEnemy3)
+                    Print("can spawn enemy 3", 5.f);
+                    break;
+            }
+
+        }
+    }
+
+    UFUNCTION()
+    void SpawnEnemy(AActor SpawnRef, TSubclassOf<AActor> SpawnClass)
+    {
+        float XPosOffset = FMath::RandRange(0.f, MaxSpawnDistance);
+        float YPosOffset = FMath::RandRange(0.f, MaxSpawnDistance);
+        SpawnRef = SpawnActor(SpawnClass, FVector(ActorLocation.X + XPosOffset, ActorLocation.Y + YPosOffset, ActorLocation.Z + 50.f));
+    }
+
 
     UFUNCTION()
     void EndSpawn()

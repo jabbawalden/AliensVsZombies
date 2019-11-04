@@ -1,8 +1,3 @@
-import Components.UZHealthComp;
-import Components.UZTraceCheckComp;
-import Components.UZDealDamage;
-import Components.UZMovementComp;
-import GameFiles.UZGameMode;
 import EnemyFiles.UZZombieBaseClass;
 
 class AUZLargeZombie : AUZZombieBaseClass
@@ -34,7 +29,7 @@ class AUZLargeZombie : AUZZombieBaseClass
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        HealthComp.EventEnemyDeath.AddUFunction(this, n"LargeZombieDeathCall");
+        HealthComp.EventDeath.AddUFunction(this, n"LargeZombieDeathCall");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
         Super::BeginPlay();

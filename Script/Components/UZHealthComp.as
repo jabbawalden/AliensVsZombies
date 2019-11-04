@@ -2,7 +2,7 @@ import GameFiles.UZEvents;
 
 class UUZHealthComp : UActorComponent
 {
-    FEnemyDeathEvent EventEnemyDeath;
+    FEnemyDeathEvent EventDeath;
 
     UPROPERTY()
     float CurrentHealth;
@@ -21,7 +21,7 @@ class UUZHealthComp : UActorComponent
     {
         if (CurrentHealth <= 0.f)
         {
-            EventEnemyDeath.Broadcast(); 
+            EventDeath.Broadcast(); 
         }
     }
 

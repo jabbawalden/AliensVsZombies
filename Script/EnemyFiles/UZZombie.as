@@ -1,8 +1,3 @@
-import Components.UZHealthComp;
-import GameFiles.UZGameMode;
-import Components.UZTraceCheckComp;
-import Components.UZDealDamage;
-import Components.UZMovementComp;
 import EnemyFiles.UZZombieBaseClass;
 
 class AUZZombie : AUZZombieBaseClass
@@ -22,10 +17,8 @@ class AUZZombie : AUZZombieBaseClass
     void BeginPlay()
     {
         // HealthComp.EventEnemyDeath.AddUFunction(this, n"EventCheck");
-        HealthComp.EventEnemyDeath.AddUFunction(this, n"ZombieDeathCall");
+        HealthComp.EventDeath.AddUFunction(this, n"ZombieDeathCall");
         Super::BeginPlay(); 
-
-
     }
 
     UFUNCTION(BlueprintOverride)

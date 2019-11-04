@@ -43,7 +43,6 @@ class UUZPlayerMainWidget : UUserWidget
         UProgressBar ProgressBar = GetHealthProgressBar();
         ProgressBar.Percent = GameMode.LifePercent();
     }
-
 }
 
 UFUNCTION(Category = "Player HUD")

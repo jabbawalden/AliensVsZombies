@@ -20,13 +20,21 @@ class AUZGameMode : AGameModeBase
     float EnemyMinSpawnTime = 1.f;
     float EnemyMaxSpawnTime = 2.5f;
 
-    float IncreaseSpawnTimeRate = 2.f;
+    float IncreaseSpawnTimeRate = 10.f;
     float NewIncreaseSpawnTime;
+
+    int SpawnDifficulty = 0;
+
+    int Enemy2SpawnDifficulty = 5;
+    int Enemy3SpawnDifficulty = 10;
+    bool bCanSpawnEnemy2;
+    bool bCanSpawnEnemy3;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
         Life = MaxLife;
+        Resources = 500;
         EventUpdateResources.Broadcast();
         EventUpdateLife.Broadcast();
     }
@@ -84,8 +92,22 @@ class AUZGameMode : AGameModeBase
         if (NewIncreaseSpawnTime <= Gameplay::TimeSeconds)
         {
             NewIncreaseSpawnTime = Gameplay::TimeSeconds + IncreaseSpawnTimeRate;
-            EnemyMinSpawnTime /= 1.35f;
-            EnemyMaxSpawnTime /= 1.35f;
+            EnemyMinSpawnTime /= 1.2f;
+            EnemyMaxSpawnTime /= 1.2f;
+            SpawnDifficulty++;
+
+            if (SpawnDifficulty >= Enemy2SpawnDifficulty)
+            {
+                bCanSpawnEnemy2 = true;
+                Print("Can spawn enemy 2", 5.f);
+            }
+
+            if (SpawnDifficulty >= Enemy3SpawnDifficulty)
+            {
+                bCanSpawnEnemy3 = true;
+                Print("Can spawn enemy 3", 5.f);
+            }
+
         }
     }
 }
