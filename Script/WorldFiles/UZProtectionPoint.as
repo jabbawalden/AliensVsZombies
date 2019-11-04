@@ -20,12 +20,20 @@ class AUZProtectionPoint : AActor
     void BeginPlay()
     {
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
+        if (GameMode != nullptr)
+        {
+            GameMode.Life = HealthComp.MaxHealth;
+            GameMode.MaxLife = HealthComp.MaxHealth;
+        }
+
+        HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateGameModeHealth");
     }
 
-    UFUNCTION(BlueprintOverride)
-    void Tick(float DeltaSeconds)
+    UFUNCTION()
+    void UpdateGameModeHealth()
     {
-        
+        GameMode.Life = HealthComp.CurrentHealth;
+        GameMode.EventUpdateLife.Broadcast(); 
     }
 
 }

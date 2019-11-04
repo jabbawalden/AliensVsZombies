@@ -35,7 +35,6 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Life = MaxLife;
         Resources = 500;
         EventUpdateResources.Broadcast();
         EventUpdateLife.Broadcast();
@@ -58,13 +57,6 @@ class AUZGameMode : AGameModeBase
     {
         Resources += InputResources;
         EventUpdateResources.Broadcast();
-    }
-
-    UFUNCTION()
-    void ReduceHealth(float Amount)
-    {
-        Life -= Amount;
-        EventUpdateLife.Broadcast();
     }
 
     UFUNCTION()

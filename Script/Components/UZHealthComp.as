@@ -3,6 +3,7 @@ import GameFiles.UZEvents;
 class UUZHealthComp : UActorComponent
 {
     FEnemyDeathEvent EventDeath;
+    FUpdateLife EventUpdateLife;
 
     UPROPERTY()
     float CurrentHealth;
@@ -29,6 +30,7 @@ class UUZHealthComp : UActorComponent
     void DamageHealth(float Amount)
     {
         CurrentHealth -= Amount;
+        EventUpdateLife.Broadcast();
     }
 
     UFUNCTION()

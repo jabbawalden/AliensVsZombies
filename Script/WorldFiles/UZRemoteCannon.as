@@ -79,7 +79,7 @@ class AUZRemoteCannon : AActor
     void BeginPlay()
     {
         HealthComp.EventDeath.AddUFunction(this, n"TurretDeath");
-
+        HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateHealth");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
 
         if (GameMode != nullptr)
@@ -97,7 +97,6 @@ class AUZRemoteCannon : AActor
     {
         SetTarget();
         RotateTurret(DeltaSeconds);
-        TurretWidgetClass.UpdateLifeBar(HealthComp.GetHealthPercent());
 
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
@@ -131,8 +130,14 @@ class AUZRemoteCannon : AActor
 
         if (TurretWidgetClass != nullptr)
         {
-            TurretWidgetClass.UpdateLifeBar(HealthComp.GetHealthPercent());
+            UpdateHealth();
         }
+    }
+
+    UFUNCTION()
+    void UpdateHealth()
+    {
+        TurretWidgetClass.UpdateLifeBar(HealthComp.GetHealthPercent());
     }
 
     UFUNCTION()
