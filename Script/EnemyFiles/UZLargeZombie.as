@@ -29,7 +29,7 @@ class AUZLargeZombie : AUZZombieBaseClass
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        ResourceAmount = 5.f;
+        ResourceAmount = 25.f;
 
         HealthComp.EventDeath.AddUFunction(this, n"LargeZombieDeathCall");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 

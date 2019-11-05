@@ -81,16 +81,15 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        SetNewSpawnRates();
-        SetNewZombieMaxHealth();
-        SetNewCitizenCount();
-
         Print("" + Life, 0.f); 
 
         if (Life <= 0 && !bGameEnded)
         {
             bGameEnded = true;
             EndGame();
+            SetNewSpawnRates();
+            SetNewZombieMaxHealth();
+            SetNewCitizenCount();
         }
     }
 
