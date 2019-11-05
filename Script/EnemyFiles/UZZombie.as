@@ -13,6 +13,7 @@ class AUZZombie : AUZZombieBaseClass
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        ResourceAmount = 10.f;
         HealthComp.EventDeath.AddUFunction(this, n"ZombieDeathCall");
         Super::BeginPlay(); 
     }

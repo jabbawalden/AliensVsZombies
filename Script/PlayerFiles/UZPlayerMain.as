@@ -21,7 +21,7 @@ class AUZPlayerMain : APawn
     USphereComponent SphereCompResourceCatch;
 
     UPROPERTY(DefaultComponent, Attach = SceneComp)
-    USceneComponent TurretSpawnOrigin;
+    USceneComponent SpawnObjectOrigin;
 
     UPROPERTY(DefaultComponent)
     UFloatingPawnMovement FloatingPawnComp;
@@ -40,6 +40,10 @@ class AUZPlayerMain : APawn
     AActor PullBeamRef;
     AUZPullBeam PullBeam;
 
+    UPROPERTY()
+    TSubclassOf<AActor> StunTrapClass;
+    AActor StunTrapRef;
+
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
 
@@ -55,9 +59,12 @@ class AUZPlayerMain : APawn
     TSubclassOf<UUserWidget> MainWidget;
 
     UPROPERTY()
-    float SpawnTurretRate;
+    float SpawnTurretRate = 1.f;
     float NewSpawnTurretTime; 
-    float TurretCost = 200.f;
+
+    UPROPERTY()
+    float SpawnSunTrapRate = 1.f;
+    float NewSpawnStunTrapTime; 
 
     bool bIsActive = true;
     bool bLaserOn;
@@ -120,6 +127,7 @@ class AUZPlayerMain : APawn
         InputComp.BindAction(n"PullBeam", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"PullBeamOn"));
         InputComp.BindAction(n"PullBeam", EInputEvent::IE_Released, FInputActionHandlerDynamicSignature(this, n"PullBeamOff"));    
         InputComp.BindAction(n"BuildTurret", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"SpawnTurret")); 
+        InputComp.BindAction(n"BuildStunTrap", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"SpawnStunTrap")); 
     }
 
     UFUNCTION()
@@ -214,19 +222,35 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnTurret(FKey Key)
     {
-        if (GameMode != nullptr)
-        {
-            if (GameMode.Resources >= TurretCost)
-            {
-                if (NewSpawnTurretTime <= Gameplay::TimeSeconds)
-                {
-                    NewSpawnTurretTime = Gameplay::TimeSeconds + SpawnTurretRate;
-                    RemoteCannonRef = SpawnActor(RemoteCannonClass, TurretSpawnOrigin.GetWorldLocation());
-                    GameMode.AddRemoveResources(-TurretCost); 
-                }    
-            }
-        }
+        if (GameMode == nullptr)
+        return;
 
+        if (GameMode.Resources >= GameMode.TurretCost)
+        {
+            if (NewSpawnTurretTime <= Gameplay::TimeSeconds)
+            {
+                NewSpawnTurretTime = Gameplay::TimeSeconds + SpawnTurretRate;
+                RemoteCannonRef = SpawnActor(RemoteCannonClass, SpawnObjectOrigin.GetWorldLocation());
+                GameMode.AddRemoveResources(-GameMode.TurretCost); 
+            }    
+        }
+    }
+
+    UFUNCTION()
+    void SpawnStunTrap(FKey Key)
+    {
+        if (GameMode == nullptr)
+        return;
+
+        if (GameMode.Resources >= GameMode.StunTrapCost)
+        {
+            if (NewSpawnStunTrapTime <= Gameplay::TimeSeconds)
+            {
+                NewSpawnStunTrapTime = Gameplay::TimeSeconds + SpawnSunTrapRate;
+                StunTrapRef = SpawnActor(StunTrapClass, SpawnObjectOrigin.GetWorldLocation());
+                GameMode.AddRemoveResources(-GameMode.StunTrapCost); 
+            }    
+        }
     }
 
     UFUNCTION()

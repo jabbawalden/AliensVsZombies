@@ -9,10 +9,18 @@ class AUZGameMode : AGameModeBase
     FGameStartEvent EventStartGame;
     FUpdateResources EventUpdateResources;
     FUpdateLife EventUpdateLife;
+    FUpdateTurretBorder EventUpdateTurretBorder;
+    FUpdateStunTrapBorder EventUpdateStunTrapBorder;
 
     UPROPERTY()
     float Life;
-    float MaxLife = 1000.f;
+    float MaxLife = 1500.f;
+
+    UPROPERTY()
+    float TurretCost = 200.f;
+
+    UPROPERTY()
+    float StunTrapCost = 50.f;
 
     bool bGameEnded;
     bool bGameNotStarted = true;
@@ -21,7 +29,7 @@ class AUZGameMode : AGameModeBase
     float EnemyMaxSpawnTime = 1.8f;
 
     UPROPERTY()
-    float SpawnIncreaseDivider = 1.06f;
+    float SpawnIncreaseDivider = 1.05f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 11.f;
@@ -47,14 +55,13 @@ class AUZGameMode : AGameModeBase
     float ZombieNewHealthTime;
 
     UPROPERTY()
-    int MaxResourcesInLevel = 3;
-    int CurrentResourcesInLevel = 3;
+    int MaxResourcesInLevel = 4;
+    int CurrentResourcesInLevel;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Resources = 100;
-
+        Resources = 1000;
         System::SetTimer(this, n"BroadCastWidgetEvents", 0.2f,false);
     }
 
@@ -63,6 +70,8 @@ class AUZGameMode : AGameModeBase
     {
         SetNewSpawnRates();
         SetNewZombieMaxHealth();
+
+        Print("" + Life, 0.f); 
 
         if (Life <= 0 && !bGameEnded)
         {
@@ -76,6 +85,8 @@ class AUZGameMode : AGameModeBase
     {
         EventUpdateResources.Broadcast();
         EventUpdateLife.Broadcast();
+        EventUpdateStunTrapBorder.Broadcast();
+        EventUpdateTurretBorder.Broadcast();
     }
 
     UFUNCTION()
@@ -83,6 +94,8 @@ class AUZGameMode : AGameModeBase
     {
         Resources += InputResources;
         EventUpdateResources.Broadcast();
+        EventUpdateStunTrapBorder.Broadcast();
+        EventUpdateTurretBorder.Broadcast();
     }
 
     UFUNCTION()

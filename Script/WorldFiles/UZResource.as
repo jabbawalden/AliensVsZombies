@@ -1,3 +1,4 @@
+import GameFiles.UZGameMode;
 class AUZResource : AActor
 {
     UPROPERTY(DefaultComponent, RootComponent)
@@ -13,14 +14,27 @@ class AUZResource : AActor
 
     AActor TargetRef;
 
+    AUZGameMode GameMode;
+
     float MovementSpeed = 450.f;
 
-    int ResourceAmount = 50;
+    int ResourceAmount = 75;
 
     bool IsCollecting;
 
     UPROPERTY()
     float InterpSpeed = 11.5f;
+
+    UFUNCTION(BlueprintOverride)
+    void BeginPlay()
+    {
+        GameMode = Cast<AUZGameMode>(Gameplay::GameMode);
+        
+        if (GameMode == nullptr)
+        return;
+
+        GameMode.CurrentResourcesInLevel++;
+    }
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)

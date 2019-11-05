@@ -48,6 +48,7 @@ class AUZZombieBaseClass : AActor
         if (MovementComp.CurrentTarget != nullptr)
         {
             UUZHealthComp OtherHealthComp = UUZHealthComp::Get(MovementComp.CurrentTarget);
+            
             if (OtherHealthComp != nullptr)
             {
                 DamageComp.DealTargetDamage(OtherHealthComp); 

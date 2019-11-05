@@ -33,7 +33,6 @@ class AUZResourceSpawner : AActor
         
         if (NewSpawnTime <= Gameplay::TimeSeconds && GameMode.CurrentResourcesInLevel < GameMode.MaxResourcesInLevel)
         {
-            GameMode.CurrentResourcesInLevel++;
             float XOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);
             float YOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);
             FVector SpawnLoc = FVector(ActorLocation.X + XOffset, ActorLocation.Y + YOffset, ActorLocation.Z);
