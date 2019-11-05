@@ -59,11 +59,11 @@ class AUZPlayerMain : APawn
     TSubclassOf<UUserWidget> MainWidget;
 
     UPROPERTY()
-    float SpawnTurretRate = 1.f;
+    float SpawnTurretRate = 0.5f;
     float NewSpawnTurretTime; 
 
     UPROPERTY()
-    float SpawnSunTrapRate = 1.f;
+    float SpawnSunTrapRate = 0.5f;
     float NewSpawnStunTrapTime; 
 
     bool bIsActive = true;
