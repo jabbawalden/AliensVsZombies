@@ -23,7 +23,7 @@ class AUZCameraActor : AActor
     float XOffset = -134250.f;
 
     UPROPERTY()
-    float LocationFollowMultiplier = 0.75f;
+    float LocationFollowMultiplier = 0.85f;
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)

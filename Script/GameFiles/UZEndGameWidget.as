@@ -1,0 +1,4 @@
+class UUZEndgameWidget : UUserWidget
+{
+    
+}

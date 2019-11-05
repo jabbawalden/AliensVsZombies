@@ -21,11 +21,19 @@ class UUZPlayerMainWidget : UUserWidget
             GameMode.EventUpdateResources.AddUFunction(this, n"UpdateResourcesText");
             GameMode.EventUpdateTurretBorder.AddUFunction(this, n"UpdateCanBuildTurret");
             GameMode.EventUpdateStunTrapBorder.AddUFunction(this, n"UpdateCanBuildStunTrap");
+            GameMode.EventUpdateCitizenCountUI.AddUFunction(this, n"UpdateCitizenCount");
         } 
     }
 
     UFUNCTION(BlueprintEvent)
     UTextBlock GetResourceWidgetText()
+    {
+        throw("You must use override GetResourceWidgetText from the widget blueprint to return the correct text widget.");
+        return nullptr;
+    }
+
+    UFUNCTION(BlueprintEvent)
+    UTextBlock GetCitizenCountText()
     {
         throw("You must use override GetResourceWidgetText from the widget blueprint to return the correct text widget.");
         return nullptr;
@@ -96,6 +104,13 @@ class UUZPlayerMainWidget : UUserWidget
     {
         UProgressBar ProgressBar = GetHealthProgressBar();
         ProgressBar.Percent = GameMode.LifePercent();
+    }
+
+    UFUNCTION()
+    void UpdateCitizenCount(int CitizenCount)
+    {
+        UTextBlock CitizenDisplay = GetCitizenCountText();
+        CitizenDisplay.Text = FText::FromString("Citizen Count: " + CitizenCount);
     }
 }
 

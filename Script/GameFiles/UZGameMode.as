@@ -11,17 +11,29 @@ class AUZGameMode : AGameModeBase
     FUpdateLife EventUpdateLife;
     FUpdateTurretBorder EventUpdateTurretBorder;
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
+    FUpdateCitizenCountUI EventUpdateCitizenCountUI;
 
+    //LIFE
     UPROPERTY()
     float Life;
     float MaxLife = 1500.f;
 
+    //CITIZENS SAVED
+    UPROPERTY()
+    int CitizenSaveCount = 0;
+
+    UPROPERTY()
+    float CitizenUpRate = 0.5f;
+    float NewCitizenUpTime;
+
+    //COSTS
     UPROPERTY()
     float TurretCost = 200.f;
 
     UPROPERTY()
     float StunTrapCost = 50.f;
 
+    //GAME STATE INFO
     bool bGameEnded;
     bool bGameNotStarted = true;
 
@@ -45,15 +57,16 @@ class AUZGameMode : AGameModeBase
     bool bCanSpawnEnemy2;
     bool bCanSpawnEnemy3;
 
+    //ZOMBIE
     float ZombieBasicMaxHealth = 15.f;
     float ZombieLargeMaxHealth = 40.f;
-
     float ZombieHealthMultiplier = 1.05f;
 ;
     UPROPERTY()
     float ZombieNewHealthRate = 10.f;
     float ZombieNewHealthTime;
 
+    //RESOURCES
     UPROPERTY()
     int MaxResourcesInLevel = 4;
     int CurrentResourcesInLevel;
@@ -61,7 +74,7 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Resources = 1000;
+        Resources = 200;
         System::SetTimer(this, n"BroadCastWidgetEvents", 0.2f,false);
     }
 
@@ -70,6 +83,7 @@ class AUZGameMode : AGameModeBase
     {
         SetNewSpawnRates();
         SetNewZombieMaxHealth();
+        SetNewCitizenCount();
 
         Print("" + Life, 0.f); 
 
@@ -87,6 +101,7 @@ class AUZGameMode : AGameModeBase
         EventUpdateLife.Broadcast();
         EventUpdateStunTrapBorder.Broadcast();
         EventUpdateTurretBorder.Broadcast();
+        EventUpdateCitizenCountUI.Broadcast(CitizenSaveCount);
     }
 
     UFUNCTION()
@@ -151,6 +166,16 @@ class AUZGameMode : AGameModeBase
             ZombieLargeMaxHealth *= ZombieHealthMultiplier;
             ZombieNewHealthTime = Gameplay::TimeSeconds + ZombieNewHealthRate; 
         }
+    }
 
+    UFUNCTION()
+    void SetNewCitizenCount()
+    {
+        if (NewCitizenUpTime <= Gameplay::TimeSeconds)
+        {
+            NewCitizenUpTime = Gameplay::TimeSeconds + CitizenUpRate;
+            CitizenSaveCount++;
+            EventUpdateCitizenCountUI.Broadcast(CitizenSaveCount);
+        }
     }
 }

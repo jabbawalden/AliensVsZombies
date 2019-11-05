@@ -11,3 +11,6 @@ event void FUpdateLife();
 event void FUpdateTurretBorder();
 
 event void FUpdateStunTrapBorder();
+
+event void FUpdateCitizenCountUI(int count); 
+
