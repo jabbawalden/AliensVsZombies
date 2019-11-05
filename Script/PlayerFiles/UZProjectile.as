@@ -15,10 +15,10 @@ class AUZProjectile : AActor
     FVector ShootDirection;
 
     UPROPERTY()
-    float Damage = 3.f;
+    float Damage = 4.f;
 
     UPROPERTY()
-    float MoveSpeed = 1960.f;
+    float MoveSpeed = 2460.f;
 
     float KillTime = 2.f;
 
@@ -54,12 +54,15 @@ class AUZProjectile : AActor
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
-
-        if (HealthComp != nullptr)
+        if (OtherActor.Tags.Contains(n"Enemy"))
         {
-            HealthComp.DamageHealth(Damage);
-            DestroyActor(); 
+            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
+
+            if (HealthComp != nullptr)
+            {
+                HealthComp.DamageHealth(Damage);
+                DestroyActor(); 
+            }
         }
     }
 

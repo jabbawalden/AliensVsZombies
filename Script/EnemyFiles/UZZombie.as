@@ -10,9 +10,6 @@ class AUZZombie : AUZZombieBaseClass
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
-    UPROPERTY()
-    int ResourceAmount = 3;
-
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {

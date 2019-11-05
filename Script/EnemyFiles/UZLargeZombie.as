@@ -49,6 +49,12 @@ class AUZLargeZombie : AUZZombieBaseClass
         ZombieRef = SpawnActor(ZombieClass, Spawn3.GetWorldLocation());
         ZombieRef = SpawnActor(ZombieClass, Spawn4.GetWorldLocation());
 
+        if (GameMode != nullptr)
+        {
+            GameMode.AddRemoveResources(ResourceAmount);
+            DestroyActor();
+        }
+
         DestroyActor();
     }
 }

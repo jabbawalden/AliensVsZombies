@@ -25,6 +25,7 @@ class AUZPlayerMain : APawn
 
     UPROPERTY(DefaultComponent)
     UFloatingPawnMovement FloatingPawnComp;
+    default FloatingPawnComp.MaxSpeed = 1500.f;
 
     AUZGameMode GameMode;
     APlayerController PlayerController;
@@ -38,9 +39,6 @@ class AUZPlayerMain : APawn
     TSubclassOf<AActor> PullBeamClass;
     AActor PullBeamRef;
     AUZPullBeam PullBeam;
-
-    //UPROPERTY()
-    //float MovementSpeed = 1250.f;
 
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
@@ -59,7 +57,7 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     float SpawnTurretRate;
     float NewSpawnTurretTime; 
-    float TurretCost = 50.f;
+    float TurretCost = 200.f;
 
     bool bIsActive = true;
     bool bLaserOn;
@@ -244,6 +242,7 @@ class AUZPlayerMain : APawn
             if (GameMode != nullptr)
             {
                 GameMode.AddRemoveResources(Resource.ResourceAmount);
+                GameMode.CurrentResourcesInLevel--;
             }
             Resource.DestroyActor();
         }

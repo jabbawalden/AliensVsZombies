@@ -3,7 +3,10 @@ import WorldFiles.UZProtectionPoint;
 class UUZMovementComp : UActorComponent
 {
     UPROPERTY()
-    float MoveSpeed = 110.f;
+    float MoveSpeed;
+
+    UPROPERTY()
+    float DefaultMoveSpeed = 110.f;
 
     UPROPERTY()
     float InterpSpeed = 2.4f;
@@ -19,6 +22,7 @@ class UUZMovementComp : UActorComponent
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        MoveSpeed = DefaultMoveSpeed;
         GetFinalDestinationReferece();
         SetTargetToFinal();
     }

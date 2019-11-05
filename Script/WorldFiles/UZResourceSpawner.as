@@ -1,3 +1,5 @@
+import GameFiles.UZGameMode;
+
 class AUZResourceSpawner : AActor
 {
     UPROPERTY()
@@ -8,18 +10,30 @@ class AUZResourceSpawner : AActor
     float SpawnMaxDistance = 1800.f;
 
     UPROPERTY()
-    float MinRate = 6.f;
+    float MinRate = 10.f;
 
     UPROPERTY()
-    float MaxRate = 10.f;
+    float MaxRate = 14.f;
 
     float NewSpawnTime;
+
+    AUZGameMode GameMode;
+
+    UFUNCTION(BlueprintOverride)
+    void BeginPlay()
+    {
+        GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
+    }
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        if (NewSpawnTime <= Gameplay::TimeSeconds)
+        if (GameMode == nullptr)
+        return;
+        
+        if (NewSpawnTime <= Gameplay::TimeSeconds && GameMode.CurrentResourcesInLevel < GameMode.MaxResourcesInLevel)
         {
+            GameMode.CurrentResourcesInLevel++;
             float XOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);
             float YOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);
             FVector SpawnLoc = FVector(ActorLocation.X + XOffset, ActorLocation.Y + YOffset, ActorLocation.Z);

@@ -1,9 +1,17 @@
 import GameFiles.UZEvents;
+import GameFiles.UZGameMode;
+
+enum HealthType {ZombieBasic, ZombieLarge};
 
 class UUZHealthComp : UActorComponent
 {
     FEnemyDeathEvent EventDeath;
     FUpdateLife EventUpdateLife;
+
+    AUZGameMode GameMode;
+
+    UPROPERTY()
+    HealthType OurHealthType; 
 
     UPROPERTY()
     float CurrentHealth;
@@ -14,7 +22,18 @@ class UUZHealthComp : UActorComponent
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        CurrentHealth = MaxHealth;
+        GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
+        
+        if (GameMode != nullptr)
+        {
+            if (OurHealthType == HealthType::ZombieBasic)
+                MaxHealth = GameMode.ZombieBasicMaxHealth;
+            else if(OurHealthType == HealthType::ZombieLarge)
+                MaxHealth = GameMode.ZombieLargeMaxHealth;
+
+            CurrentHealth = MaxHealth;
+        }
+
     }
 
     UFUNCTION(BlueprintOverride)

@@ -1,5 +1,3 @@
-import GameFiles.UZGameMode;
-
 class AUZResource : AActor
 {
     UPROPERTY(DefaultComponent, RootComponent)
@@ -13,13 +11,11 @@ class AUZResource : AActor
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
-    AUZGameMode GameMode;
-
     AActor TargetRef;
 
     float MovementSpeed = 450.f;
 
-    int ResourceAmount = 15;
+    int ResourceAmount = 50;
 
     bool IsCollecting;
 

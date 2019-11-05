@@ -75,6 +75,10 @@ class AUZRemoteCannon : AActor
 
     bool bCanShoot = true;
 
+    float DestructionRate = 1.5f;
+    float DestructionDamage = 0.25f;
+    float NewDestructionTime;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -97,6 +101,7 @@ class AUZRemoteCannon : AActor
     {
         SetTarget();
         RotateTurret(DeltaSeconds);
+        GradualDestruction();
 
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
@@ -106,10 +111,6 @@ class AUZRemoteCannon : AActor
         if (TraceCheckComp.bIsInRangeOfTarget)
         {
             BoxComp.SetSimulatePhysics(false);
-        }
-        else
-        {
-
         }
     }
 
@@ -131,6 +132,17 @@ class AUZRemoteCannon : AActor
         if (TurretWidgetClass != nullptr)
         {
             UpdateHealth();
+        }
+    }
+
+    UFUNCTION()
+    void GradualDestruction()
+    {
+        if (NewDestructionTime <= Gameplay::TimeSeconds)
+        {
+            HealthComp.CurrentHealth -= DestructionDamage;
+            UpdateHealth();
+            NewDestructionTime = Gameplay::TimeSeconds + DestructionRate;
         }
     }
 

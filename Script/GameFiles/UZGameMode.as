@@ -17,39 +17,65 @@ class AUZGameMode : AGameModeBase
     bool bGameEnded;
     bool bGameNotStarted = true;
 
-    float EnemyMinSpawnTime = 0.8f;
-    float EnemyMaxSpawnTime = 2.1f;
+    float EnemyMinSpawnTime = 1.4f;
+    float EnemyMaxSpawnTime = 1.8f;
 
-    float SpawnIncreaseDivider = 1.1f;
+    UPROPERTY()
+    float SpawnIncreaseDivider = 1.06f;
 
-    float IncreaseSpawnTimeRate = 10.f;
+    UPROPERTY()
+    float IncreaseSpawnTimeRate = 11.f;
     float NewIncreaseSpawnTime;
 
     int SpawnDifficulty = 0;
 
-    int Enemy2SpawnDifficulty = 5;
-    int Enemy3SpawnDifficulty = 10;
+    UPROPERTY()
+    int Enemy2SpawnDifficulty = 15;
+    UPROPERTY()
+    int Enemy3SpawnDifficulty = 25;
+
     bool bCanSpawnEnemy2;
     bool bCanSpawnEnemy3;
+
+    float ZombieBasicMaxHealth = 15.f;
+    float ZombieLargeMaxHealth = 40.f;
+
+    float ZombieHealthMultiplier = 1.05f;
+;
+    UPROPERTY()
+    float ZombieNewHealthRate = 10.f;
+    float ZombieNewHealthTime;
+
+    UPROPERTY()
+    int MaxResourcesInLevel = 3;
+    int CurrentResourcesInLevel = 3;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
         Resources = 100;
-        EventUpdateResources.Broadcast();
-        EventUpdateLife.Broadcast();
+
+        System::SetTimer(this, n"BroadCastWidgetEvents", 0.2f,false);
     }
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
         SetNewSpawnRates();
+        SetNewZombieMaxHealth();
 
         if (Life <= 0 && !bGameEnded)
         {
             bGameEnded = true;
             EndGame();
         }
+    }
+
+    UFUNCTION()
+    void BroadCastWidgetEvents()
+    {
+        EventUpdateResources.Broadcast();
+        EventUpdateLife.Broadcast();
     }
 
     UFUNCTION()
@@ -93,15 +119,25 @@ class AUZGameMode : AGameModeBase
             if (SpawnDifficulty >= Enemy2SpawnDifficulty)
             {
                 bCanSpawnEnemy2 = true;
-                Print("Can spawn enemy 2", 5.f);
             }
 
             if (SpawnDifficulty >= Enemy3SpawnDifficulty)
             {
                 bCanSpawnEnemy3 = true;
-                Print("Can spawn enemy 3", 5.f);
             }
 
         }
+    }
+
+    UFUNCTION()
+    void SetNewZombieMaxHealth()
+    {
+        if (ZombieNewHealthTime <= Gameplay::TimeSeconds)
+        {
+            ZombieBasicMaxHealth *= ZombieHealthMultiplier;
+            ZombieLargeMaxHealth *= ZombieHealthMultiplier;
+            ZombieNewHealthTime = Gameplay::TimeSeconds + ZombieNewHealthRate; 
+        }
+
     }
 }

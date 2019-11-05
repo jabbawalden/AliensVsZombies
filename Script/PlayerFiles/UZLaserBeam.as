@@ -15,6 +15,10 @@ class AUZLaserBeam : AActor
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
+    UPROPERTY(DefaultComponent, Attach = SceneComp)
+    UStaticMeshComponent MeshComp2;
+    default MeshComp2.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
     UPROPERTY()
     TArray<UUZHealthComp> ZombieArray;
 
@@ -73,11 +77,14 @@ class AUZLaserBeam : AActor
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
-
-        if (HealthComp != nullptr)
+        if (OtherActor.Tags.Contains(n"Enemy"))
         {
-            ZombieArray.Add(HealthComp);
+            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
+
+            if (HealthComp != nullptr)
+            {
+                ZombieArray.Add(HealthComp);
+            }
         }
     }
 
@@ -86,12 +93,16 @@ class AUZLaserBeam : AActor
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex) 
     {
-        UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
-
-        if (HealthComp != nullptr)
+        if (OtherActor.Tags.Contains(n"Enemy"))
         {
-            ZombieArray.Remove(HealthComp);
+            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
+
+            if (HealthComp != nullptr)
+            {
+                ZombieArray.Remove(HealthComp);
+            }
         }
+
     }
 
 }

@@ -38,6 +38,9 @@ class AUZEnemySpawner : AActor
     UFUNCTION()
     void SpawnEnemyBehaviour()
     {
+        if (!bCanSpawn)
+        return;
+
         if (NewSpawnTime <= Gameplay::TimeSeconds)
         {
             float NewRate = FMath::RandRange(GameMode.EnemyMinSpawnTime, GameMode.EnemyMaxSpawnTime);
@@ -57,15 +60,13 @@ class AUZEnemySpawner : AActor
                     SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
                     break;
                 case 4:
-                    if (GameMode.bCanSpawnEnemy2)
-                        SpawnEnemy(EnemySpawn2Ref, EnemySpawn2);
+                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
                     break;
                 case 5:
-                    if (GameMode.bCanSpawnEnemy2)
-                        SpawnEnemy(EnemySpawn2Ref, EnemySpawn2);
+                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
                     break;
                 case 6:
-                    if (GameMode.bCanSpawnEnemy3)
+                    if (GameMode.bCanSpawnEnemy2)
                         SpawnEnemy(EnemySpawn2Ref, EnemySpawn2);
                     break;
             }

@@ -20,6 +20,9 @@ class AUZZombieBaseClass : AActor
     UPROPERTY(DefaultComponent)
     UUZMovementComp MovementComp;
 
+    UPROPERTY()
+    int ResourceAmount = 1;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {        
