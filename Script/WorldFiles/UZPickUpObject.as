@@ -27,6 +27,12 @@ class AUZPickUpObject : AActor
 
     int AddAmount = 75;
 
+    int ResourceAmountMin = 32;
+    int ResourceAmountMax = 85;
+
+    int CitizenAddAmountMin = 40;
+    int CitizenAddAmountMax = 100;
+
     bool IsCollecting;
 
     UPROPERTY()
@@ -44,14 +50,17 @@ class AUZPickUpObject : AActor
         {
             case PickUpObjectType::Car:
             GameMode.CurrentResourcesInLevel++;
+            AddAmount = FMath::RandRange(ResourceAmountMin, ResourceAmountMax);
             break;
 
             case PickUpObjectType::CitizenPod:
             GameMode.CurrentCitizenPods++;
+            AddAmount = FMath::RandRange(CitizenAddAmountMin, CitizenAddAmountMax);
             break;
 
             case PickUpObjectType::Resource:
             GameMode.CurrentResourcesInLevel++;
+            AddAmount = FMath::RandRange(ResourceAmountMin, ResourceAmountMax);
             break;
         }
 

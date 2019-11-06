@@ -13,13 +13,13 @@ class AUZGameMode : AGameModeBase
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
     FUpdateCitizenCountUI EventUpdateCitizenCountUI;
 
-    //STORE UI REFERENCES
+    //STORE UI REFERENCES FOR DEPARENTING FROM PLAYER
     UUserWidget StartWidgetReference;
 
     //LIFE
     UPROPERTY()
     float Life;
-    float MaxLife = 3500.f;
+    float MaxLife = 4500.f;
 
     //CITIZENS SAVED
     UPROPERTY()
@@ -31,7 +31,7 @@ class AUZGameMode : AGameModeBase
 
     //RESOURCE COSTS
     UPROPERTY()
-    float TurretCost = 350.f;
+    float TurretCost = 450.f;
 
     UPROPERTY()
     float StunTrapCost = 100.f;
@@ -41,13 +41,15 @@ class AUZGameMode : AGameModeBase
     bool bGameStarted;
 
     float EnemyMinSpawnTime = 1.9f;
-    float EnemyMaxSpawnTime = 2.6f;
+    float EnemyMaxSpawnTime = 4.1f;
 
     UPROPERTY()
-    float SpawnIncreaseDivider = 1.032f;
+    float SpawnIncreaseDividerMin = 1.03f;
+    UPROPERTY()
+    float SpawnIncreaseDividerMax = 1.058f;
 
     UPROPERTY()
-    float IncreaseSpawnTimeRate = 11.f;
+    float IncreaseSpawnTimeRate = 10.f;
     float NewIncreaseSpawnTime;
 
     int SpawnDifficulty = 0;
@@ -62,27 +64,28 @@ class AUZGameMode : AGameModeBase
 
     //ZOMBIE VALUES
     UPROPERTY()
-    float ZombieBasicMaxHealth = 15.f;
+    float ZombieBasicMaxHealth = 20.f;
     UPROPERTY()
-    float ZombieLargeMaxHealth = 50.f;
+    float ZombieLargeMaxHealth = 55.f;
     UPROPERTY()
-    float ZombieAdvancedMaxHealth = 30.f;
+    float ZombieAdvancedMaxHealth = 35.f;
     UPROPERTY()
-    float ZombieHealthMultiplier = 1.03f;
+    float ZombieHealthMultiplier = 1.028f;
 
     UPROPERTY()
     float ZombieNewHealthRate = 10.f;
     float ZombieNewHealthTime;
 
-    float GlobalMovementSpeed = 100.f;
+    float GlobalMovementSpeed = 105.f;
 
     UPROPERTY()
-    float GlobalMovementSpeedMultiplier = 1.03f;
+    float GlobalMovementSpeedMultiplierMin = 1.02f;
+    UPROPERTY()
+    float GlobalMovementSpeedMultiplierMax = 1.04f;
 
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
     float ZombieNewMoveSpeedTime;
-
 
     //RESOURCE OBJECTS
     UPROPERTY()
@@ -94,7 +97,7 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Resources = 400;
+        Resources = 1000;
         System::SetTimer(this, n"BroadCastWidgetEvents", 0.2f,false);
     }
 
@@ -167,6 +170,9 @@ class AUZGameMode : AGameModeBase
         if (NewIncreaseSpawnTime <= Gameplay::TimeSeconds)
         {
             NewIncreaseSpawnTime = Gameplay::TimeSeconds + IncreaseSpawnTimeRate;
+
+            float SpawnIncreaseDivider = FMath::RandRange(SpawnIncreaseDividerMin, SpawnIncreaseDividerMax);
+
             EnemyMinSpawnTime /= SpawnIncreaseDivider;
             EnemyMaxSpawnTime /= SpawnIncreaseDivider;
             SpawnDifficulty++;
@@ -200,6 +206,8 @@ class AUZGameMode : AGameModeBase
     {
         if (ZombieNewMoveSpeedTime <= Gameplay::TimeSeconds)
         {
+            float GlobalMovementSpeedMultiplier = FMath::RandRange(GlobalMovementSpeedMultiplierMin, GlobalMovementSpeedMultiplierMax);
+
             GlobalMovementSpeed *= GlobalMovementSpeedMultiplier;
             ZombieNewMoveSpeedTime = Gameplay::TimeSeconds + ZombieNewMoveSpeedRate; 
         }    

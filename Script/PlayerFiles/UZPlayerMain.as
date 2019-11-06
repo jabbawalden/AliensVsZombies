@@ -63,9 +63,6 @@ class AUZPlayerMain : APawn
     TSubclassOf<UUserWidget> StartWidget;
 
     UPROPERTY()
-    UUserWidget WidgetStartRef; 
-
-    UPROPERTY()
     float SpawnTurretRate = 0.5f;
     float NewSpawnTurretTime; 
 
@@ -104,9 +101,6 @@ class AUZPlayerMain : APawn
         {
             AddMainWidgetToHUD(PlayerController, MainWidget);
             AddStartWidgetToHUD(PlayerController, StartWidget);
-
-            if (WidgetStartRef != nullptr)
-            Print("" + WidgetStartRef.Name, 5.f);
         }
     }
 

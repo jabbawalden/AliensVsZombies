@@ -12,7 +12,6 @@ class AUZProtectionPoint : AActor
 
     UPROPERTY(DefaultComponent)
     UUZHealthComp HealthComp;
-    default HealthComp.MaxHealth = 2500.f;
 
     AUZGameMode GameMode;
 
