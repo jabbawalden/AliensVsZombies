@@ -1,9 +1,9 @@
 import Components.UZTraceCheckComp;
 import Components.UZMovementComp;
+import Components.UZHealthComp;
 
 class AUZStunTrap : AActor
 {
-
     UPROPERTY(DefaultComponent, RootComponent)
     UBoxComponent BoxComp;
     default BoxComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
@@ -27,7 +27,11 @@ class AUZStunTrap : AActor
     UPROPERTY(DefaultComponent)
     UUZTraceCheckComp TraceComp;
 
+    UPROPERTY()
+    float StunDamage = 10.f;
+
     TArray<UUZMovementComp> MovementCompArray;
+    TArray<UUZHealthComp> HealthCompArray;
 
     bool bHaveActivated;
 
@@ -66,6 +70,11 @@ class AUZStunTrap : AActor
                 MovementCompArray[i].MoveSpeed = 0.f;
             }
 
+            for (int i = 0; i < HealthCompArray.Num(); i++)
+            {
+                HealthCompArray[i].DamageHealth(StunDamage);
+            }
+   
             System::SetTimer(this, n"DeActivateTrap", 4.f, false);
         }
     }
@@ -77,6 +86,7 @@ class AUZStunTrap : AActor
         {
             MovementCompArray[i].MoveSpeed = MovementCompArray[i].DefaultMoveSpeed;
         }
+
         DestroyActor();
     }
 
@@ -101,11 +111,15 @@ class AUZStunTrap : AActor
         if (OtherActor.Tags.Contains(n"Enemy"))
         {
             UUZMovementComp MovementComp = UUZMovementComp::Get(OtherActor);
+            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
 
             if (MovementComp == nullptr)
             return;
-
             MovementCompArray.Add(MovementComp);
+
+            if (HealthComp == nullptr)
+            return;
+            HealthCompArray.Add(HealthComp); 
         }
 
     }
@@ -118,6 +132,7 @@ class AUZStunTrap : AActor
         if (OtherActor.Tags.Contains(n"Enemy"))
         {
             UUZMovementComp MovementComp = UUZMovementComp::Get(OtherActor);
+            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
 
             if (MovementComp == nullptr)
             return;
@@ -125,6 +140,14 @@ class AUZStunTrap : AActor
             if (MovementCompArray.Contains(MovementComp))
             {
                 MovementCompArray.Remove(MovementComp);
+            }
+
+            if (HealthComp == nullptr)
+            return;
+
+            if (HealthCompArray.Contains(HealthComp))
+            {
+                HealthCompArray.Remove(HealthComp);
             }
         }
     }

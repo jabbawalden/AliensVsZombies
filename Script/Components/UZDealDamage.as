@@ -4,9 +4,8 @@ import Components.UZHealthComp;
 class UUZDealDamage : UActorComponent
 {
     UPROPERTY()
-    float Damage = 12.f;
-
-    UPROPERTY()
+    float Damage = 10.f;
+    
     float NewDMGTime;
 
     UPROPERTY()

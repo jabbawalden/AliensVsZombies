@@ -3,7 +3,7 @@ import PlayerFiles.UZProjectile;
 class UUZShootComp : UActorComponent
 {
     UPROPERTY()
-    float FireRate = 0.25f;
+    float FireRate = 0.22f;
 
     float NewTime;
 
@@ -30,7 +30,6 @@ class UUZShootComp : UActorComponent
                     ProjectileCast.ShootDirection = Owner.GetActorForwardVector(); 
                 }
             }
-
         }
     }
 } 

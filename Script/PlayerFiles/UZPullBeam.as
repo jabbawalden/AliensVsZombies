@@ -1,4 +1,4 @@
-import WorldFiles.UZResource;
+import WorldFiles.UZPickUpObject;
 
 class AUZPullBeam : AActor
 {
@@ -45,13 +45,13 @@ class AUZPullBeam : AActor
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        AUZResource ResourceTarget = Cast<AUZResource>(OtherActor);
+        AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
 
-        if (ResourceTarget != nullptr)
+        if (PickUpTarget != nullptr)
         {
-            ResourceTarget.SetTargetReference(this);
-            ResourceTarget.IsCollecting = true;
-            ResourceTarget.SetPhysicsSimulation(false);
+            PickUpTarget.SetTargetReference(this);
+            PickUpTarget.IsCollecting = true;
+            PickUpTarget.SetPhysicsSimulation(false);
         }
     }
 
@@ -60,12 +60,12 @@ class AUZPullBeam : AActor
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex) 
     {
-        AUZResource ResourceTarget = Cast<AUZResource>(OtherActor);
+        AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
 
-        if (ResourceTarget != nullptr)
+        if (PickUpTarget != nullptr)
         {
-            ResourceTarget.IsCollecting = false;
-            ResourceTarget.SetPhysicsSimulation(true);
+            PickUpTarget.IsCollecting = false;
+            PickUpTarget.SetPhysicsSimulation(true);
         }
     }
 }

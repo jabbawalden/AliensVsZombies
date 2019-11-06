@@ -10,6 +10,9 @@ class UUZTraceCheckComp : UActorComponent
 
     bool bIsInRangeOfTarget;
 
+    UPROPERTY()
+    AActor HitTargetActor;
+
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
@@ -26,17 +29,25 @@ class UUZTraceCheckComp : UActorComponent
 		FVector StartLocation = Owner.ActorLocation;
         FVector EndLocation;
         
-        if (traceDirectionType == TraceDirection::Up)
+        switch (traceDirectionType)
+        {
+            case TraceDirection::Up:
             EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * TraceDistance);
-        else if (traceDirectionType == TraceDirection::Down)
-            EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * -TraceDistance);
-        else if (traceDirectionType == TraceDirection::Forward)     
-            EndLocation = Owner.ActorLocation + (Owner.GetActorForwardVector() * TraceDistance);
+            break;
 
+            case TraceDirection::Down:
+            EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * -TraceDistance);
+            break;
+
+            case TraceDirection::Forward:
+            EndLocation = Owner.ActorLocation + (Owner.GetActorForwardVector() * TraceDistance);
+            break;
+        }
 
         if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::None, Hit, true))
         {
             bIsInRangeOfTarget = true;
+            HitTargetActor = Hit.Actor;
         }
         else
         {

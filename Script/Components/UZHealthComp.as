@@ -1,7 +1,7 @@
 import GameFiles.UZEvents;
 import GameFiles.UZGameMode;
 
-enum HealthType {ProtectionPoint, ZombieBasic, ZombieLarge};
+enum HealthType {ProtectionPoint, ZombieBasic, ZombieLarge, Turret};
 
 class UUZHealthComp : UActorComponent
 {
@@ -13,29 +13,31 @@ class UUZHealthComp : UActorComponent
     UPROPERTY()
     HealthType OurHealthType; 
 
-    UPROPERTY()
     float CurrentHealth;
-
-    UPROPERTY()
     float MaxHealth = 15.f;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
-        
         if (GameMode != nullptr)
         {
-            if (OurHealthType == HealthType::ZombieBasic)
-                MaxHealth = GameMode.ZombieBasicMaxHealth;
-            else if(OurHealthType == HealthType::ZombieLarge)
-                MaxHealth = GameMode.ZombieLargeMaxHealth;
-            else if (OurHealthType == HealthType::ProtectionPoint)
+            switch (OurHealthType)
+            {
+                case HealthType::ProtectionPoint:
                 MaxHealth = GameMode.MaxLife;
+                break;
 
+                case HealthType::ZombieBasic:
+                MaxHealth = GameMode.ZombieBasicMaxHealth;
+                break;
+
+                case HealthType::ZombieLarge:
+                MaxHealth = GameMode.ZombieLargeMaxHealth;
+                break;
+            }
             CurrentHealth = MaxHealth;
         }
-
     }
 
     UFUNCTION(BlueprintOverride)

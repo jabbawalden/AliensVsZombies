@@ -1,5 +1,8 @@
 import GameFiles.UZGameMode;
-class AUZResource : AActor
+
+enum PickUpObjectType {Resource, CitizenPod, Car};
+
+class AUZPickUpObject : AActor
 {
     UPROPERTY(DefaultComponent, RootComponent)
     UBoxComponent BoxComp;
@@ -16,9 +19,11 @@ class AUZResource : AActor
 
     AUZGameMode GameMode;
 
-    float MovementSpeed = 450.f;
+    PickUpObjectType ObjectType;
 
-    int ResourceAmount = 75;
+    float MovementSpeed = 850.f;
+
+    int AddAmount = 75;
 
     bool IsCollecting;
 

@@ -16,7 +16,7 @@ class AUZGameMode : AGameModeBase
     //LIFE
     UPROPERTY()
     float Life;
-    float MaxLife = 1500.f;
+    float MaxLife = 3500.f;
 
     //CITIZENS SAVED
     UPROPERTY()
@@ -26,22 +26,22 @@ class AUZGameMode : AGameModeBase
     float CitizenUpRate = 0.5f;
     float NewCitizenUpTime;
 
-    //COSTS
+    //RESOURCE COSTS
     UPROPERTY()
-    float TurretCost = 200.f;
+    float TurretCost = 400.f;
 
     UPROPERTY()
-    float StunTrapCost = 50.f;
+    float StunTrapCost = 100.f;
 
     //GAME STATE INFO
     bool bGameEnded;
     bool bGameNotStarted = true;
 
-    float EnemyMinSpawnTime = 1.4f;
-    float EnemyMaxSpawnTime = 1.8f;
+    float EnemyMinSpawnTime = 1.8f;
+    float EnemyMaxSpawnTime = 2.5f;
 
     UPROPERTY()
-    float SpawnIncreaseDivider = 1.05f;
+    float SpawnIncreaseDivider = 1.03f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 11.f;
@@ -50,23 +50,36 @@ class AUZGameMode : AGameModeBase
     int SpawnDifficulty = 0;
 
     UPROPERTY()
-    int Enemy2SpawnDifficulty = 15;
+    int Enemy2SpawnDifficulty = 10;
     UPROPERTY()
-    int Enemy3SpawnDifficulty = 25;
+    int Enemy3SpawnDifficulty = 20;
 
     bool bCanSpawnEnemy2;
     bool bCanSpawnEnemy3;
 
-    //ZOMBIE
-    float ZombieBasicMaxHealth = 15.f;
-    float ZombieLargeMaxHealth = 40.f;
-    float ZombieHealthMultiplier = 1.05f;
-;
+    //ZOMBIE VALUES
+    UPROPERTY()
+    float ZombieBasicMaxHealth = 20.f;
+    UPROPERTY()
+    float ZombieLargeMaxHealth = 50.f;
+    UPROPERTY()
+    float ZombieHealthMultiplier = 1.03f;
+
     UPROPERTY()
     float ZombieNewHealthRate = 10.f;
     float ZombieNewHealthTime;
 
-    //RESOURCES
+    float GlobalMovementSpeed = 110.f;
+
+    UPROPERTY()
+    float GlobalMovementSpeedMultiplier = 1.03f;
+
+    UPROPERTY()
+    float ZombieNewMoveSpeedRate = 8.f;
+    float ZombieNewMoveSpeedTime;
+
+
+    //RESOURCE OBJECTS
     UPROPERTY()
     int MaxResourcesInLevel = 4;
     int CurrentResourcesInLevel;
@@ -74,22 +87,24 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Resources = 200;
+        Resources = 400;
         System::SetTimer(this, n"BroadCastWidgetEvents", 0.2f,false);
     }
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        Print("" + Life, 0.f); 
-
         if (Life <= 0 && !bGameEnded)
         {
             bGameEnded = true;
             EndGame();
+        }
+        else
+        {
             SetNewSpawnRates();
             SetNewZombieMaxHealth();
             SetNewCitizenCount();
+            SetNewZombieSpeed();
         }
     }
 
@@ -110,6 +125,12 @@ class AUZGameMode : AGameModeBase
         EventUpdateResources.Broadcast();
         EventUpdateStunTrapBorder.Broadcast();
         EventUpdateTurretBorder.Broadcast();
+    }
+
+    UFUNCTION()
+    void AddCitizenCount(int Amount)
+    {
+        CitizenSaveCount += Amount;
     }
 
     UFUNCTION()
@@ -152,7 +173,6 @@ class AUZGameMode : AGameModeBase
             {
                 bCanSpawnEnemy3 = true;
             }
-
         }
     }
 
@@ -165,6 +185,16 @@ class AUZGameMode : AGameModeBase
             ZombieLargeMaxHealth *= ZombieHealthMultiplier;
             ZombieNewHealthTime = Gameplay::TimeSeconds + ZombieNewHealthRate; 
         }
+    }
+
+    UFUNCTION()
+    void SetNewZombieSpeed()
+    {
+        if (ZombieNewMoveSpeedTime <= Gameplay::TimeSeconds)
+        {
+            GlobalMovementSpeed *= GlobalMovementSpeedMultiplier;
+            ZombieNewMoveSpeedTime = Gameplay::TimeSeconds + ZombieNewMoveSpeedRate; 
+        }    
     }
 
     UFUNCTION()

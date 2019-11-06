@@ -10,6 +10,8 @@ class AUZZombie : AUZZombieBaseClass
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
+    FVector CurrentTargetActor;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {

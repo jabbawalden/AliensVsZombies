@@ -1,16 +1,16 @@
 import GameFiles.UZGameMode;
 
-class AUZResourceSpawner : AActor
+class AUZPickUpObjectSpawner : AActor
 {
     UPROPERTY()
-    TSubclassOf<AActor> ResourceToSpawn;
-    AActor ResourceToSpawnRef;
+    TSubclassOf<AActor> ObjectToSpawn;
+    AActor ObjectToSpawnRef;
 
     UPROPERTY()
-    float SpawnMaxDistance = 1800.f;
+    float SpawnMaxDistance = 1900.f;
 
     UPROPERTY()
-    float MinRate = 10.f;
+    float MinRate = 8.5f;
 
     UPROPERTY()
     float MaxRate = 14.f;
@@ -39,7 +39,7 @@ class AUZResourceSpawner : AActor
 
             float CurrentSpawnRate = FMath::RandRange(MinRate, MaxRate);
             NewSpawnTime = Gameplay::TimeSeconds + CurrentSpawnRate;
-            ResourceToSpawnRef = SpawnActor(ResourceToSpawn, SpawnLoc);
+            ObjectToSpawnRef = SpawnActor(ObjectToSpawn, SpawnLoc);
         }
     }
 }

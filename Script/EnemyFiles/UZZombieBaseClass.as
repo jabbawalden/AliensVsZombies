@@ -27,6 +27,7 @@ class AUZZombieBaseClass : AActor
     void BeginPlay()
     {        
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
+        
     }
 
     UFUNCTION(BlueprintOverride)
@@ -45,9 +46,9 @@ class AUZZombieBaseClass : AActor
     UFUNCTION()
     void AttackBehaviour()
     {
-        if (MovementComp.CurrentTarget != nullptr)
+        if (TraceCheckComp.HitTargetActor != nullptr)
         {
-            UUZHealthComp OtherHealthComp = UUZHealthComp::Get(MovementComp.CurrentTarget);
+            UUZHealthComp OtherHealthComp = UUZHealthComp::Get(TraceCheckComp.HitTargetActor);
             
             if (OtherHealthComp != nullptr)
             {

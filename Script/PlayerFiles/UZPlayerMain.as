@@ -2,7 +2,7 @@ import PlayerFiles.UZCameraActor;
 import PlayerFiles.UZLaserBeam;
 import PlayerFiles.UZPullBeam;
 import GameFiles.UZGameMode;
-import WorldFiles.UZResource;
+import WorldFiles.UZPickUpObject;
 import PlayerFiles.UZRemoteCannon;
 import GameFiles.UZPlayerWidget;
 
@@ -71,9 +71,9 @@ class AUZPlayerMain : APawn
     bool bPullOn;
 
     UPROPERTY()
-    float XLocAllowedMovement = 3000.f;
+    float XLocAllowedMovement = 3300.f;
     UPROPERTY()
-    float YLocAllowedMovement = 3000.f;
+    float YLocAllowedMovement = 3300.f;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -259,16 +259,34 @@ class AUZPlayerMain : APawn
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        AUZResource Resource = Cast<AUZResource>(OtherActor);
+        AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
         
-        if (Resource != nullptr)
+        if (PickUpTarget != nullptr)
         {
             if (GameMode != nullptr)
             {
-                GameMode.AddRemoveResources(Resource.ResourceAmount);
-                GameMode.CurrentResourcesInLevel--;
+                //rework depending on object type
+                switch (PickUpTarget.ObjectType)
+                {
+                    case PickUpObjectType::Car:
+                    GameMode.AddRemoveResources(PickUpTarget.AddAmount);
+                    GameMode.CurrentResourcesInLevel--;
+                    break;
+
+                    case PickUpObjectType::CitizenPod:
+                    GameMode.AddCitizenCount(PickUpTarget.AddAmount);
+                    GameMode.CurrentResourcesInLevel--;
+                    break;
+
+                    case PickUpObjectType::Resource:
+                    GameMode.AddRemoveResources(PickUpTarget.AddAmount);
+                    GameMode.CurrentResourcesInLevel--;
+                    break;
+                }
+
             }
-            Resource.DestroyActor();
+
+            PickUpTarget.DestroyActor();
         }
     }
 

@@ -25,7 +25,7 @@ class AUZLaserBeam : AActor
     AActor TargetLocation;
 
     UPROPERTY()
-    float Damage = 7.5f;
+    float Damage = 9.5f;
 
     float NewDamageTime;
     float DamageRate = 0.06f;

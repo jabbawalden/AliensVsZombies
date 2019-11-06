@@ -1,11 +1,9 @@
 import WorldFiles.UZProtectionPoint;
+import GameFiles.UZGameMode;
 
 class UUZMovementComp : UActorComponent
 {
-    UPROPERTY()
     float MoveSpeed;
-
-    UPROPERTY()
     float DefaultMoveSpeed = 110.f;
 
     UPROPERTY()
@@ -17,12 +15,21 @@ class UUZMovementComp : UActorComponent
     UPROPERTY()
     AActor CurrentTarget;
 
+    AUZGameMode GameMode;
+
     TArray<AUZProtectionPoint> ProtectionPointArray;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        MoveSpeed = DefaultMoveSpeed;
+        GameMode = Cast<AUZGameMode>(Gameplay::GameMode); 
+
+        if (GameMode != nullptr)
+        {
+            DefaultMoveSpeed = GameMode.GlobalMovementSpeed;
+            MoveSpeed = DefaultMoveSpeed;
+        }
+
         GetFinalDestinationReferece();
         SetTargetToFinal();
     }
@@ -64,9 +71,7 @@ class UUZMovementComp : UActorComponent
         FVector RotationDirection = CurrentTarget.ActorLocation - Owner.ActorLocation;
         FRotator DesiredRotation = FRotator::MakeFromX(RotationDirection);
         float YawRot = FMath::FInterpTo(Owner.GetActorRotation().Yaw, DesiredRotation.Yaw, DeltaTime, InterpSpeed);
-        
         //FRotator TargetRotation = FRotator(0, YawRot, 0);
-
         FRotator TargetRotation = FRotator(0, DesiredRotation.Yaw, 0);
         Owner.SetActorRotation(TargetRotation);
 
