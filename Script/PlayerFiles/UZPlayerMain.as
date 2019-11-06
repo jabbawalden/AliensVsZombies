@@ -62,6 +62,10 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     TSubclassOf<UUserWidget> StartWidget;
 
+    //TODO Implement this
+    UPROPERTY()
+    TSubclassOf<UUserWidget> EndWidget;
+
     UPROPERTY()
     float SpawnTurretRate = 0.5f;
     float NewSpawnTurretTime; 
