@@ -11,6 +11,8 @@ class AUZPickUpObjectSpawner : AActor
     UPROPERTY()
     float SpawnMaxDistance = 1900.f;
 
+    bool bCanSpawn;
+
     UPROPERTY()
     float MinRate = 8.5f;
 
@@ -28,6 +30,11 @@ class AUZPickUpObjectSpawner : AActor
     void BeginPlay()
     {
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
+
+        if(GameMode == nullptr)
+        return;
+
+        GameMode.EventStartGame.AddUFunction(this, n"StartSpawn");
     }
 
     UFUNCTION(BlueprintOverride)
@@ -39,7 +46,10 @@ class AUZPickUpObjectSpawner : AActor
         //return to stop spawning
         if (GameMode.bGameEnded)
         return;
-        
+
+        if (!bCanSpawn)
+        return;
+
         switch(OurSpawnType)
         {
             case SpawnType::ResourceObject:
@@ -51,6 +61,12 @@ class AUZPickUpObjectSpawner : AActor
             break;
         }
 
+    }
+
+    UFUNCTION()
+    void StartSpawn()
+    {
+        bCanSpawn = true;
     }
 
     UFUNCTION()

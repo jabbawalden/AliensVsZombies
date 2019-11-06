@@ -1,7 +1,7 @@
 import GameFiles.UZEvents;
 import GameFiles.UZGameMode;
 
-enum HealthType {ProtectionPoint, ZombieBasic, ZombieLarge, Turret};
+enum HealthType {ProtectionPoint, ZombieBasic, ZombieLarge, ZombieAdvanced, Turret};
 
 class UUZHealthComp : UActorComponent
 {
@@ -37,7 +37,12 @@ class UUZHealthComp : UActorComponent
                 case HealthType::ZombieLarge:
                 MaxHealth = GameMode.ZombieLargeMaxHealth;
                 break;
+
+                case HealthType::ZombieAdvanced:
+                MaxHealth = GameMode.ZombieAdvancedMaxHealth;
+                break;
             }
+            
             CurrentHealth = MaxHealth;
         }
     }

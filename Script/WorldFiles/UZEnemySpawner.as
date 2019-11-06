@@ -6,7 +6,7 @@ class AUZEnemySpawner : AActor
 
     AUZGameMode GameMode;
 
-    bool bCanSpawn = true;
+    bool bCanSpawn;
 
     float NewSpawnTime;
 
@@ -18,21 +18,31 @@ class AUZEnemySpawner : AActor
     TSubclassOf<AActor> EnemySpawn2;
     AActor EnemySpawn2Ref;
 
+    UPROPERTY()
+    TSubclassOf<AActor> EnemySpawn3;
+    AActor EnemySpawn3Ref;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
 
-        if (GameMode != nullptr)
-        {
-            GameMode.EventEndGame.AddUFunction(this, n"EndSpawn");
-        }
+        if (GameMode == nullptr)
+        return;
+
+        GameMode.EventEndGame.AddUFunction(this, n"EndSpawn");
+        GameMode.EventStartGame.AddUFunction(this, n"StartSpawn");
+
     }
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        SpawnEnemyBehaviour();
+        if (bCanSpawn)
+        {
+            SpawnEnemyBehaviour();
+        }
+
     }
 
     UFUNCTION()
@@ -46,7 +56,7 @@ class AUZEnemySpawner : AActor
             float NewRate = FMath::RandRange(GameMode.EnemyMinSpawnTime, GameMode.EnemyMaxSpawnTime);
             NewSpawnTime = Gameplay::TimeSeconds + NewRate;
 
-            int SpawnIndexChance = FMath::RandRange(1, 6);
+            int SpawnIndexChance = FMath::RandRange(1, 8);
 
             switch(SpawnIndexChance)
             {
@@ -69,6 +79,14 @@ class AUZEnemySpawner : AActor
                     if (GameMode.bCanSpawnEnemy2)
                         SpawnEnemy(EnemySpawn2Ref, EnemySpawn2);
                     break;
+                case 7:
+                    if (GameMode.bCanSpawnEnemy3)
+                        SpawnEnemy(EnemySpawn3Ref, EnemySpawn3);
+                    break;
+                case 8:
+                    if (GameMode.bCanSpawnEnemy3)
+                        SpawnEnemy(EnemySpawn3Ref, EnemySpawn3);
+                    break;
             }
         }
     }
@@ -79,6 +97,12 @@ class AUZEnemySpawner : AActor
         float XPosOffset = FMath::RandRange(-MaxSpawnDistance, MaxSpawnDistance);
         float YPosOffset = FMath::RandRange(-MaxSpawnDistance, MaxSpawnDistance);
         SpawnRef = SpawnActor(SpawnClass, FVector(ActorLocation.X + XPosOffset, ActorLocation.Y + YPosOffset, ActorLocation.Z + 50.f));
+    }
+
+    UFUNCTION()
+    void StartSpawn()
+    {
+        bCanSpawn = true;
     }
 
     UFUNCTION()

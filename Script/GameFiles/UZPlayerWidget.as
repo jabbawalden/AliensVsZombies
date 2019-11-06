@@ -114,9 +114,3 @@ class UUZPlayerMainWidget : UUserWidget
     }
 }
 
-UFUNCTION(Category = "Player HUD")
-void AddMainWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidget> WidgetClass)
-{
-    UUserWidget UserWidget = WidgetBlueprint::CreateWidget(WidgetClass, PlayerController);
-    UserWidget.AddToViewport();
-}

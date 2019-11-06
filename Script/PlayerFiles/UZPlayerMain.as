@@ -5,6 +5,7 @@ import GameFiles.UZGameMode;
 import WorldFiles.UZPickUpObject;
 import PlayerFiles.UZRemoteCannon;
 import GameFiles.UZPlayerWidget;
+import GameFiles.UZStaticFunctions;
 
 class AUZPlayerMain : APawn
 {
@@ -59,6 +60,12 @@ class AUZPlayerMain : APawn
     TSubclassOf<UUserWidget> MainWidget;
 
     UPROPERTY()
+    TSubclassOf<UUserWidget> StartWidget;
+
+    UPROPERTY()
+    UUserWidget WidgetStartRef; 
+
+    UPROPERTY()
     float SpawnTurretRate = 0.5f;
     float NewSpawnTurretTime; 
 
@@ -66,14 +73,14 @@ class AUZPlayerMain : APawn
     float SpawnSunTrapRate = 0.5f;
     float NewSpawnStunTrapTime; 
 
-    bool bIsActive = true;
+    bool bIsActive;
     bool bLaserOn;
     bool bPullOn;
 
     UPROPERTY()
-    float XLocAllowedMovement = 3300.f;
+    float XLocAllowedMovement = 3200.f;
     UPROPERTY()
-    float YLocAllowedMovement = 3300.f;
+    float YLocAllowedMovement = 3000.f;
 
     UPROPERTY()
     float MeshRotateSpeed = 100.f;
@@ -84,6 +91,11 @@ class AUZPlayerMain : APawn
         SphereCompResourceCatch.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
+        if (GameMode == nullptr)
+        return;
+
+        GameMode.EventStartGame.AddUFunction(this, n"StartGame");
+
         PlayerGameModeSetUp();
         PlayerCamSetup();
         PlayerInputSetup();
@@ -91,6 +103,10 @@ class AUZPlayerMain : APawn
         if (PlayerController != nullptr)
         {
             AddMainWidgetToHUD(PlayerController, MainWidget);
+            AddStartWidgetToHUD(PlayerController, StartWidget);
+
+            if (WidgetStartRef != nullptr)
+            Print("" + WidgetStartRef.Name, 5.f);
         }
     }
 
@@ -98,6 +114,13 @@ class AUZPlayerMain : APawn
     void Tick(float DeltaSeconds)
     {
         SetMeshRotation(DeltaSeconds);
+    }
+    
+    UFUNCTION()
+    void StartGame()
+    {
+        bIsActive = true;
+        GameMode.StartWidgetReference.RemoveFromParent(); 
     }
 
     UFUNCTION()
@@ -142,12 +165,14 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void StartPressed(FKey Key)
     {
+        if (GameMode == nullptr)
+        return;
 
-        if (GameMode != nullptr && GameMode.bGameEnded)
+        if (GameMode.bGameEnded)
         {
             Gameplay::OpenLevel(n"MainMap");
         }
-        else if (GameMode != nullptr && GameMode.bGameNotStarted)
+        else
         {
             GameMode.StartGame();
         }
@@ -311,6 +336,7 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void DisablePlayerControls()
     {
+
         if (PlayerController != nullptr)
         {
             bIsActive = false;

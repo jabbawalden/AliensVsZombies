@@ -13,6 +13,9 @@ class AUZGameMode : AGameModeBase
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
     FUpdateCitizenCountUI EventUpdateCitizenCountUI;
 
+    //STORE UI REFERENCES
+    UUserWidget StartWidgetReference;
+
     //LIFE
     UPROPERTY()
     float Life;
@@ -35,13 +38,13 @@ class AUZGameMode : AGameModeBase
 
     //GAME STATE INFO
     bool bGameEnded;
-    bool bGameNotStarted = true;
+    bool bGameStarted;
 
     float EnemyMinSpawnTime = 1.9f;
     float EnemyMaxSpawnTime = 2.6f;
 
     UPROPERTY()
-    float SpawnIncreaseDivider = 1.03f;
+    float SpawnIncreaseDivider = 1.032f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 11.f;
@@ -62,6 +65,8 @@ class AUZGameMode : AGameModeBase
     float ZombieBasicMaxHealth = 15.f;
     UPROPERTY()
     float ZombieLargeMaxHealth = 50.f;
+    UPROPERTY()
+    float ZombieAdvancedMaxHealth = 30.f;
     UPROPERTY()
     float ZombieHealthMultiplier = 1.03f;
 
@@ -101,7 +106,7 @@ class AUZGameMode : AGameModeBase
             bGameEnded = true;
             EndGame();
         }
-        else
+        else if (Life > 0 && bGameStarted)
         {
             SetNewSpawnRates();
             SetNewZombieMaxHealth();
@@ -139,7 +144,7 @@ class AUZGameMode : AGameModeBase
     void StartGame()
     {
         EventStartGame.Broadcast();
-        bGameNotStarted = false;
+        bGameStarted = true;
     }
 
     UFUNCTION()
@@ -185,6 +190,7 @@ class AUZGameMode : AGameModeBase
         {
             ZombieBasicMaxHealth *= ZombieHealthMultiplier;
             ZombieLargeMaxHealth *= ZombieHealthMultiplier;
+            ZombieAdvancedMaxHealth *= ZombieHealthMultiplier;
             ZombieNewHealthTime = Gameplay::TimeSeconds + ZombieNewHealthRate; 
         }
     }
