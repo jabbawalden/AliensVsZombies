@@ -1,5 +1,7 @@
 import GameFiles.UZGameMode;
 
+enum SpawnType {ResourceObject, CitizenObject};
+
 class AUZPickUpObjectSpawner : AActor
 {
     UPROPERTY()
@@ -17,6 +19,9 @@ class AUZPickUpObjectSpawner : AActor
 
     float NewSpawnTime;
 
+    UPROPERTY()
+    SpawnType OurSpawnType;
+
     AUZGameMode GameMode;
 
     UFUNCTION(BlueprintOverride)
@@ -30,8 +35,43 @@ class AUZPickUpObjectSpawner : AActor
     {
         if (GameMode == nullptr)
         return;
-        
+
+        //return to stop spawning
+        if (!GameMode.bGameEnded)
+        return;
+
+        switch(OurSpawnType)
+        {
+            case SpawnType::ResourceObject:
+            SpawnResourceObjects();
+            break;
+
+            case SpawnType::CitizenObject:
+            SpawnCitizenObjects();
+            break;
+        }
+
+    }
+
+    UFUNCTION()
+    void SpawnResourceObjects()
+    {
         if (NewSpawnTime <= Gameplay::TimeSeconds && GameMode.CurrentResourcesInLevel < GameMode.MaxResourcesInLevel)
+        {
+            float XOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);
+            float YOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);
+            FVector SpawnLoc = FVector(ActorLocation.X + XOffset, ActorLocation.Y + YOffset, ActorLocation.Z);
+
+            float CurrentSpawnRate = FMath::RandRange(MinRate, MaxRate);
+            NewSpawnTime = Gameplay::TimeSeconds + CurrentSpawnRate;
+            ObjectToSpawnRef = SpawnActor(ObjectToSpawn, SpawnLoc);
+        }
+    }
+
+    UFUNCTION()
+    void SpawnCitizenObjects()
+    {
+        if (NewSpawnTime <= Gameplay::TimeSeconds && GameMode.CurrentCitizenPods < GameMode.MaxCitizenPods)
         {
             float XOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);
             float YOffset = FMath::RandRange(-SpawnMaxDistance, SpawnMaxDistance);

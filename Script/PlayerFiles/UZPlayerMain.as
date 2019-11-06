@@ -275,7 +275,7 @@ class AUZPlayerMain : APawn
 
                     case PickUpObjectType::CitizenPod:
                     GameMode.AddCitizenCount(PickUpTarget.AddAmount);
-                    GameMode.CurrentResourcesInLevel--;
+                    GameMode.CurrentCitizenPods--;
                     break;
 
                     case PickUpObjectType::Resource:

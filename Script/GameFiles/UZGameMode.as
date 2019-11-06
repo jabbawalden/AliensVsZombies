@@ -28,7 +28,7 @@ class AUZGameMode : AGameModeBase
 
     //RESOURCE COSTS
     UPROPERTY()
-    float TurretCost = 400.f;
+    float TurretCost = 350.f;
 
     UPROPERTY()
     float StunTrapCost = 100.f;
@@ -37,8 +37,8 @@ class AUZGameMode : AGameModeBase
     bool bGameEnded;
     bool bGameNotStarted = true;
 
-    float EnemyMinSpawnTime = 1.8f;
-    float EnemyMaxSpawnTime = 2.5f;
+    float EnemyMinSpawnTime = 1.9f;
+    float EnemyMaxSpawnTime = 2.6f;
 
     UPROPERTY()
     float SpawnIncreaseDivider = 1.03f;
@@ -59,7 +59,7 @@ class AUZGameMode : AGameModeBase
 
     //ZOMBIE VALUES
     UPROPERTY()
-    float ZombieBasicMaxHealth = 20.f;
+    float ZombieBasicMaxHealth = 15.f;
     UPROPERTY()
     float ZombieLargeMaxHealth = 50.f;
     UPROPERTY()
@@ -69,7 +69,7 @@ class AUZGameMode : AGameModeBase
     float ZombieNewHealthRate = 10.f;
     float ZombieNewHealthTime;
 
-    float GlobalMovementSpeed = 110.f;
+    float GlobalMovementSpeed = 100.f;
 
     UPROPERTY()
     float GlobalMovementSpeedMultiplier = 1.03f;
@@ -81,8 +81,10 @@ class AUZGameMode : AGameModeBase
 
     //RESOURCE OBJECTS
     UPROPERTY()
-    int MaxResourcesInLevel = 4;
+    int MaxResourcesInLevel = 5;
     int CurrentResourcesInLevel;
+    int MaxCitizenPods = 3;
+    int CurrentCitizenPods;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()

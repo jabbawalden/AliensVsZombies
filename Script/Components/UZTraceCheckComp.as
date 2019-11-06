@@ -48,6 +48,7 @@ class UUZTraceCheckComp : UActorComponent
         {
             bIsInRangeOfTarget = true;
             HitTargetActor = Hit.Actor;
+            // Print("" + Hit.Actor.Name, 0.f);
         }
         else
         {

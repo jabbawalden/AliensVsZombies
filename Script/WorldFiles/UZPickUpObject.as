@@ -19,8 +19,10 @@ class AUZPickUpObject : AActor
 
     AUZGameMode GameMode;
 
+    UPROPERTY()
     PickUpObjectType ObjectType;
 
+    UPROPERTY()
     float MovementSpeed = 850.f;
 
     int AddAmount = 75;
@@ -38,7 +40,21 @@ class AUZPickUpObject : AActor
         if (GameMode == nullptr)
         return;
 
-        GameMode.CurrentResourcesInLevel++;
+        switch(ObjectType)
+        {
+            case PickUpObjectType::Car:
+            GameMode.CurrentResourcesInLevel++;
+            break;
+
+            case PickUpObjectType::CitizenPod:
+            GameMode.CurrentCitizenPods++;
+            break;
+
+            case PickUpObjectType::Resource:
+            GameMode.CurrentResourcesInLevel++;
+            break;
+        }
+
     }
 
     UFUNCTION(BlueprintOverride)

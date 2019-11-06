@@ -75,8 +75,8 @@ class AUZRemoteCannon : AActor
 
     bool bCanShoot = true;
 
-    float DestructionRate = 1.5f;
-    float DestructionDamage = 0.25f;
+    float DestructionRate = 1.8f;
+    float DestructionDamage = 0.12f;
     float NewDestructionTime;
 
     UFUNCTION(BlueprintOverride)
