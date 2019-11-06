@@ -75,6 +75,9 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     float YLocAllowedMovement = 3300.f;
 
+    UPROPERTY()
+    float MeshRotateSpeed = 100.f;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -89,6 +92,12 @@ class AUZPlayerMain : APawn
         {
             AddMainWidgetToHUD(PlayerController, MainWidget);
         }
+    }
+
+    UFUNCTION(BlueprintOverride)
+    void Tick(float DeltaSeconds)
+    {
+        SetMeshRotation(DeltaSeconds);
     }
 
     UFUNCTION()
@@ -251,6 +260,15 @@ class AUZPlayerMain : APawn
                 GameMode.AddRemoveResources(-GameMode.StunTrapCost); 
             }    
         }
+    }
+
+    UFUNCTION()
+    void SetMeshRotation(float DeltaTime)
+    {
+        FRotator CurrentMeshRot = MeshComp.GetRelativeRotation();
+        float YawValue = CurrentMeshRot.Yaw + MeshRotateSpeed * DeltaTime;
+        FRotator NextRot = FRotator(0, YawValue, 0);
+        MeshComp.SetRelativeRotation(NextRot);
     }
 
     UFUNCTION()
