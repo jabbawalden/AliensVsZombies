@@ -71,12 +71,15 @@ class AUZRemoteCannon : AActor
     UPROPERTY()
     float InterpSpeed = 2.5f;
 
+    UPROPERTY()
+    float MaxHealth = 200.f;
+
     int ShootTargetIndex;
 
     bool bCanShoot = true;
 
-    float DestructionRate = 1.8f;
-    float DestructionDamage = 0.12f;
+    float DestructionRate = 1.4f;
+    float DestructionDamage = 0.22f;
     float NewDestructionTime;
 
     UFUNCTION(BlueprintOverride)
@@ -93,7 +96,6 @@ class AUZRemoteCannon : AActor
 
         RemoteCannonSetup();
         WidgetCompSetup();
-
     }
 
     UFUNCTION(BlueprintOverride)

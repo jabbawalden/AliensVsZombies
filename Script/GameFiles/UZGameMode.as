@@ -50,9 +50,9 @@ class AUZGameMode : AGameModeBase
     int SpawnDifficulty = 0;
 
     UPROPERTY()
-    int Enemy2SpawnDifficulty = 10;
+    int Enemy2SpawnDifficulty = 8;
     UPROPERTY()
-    int Enemy3SpawnDifficulty = 20;
+    int Enemy3SpawnDifficulty = 16;
 
     bool bCanSpawnEnemy2;
     bool bCanSpawnEnemy3;

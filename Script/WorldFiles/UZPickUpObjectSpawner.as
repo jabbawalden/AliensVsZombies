@@ -37,9 +37,9 @@ class AUZPickUpObjectSpawner : AActor
         return;
 
         //return to stop spawning
-        if (!GameMode.bGameEnded)
+        if (GameMode.bGameEnded)
         return;
-
+        
         switch(OurSpawnType)
         {
             case SpawnType::ResourceObject:

@@ -13,8 +13,10 @@ class UUZHealthComp : UActorComponent
     UPROPERTY()
     HealthType OurHealthType; 
 
-    float CurrentHealth;
+    UPROPERTY()
     float MaxHealth = 15.f;
+    float CurrentHealth;
+
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
