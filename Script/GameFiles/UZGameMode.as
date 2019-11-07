@@ -1,4 +1,5 @@
 import GameFiles.UZEvents;
+import GameFiles.UZStaticClasses;
 
 class AUZGameMode : AGameModeBase
 {
@@ -40,13 +41,15 @@ class AUZGameMode : AGameModeBase
     bool bGameEnded;
     bool bGameStarted;
 
+    UPROPERTY()
     float EnemyMinSpawnTime = 1.9f;
+    UPROPERTY()
     float EnemyMaxSpawnTime = 4.1f;
 
     UPROPERTY()
     float SpawnIncreaseDividerMin = 1.03f;
     UPROPERTY()
-    float SpawnIncreaseDividerMax = 1.058f;
+    float SpawnIncreaseDividerMax = 1.07f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 10.f;
@@ -70,7 +73,7 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float ZombieAdvancedMaxHealth = 35.f;
     UPROPERTY()
-    float ZombieHealthMultiplier = 1.028f;
+    float ZombieHealthMultiplier = 1.005f;
 
     UPROPERTY()
     float ZombieNewHealthRate = 10.f;
@@ -81,7 +84,7 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float GlobalMovementSpeedMultiplierMin = 1.02f;
     UPROPERTY()
-    float GlobalMovementSpeedMultiplierMax = 1.04f;
+    float GlobalMovementSpeedMultiplierMax = 1.08f;
 
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
@@ -117,6 +120,7 @@ class AUZGameMode : AGameModeBase
             SetNewZombieSpeed();
         }
     }
+
 
     UFUNCTION()
     void BroadCastWidgetEvents()

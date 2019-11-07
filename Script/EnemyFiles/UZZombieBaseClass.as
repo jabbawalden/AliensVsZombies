@@ -26,8 +26,8 @@ class AUZZombieBaseClass : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {        
+        Tags.Add(n"Enemy");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
-        
     }
 
     UFUNCTION(BlueprintOverride)

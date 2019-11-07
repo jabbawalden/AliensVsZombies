@@ -82,6 +82,8 @@ class AUZRemoteCannon : AActor
     float DestructionDamage = 0.22f;
     float NewDestructionTime;
 
+    float TestNumber;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -89,10 +91,16 @@ class AUZRemoteCannon : AActor
         HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateHealth");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
 
+        // Print("Our Test Number is = ", 5.f);
+
         if (GameMode != nullptr)
         {
             GameMode.EventEndGame.AddUFunction(this, n"EndShoot");
         }
+
+        Tags.Add(UZTags::Turret); 
+
+        // Print("" + UZTags::Turret, 5.f);
 
         RemoteCannonSetup();
         WidgetCompSetup();

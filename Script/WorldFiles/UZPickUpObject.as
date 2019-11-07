@@ -41,6 +41,8 @@ class AUZPickUpObject : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        Tags.Add(n"PickUp");
+
         GameMode = Cast<AUZGameMode>(Gameplay::GameMode);
         
         if (GameMode == nullptr)

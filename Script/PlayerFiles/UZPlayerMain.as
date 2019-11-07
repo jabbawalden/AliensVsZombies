@@ -179,31 +179,35 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void MovePForward(float AxisValue)
     {
-        if (bIsActive)
-        {
-            if (ActorLocation.X > -XLocAllowedMovement && AxisValue < 0)
-                AddMovementInput(ControlRotation.ForwardVector, AxisValue);
-            else if (ActorLocation.X < XLocAllowedMovement && AxisValue > 0)  
-                AddMovementInput(ControlRotation.ForwardVector, AxisValue);
-        }
+        if (!bIsActive)
+        return;
+        
+        if (ActorLocation.X > -XLocAllowedMovement && AxisValue < 0)
+            AddMovementInput(ControlRotation.ForwardVector, AxisValue);
+        else if (ActorLocation.X < XLocAllowedMovement && AxisValue > 0)  
+            AddMovementInput(ControlRotation.ForwardVector, AxisValue);
+        
     }
 
     UFUNCTION()
     void MovePRight(float AxisValue)
     {
-        if (bIsActive)
-        {
-            if (ActorLocation.Y > -YLocAllowedMovement && AxisValue < 0)
-                AddMovementInput(ControlRotation.RightVector, AxisValue); 
-            else if (ActorLocation.Y < YLocAllowedMovement && AxisValue > 0)  
-                AddMovementInput(ControlRotation.RightVector, AxisValue);       
-        }
+        if (!bIsActive)
+        return;
+
+        if (ActorLocation.Y > -YLocAllowedMovement && AxisValue < 0)
+            AddMovementInput(ControlRotation.RightVector, AxisValue); 
+        else if (ActorLocation.Y < YLocAllowedMovement && AxisValue > 0)  
+            AddMovementInput(ControlRotation.RightVector, AxisValue);       
     }
 
     UFUNCTION()
     void LaserCannonOn(FKey Key)
     {
-        if (bIsActive && !bPullOn)
+        if (!bIsActive)
+        return;
+
+        if (!bPullOn)
         {
             LaserBeamRef = SpawnActor(LaserBeamClass, ActorLocation);
             LaserBeam = Cast<AUZLaserBeam>(LaserBeamRef);
@@ -218,7 +222,10 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void LaserCannonOff(FKey Key)
     {
-        if (LaserBeam != nullptr && bIsActive)
+        if (!bIsActive)
+        return;
+
+        if (LaserBeam != nullptr)
         {
             LaserBeam.IsActive = false;
             bLaserOn = false;
@@ -228,7 +235,10 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PullBeamOn(FKey Key)
     {
-        if (bIsActive && !bLaserOn)
+        if (!bIsActive)
+        return;
+
+        if (!bLaserOn)
         {
             PullBeamRef = SpawnActor(PullBeamClass, ActorLocation);
             PullBeam = Cast<AUZPullBeam>(PullBeamRef);
@@ -244,7 +254,10 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PullBeamOff(FKey Key)
     {
-        if (PullBeam != nullptr && bIsActive)
+        if (!bIsActive)
+        return;
+
+        if (PullBeam != nullptr)
         {
             PullBeam.IsActive = false;
             bPullOn = false;
@@ -255,6 +268,9 @@ class AUZPlayerMain : APawn
     void SpawnTurret(FKey Key)
     {
         if (GameMode == nullptr)
+        return;
+
+        if (!bIsActive)
         return;
 
         if (GameMode.Resources >= GameMode.TurretCost)
@@ -272,6 +288,9 @@ class AUZPlayerMain : APawn
     void SpawnStunTrap(FKey Key)
     {
         if (GameMode == nullptr)
+        return;
+
+        if (!bIsActive)
         return;
 
         if (GameMode.Resources >= GameMode.StunTrapCost)

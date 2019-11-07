@@ -20,12 +20,19 @@ class AUZStunTrap : AActor
     default TrapAOE.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
 
     UPROPERTY(DefaultComponent, Attach = BoxComp)
-    USphereComponent SphereCompActivation;
-    default SphereCompActivation.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-    default SphereCompActivation.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
+    UBoxComponent BoxCompActivation;
+    default BoxCompActivation.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    default BoxCompActivation.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
 
     UPROPERTY(DefaultComponent)
     UUZTraceCheckComp TraceComp;
+
+    UPROPERTY()
+    TSubclassOf<AActor> TrapRepresent;
+    AActor TrapRepresentRef; 
+
+    UPROPERTY()
+    float ZOffset = 50.f;
 
     UPROPERTY()
     float StunDamage = 10.f;
@@ -38,7 +45,7 @@ class AUZStunTrap : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        SphereCompActivation.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlapSphere");
+        BoxCompActivation.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlapSphere");
         TrapAOE.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlapTrapAOE");
         TrapAOE.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlapTrapAOE");
         BoxComp.SetSimulatePhysics(true);
@@ -64,7 +71,9 @@ class AUZStunTrap : AActor
         if (!bHaveActivated)
         {
             bHaveActivated = true;
-            
+            FVector Spawnloc = FVector(ActorLocation.X, ActorLocation.Y, ActorLocation.Z - ZOffset);
+            TrapRepresentRef = SpawnActor(TrapRepresent, Spawnloc);
+
             for (int i = 0; i < MovementCompArray.Num(); i++)
             {
                 MovementCompArray[i].MoveSpeed = 0.f;
@@ -86,7 +95,7 @@ class AUZStunTrap : AActor
         {
             MovementCompArray[i].MoveSpeed = MovementCompArray[i].DefaultMoveSpeed;
         }
-
+        TrapRepresentRef.DestroyActor();
         DestroyActor();
     }
 

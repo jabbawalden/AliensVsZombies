@@ -14,10 +14,10 @@ class AUZPickUpObjectSpawner : AActor
     bool bCanSpawn;
 
     UPROPERTY()
-    float MinRate = 8.5f;
+    float MinRate = 6.5f;
 
     UPROPERTY()
-    float MaxRate = 14.f;
+    float MaxRate = 13.5f;
 
     float NewSpawnTime;
 

@@ -1,4 +1,5 @@
 import WorldFiles.UZPickUpObject;
+import Components.UZHealthComp;
 
 class AUZPullBeam : AActor
 {
@@ -13,9 +14,19 @@ class AUZPullBeam : AActor
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
+    UPROPERTY()
+    float HealAmount = 10.f;
+    UPROPERTY()
+    float HealRate = 0.25f;
+    float NewHealTime;
+
+    TArray<UUZHealthComp> HealthCompArray;
+
     AActor PlayerRef;
 
     bool IsActive = true;
+
+
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -45,13 +56,21 @@ class AUZPullBeam : AActor
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
-
-        if (PickUpTarget != nullptr)
+        if (OtherActor.Tags.Contains(n"PickUp"))
         {
-            PickUpTarget.SetTargetReference(this);
-            PickUpTarget.IsCollecting = true;
-            PickUpTarget.SetPhysicsSimulation(false);
+            AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
+
+            if (PickUpTarget != nullptr)
+            {
+                PickUpTarget.SetTargetReference(this);
+                PickUpTarget.IsCollecting = true;
+                PickUpTarget.SetPhysicsSimulation(false);
+            }
+        }
+
+        if (OtherActor.Tags.Contains(n"Turet"))
+        {
+            
         }
     }
 
@@ -60,12 +79,20 @@ class AUZPullBeam : AActor
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex) 
     {
-        AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
-
-        if (PickUpTarget != nullptr)
+        if (OtherActor.Tags.Contains(n"PickUp"))
         {
-            PickUpTarget.IsCollecting = false;
-            PickUpTarget.SetPhysicsSimulation(true);
+            AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
+
+            if (PickUpTarget != nullptr)
+            {
+                PickUpTarget.IsCollecting = false;
+                PickUpTarget.SetPhysicsSimulation(true);
+            }
+        }
+
+        if (OtherActor.Tags.Contains(n"Turet"))
+        {
+            
         }
     }
 }
