@@ -6,6 +6,7 @@ import GameFiles.UZGameMode;
 import Components.UZHealthComp;
 import Components.UZMovementComp;
 import GameFiles.UZTurretWidget;
+import GameFiles.UZStaticData;
 
 class AUZRemoteCannon : AActor
 {

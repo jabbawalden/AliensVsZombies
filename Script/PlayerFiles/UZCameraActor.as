@@ -42,7 +42,7 @@ class AUZCameraActor : AActor
         float ZInterp = FMath::FInterpTo(TargetLocation.Z, ActorLocation.Z, DeltaTime, InterpSpeed);
 
         FVector FinalLocation = FVector(XInterp, YInterp, ZInterp);
-        SetActorLocation(TargetLocation);
+        SetActorLocation(TargetLocation + FVector(-500.f,0.f,0.f));
     }
 
     //called by player once target view is set

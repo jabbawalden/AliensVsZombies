@@ -118,6 +118,10 @@ class AUZPlayerMain : APawn
     void StartGame()
     {
         bIsActive = true;
+
+        if (GameMode.StartWidgetReference == nullptr)
+        return;
+        
         GameMode.StartWidgetReference.RemoveFromParent(); 
     }
 

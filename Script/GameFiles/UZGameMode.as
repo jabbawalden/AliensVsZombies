@@ -1,5 +1,4 @@
 import GameFiles.UZEvents;
-import GameFiles.UZStaticClasses;
 
 class AUZGameMode : AGameModeBase
 {
@@ -120,7 +119,6 @@ class AUZGameMode : AGameModeBase
             SetNewZombieSpeed();
         }
     }
-
 
     UFUNCTION()
     void BroadCastWidgetEvents()

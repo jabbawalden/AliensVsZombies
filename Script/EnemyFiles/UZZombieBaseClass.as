@@ -56,4 +56,5 @@ class AUZZombieBaseClass : AActor
             }
         }
     }
+
 }
