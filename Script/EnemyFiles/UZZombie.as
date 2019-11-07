@@ -16,7 +16,6 @@ class AUZZombie : AUZZombieBaseClass
     void BeginPlay()
     {
         ResourceAmount = 2;
-        
         HealthComp.EventDeath.AddUFunction(this, n"ZombieDeathCall");
         Super::BeginPlay(); 
     }

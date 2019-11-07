@@ -23,7 +23,7 @@ class UUZMovementComp : UActorComponent
     AActor PriorityTarget;
 
     UPROPERTY()
-    float MovementTraceDistance = 200.f; 
+    float MovementTraceDistance = 250.f; 
 
     AUZGameMode GameMode;
 
@@ -32,6 +32,8 @@ class UUZMovementComp : UActorComponent
     float PriorityDistance;
     float PriorityMinDistance = 250.f;
     float PriorityActorCheckDistance = 1000000.f;
+
+    bool bCanMoveTest = true;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -58,7 +60,7 @@ class UUZMovementComp : UActorComponent
     UFUNCTION()
     void MoveAI(float DeltaTime)
     {
-        if (FinalTarget != nullptr)
+        if (FinalTarget != nullptr && bCanMoveTest)
         {
             SetZombieLocation(DeltaTime);
             SetZombieRotation(DeltaTime);
@@ -151,19 +153,23 @@ class UUZMovementComp : UActorComponent
 		IgnoredActors.Add(Owner);
         FHitResult Hit;
         
-		FVector StartLocation = Owner.ActorLocation;
+		FVector StartLocation = Owner.ActorLocation + FVector(0,0, 50.f);
         FVector EndLocation;
 
         EndLocation = Owner.ActorLocation + (Owner.GetActorForwardVector() * MovementTraceDistance);
 
-        if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::None, Hit, true))
+        if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::ForDuration, Hit, true))
         {
+            Print("" + Hit.Actor.Name, 0.f);
+
             if (Hit.Actor.Tags.Contains(UZTags::Obstacle))
             {
                 AUZObstacle Obstacle = Cast<AUZObstacle>(Hit.Actor);
-                
+
                 if (Obstacle == nullptr)
                 return;
+
+                bCanMoveTest = false;
 
                 if (PriorityTarget == nullptr)
                     HitObstacleResponse(Obstacle);
@@ -183,13 +189,15 @@ class UUZMovementComp : UActorComponent
         for (int i = 0; i < Obstacle.PriorityLocationArray.Num(); i++)
         {
             RunPriorityCheck(Obstacle.PriorityLocationArray[i].ActorLocation);
-            Print("running priority check" + Obstacle.PriorityLocationArray.Num(), 0.f);
+            Print("running priority check " + i, 0.f);
         }
     }
 
     UFUNCTION()
     void RunPriorityCheck(FVector DestinationLoc)
     {
+        Print("" + DestinationLoc, 0.f);
+        
         TArray<AActor> IgnoredActors;
 		IgnoredActors.Add(Owner);
         FHitResult Hit;
