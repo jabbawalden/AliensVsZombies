@@ -1,6 +1,7 @@
 import Components.UZTraceCheckComp;
 import Components.UZMovementComp;
 import Components.UZHealthComp;
+import GameFiles.UZStaticData;
 
 class AUZStunTrap : AActor
 {
@@ -105,7 +106,7 @@ class AUZStunTrap : AActor
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        if (OtherActor.Tags.Contains(n"Enemy"))
+        if (OtherActor.Tags.Contains(UZTags::Enemy))
         {
             ActivateTrap();
         }
@@ -117,7 +118,7 @@ class AUZStunTrap : AActor
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        if (OtherActor.Tags.Contains(n"Enemy"))
+        if (OtherActor.Tags.Contains(UZTags::Enemy))
         {
             UUZMovementComp MovementComp = UUZMovementComp::Get(OtherActor);
             UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);

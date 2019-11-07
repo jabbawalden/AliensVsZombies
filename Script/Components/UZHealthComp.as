@@ -47,9 +47,18 @@ class UUZHealthComp : UActorComponent
         }
     }
 
-    UFUNCTION(BlueprintOverride)
-    void Tick(float DeltaSeconds)
+    // UFUNCTION(BlueprintOverride)
+    // void Tick(float DeltaSeconds)
+    // {
+
+    // }
+
+    UFUNCTION()
+    void DamageHealth(float Amount)
     {
+        CurrentHealth -= Amount;
+        EventUpdateLife.Broadcast();
+
         if (CurrentHealth <= 0.f)
         {
             EventDeath.Broadcast(); 
@@ -57,10 +66,13 @@ class UUZHealthComp : UActorComponent
     }
 
     UFUNCTION()
-    void DamageHealth(float Amount)
+    void Heal(float Amount)
     {
-        CurrentHealth -= Amount;
-        EventUpdateLife.Broadcast();
+        if (CurrentHealth < MaxHealth)
+        {
+            CurrentHealth += Amount;
+            EventUpdateLife.Broadcast();
+        }
     }
 
     UFUNCTION()

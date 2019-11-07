@@ -1,5 +1,6 @@
 import WorldFiles.UZPickUpObject;
 import Components.UZHealthComp;
+import GameFiles.UZStaticData;
 
 class AUZPullBeam : AActor
 {
@@ -15,7 +16,7 @@ class AUZPullBeam : AActor
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
     UPROPERTY()
-    float HealAmount = 10.f;
+    float HealAmount = 8.f;
     UPROPERTY()
     float HealRate = 0.25f;
     float NewHealTime;
@@ -25,7 +26,6 @@ class AUZPullBeam : AActor
     AActor PlayerRef;
 
     bool IsActive = true;
-
 
 
     UFUNCTION(BlueprintOverride)
@@ -38,6 +38,8 @@ class AUZPullBeam : AActor
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
+        HealTurrets();
+
         if (!IsActive)
         {
             DestroyActor();
@@ -51,26 +53,49 @@ class AUZPullBeam : AActor
     }
 
     UFUNCTION()
+    void HealTurrets()
+    {
+        if (HealthCompArray.Num() == 0)
+        return;
+
+        if (NewHealTime < Gameplay::TimeSeconds)
+        {
+            NewHealTime = Gameplay::TimeSeconds + HealRate;
+            for (int i = 0; i < HealthCompArray.Num(); i++)
+            {
+                HealthCompArray[i].Heal(HealAmount); 
+            }
+        }
+    }
+
+    UFUNCTION()
     void TriggerOnBeginOverlap(
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
         bool bFromSweep, FHitResult& Hit) 
     {
-        if (OtherActor.Tags.Contains(n"PickUp"))
+        if (OtherActor.Tags.Contains(UZTags::PickUp))
         {
             AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
 
-            if (PickUpTarget != nullptr)
-            {
-                PickUpTarget.SetTargetReference(this);
-                PickUpTarget.IsCollecting = true;
-                PickUpTarget.SetPhysicsSimulation(false);
-            }
+            if (PickUpTarget == nullptr)
+            return;
+            
+            PickUpTarget.SetTargetReference(this);
+            PickUpTarget.IsCollecting = true;
+            PickUpTarget.SetPhysicsSimulation(false);
+            
         }
 
-        if (OtherActor.Tags.Contains(n"Turet"))
+        if (OtherActor.Tags.Contains(UZTags::Turret))
         {
-            
+            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
+
+            if (HealthComp == nullptr)
+            return;
+
+            HealthCompArray.Add(HealthComp);
+            Print("Added Turret", 5.f);
         }
     }
 
@@ -79,7 +104,7 @@ class AUZPullBeam : AActor
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex) 
     {
-        if (OtherActor.Tags.Contains(n"PickUp"))
+        if (OtherActor.Tags.Contains(UZTags::PickUp))
         {
             AUZPickUpObject PickUpTarget = Cast<AUZPickUpObject>(OtherActor);
 
@@ -90,9 +115,15 @@ class AUZPullBeam : AActor
             }
         }
 
-        if (OtherActor.Tags.Contains(n"Turet"))
+        if (OtherActor.Tags.Contains(UZTags::Turret))
         {
-            
+            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
+
+            if (HealthComp == nullptr)
+            return;
+
+            HealthCompArray.Remove(HealthComp);
+            Print("Removed Turret", 5.f);
         }
     }
 }

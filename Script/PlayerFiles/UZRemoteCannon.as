@@ -111,7 +111,7 @@ class AUZRemoteCannon : AActor
     {
         SetTarget();
         RotateTurret(DeltaSeconds);
-        GradualDestruction();
+        //GradualDestruction();
 
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
