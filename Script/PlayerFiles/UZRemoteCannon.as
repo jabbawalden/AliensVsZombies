@@ -100,6 +100,7 @@ class AUZRemoteCannon : AActor
         }
 
         Tags.Add(UZTags::Turret); 
+        Tags.Add(UZTags::IsTraceCompVisible); 
 
         // Print("" + UZTags::Turret, 5.f);
 

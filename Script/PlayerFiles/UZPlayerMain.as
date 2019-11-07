@@ -104,7 +104,7 @@ class AUZPlayerMain : APawn
         if (PlayerController != nullptr)
         {
             AddMainWidgetToHUD(PlayerController, MainWidget);
-            AddStartWidgetToHUD(PlayerController, StartWidget);
+            //AddStartWidgetToHUD(PlayerController, StartWidget);
         }
     }
 
@@ -121,7 +121,7 @@ class AUZPlayerMain : APawn
 
         if (GameMode.StartWidgetReference == nullptr)
         return;
-        
+
         GameMode.StartWidgetReference.RemoveFromParent(); 
     }
 

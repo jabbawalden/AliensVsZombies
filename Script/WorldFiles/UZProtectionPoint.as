@@ -1,5 +1,6 @@
 import GameFiles.UZGameMode;
 import Components.UZHealthComp;
+import GameFiles.UZStaticData;
 
 class AUZProtectionPoint : AActor
 {
@@ -24,6 +25,8 @@ class AUZProtectionPoint : AActor
             GameMode.Life = HealthComp.MaxHealth;
             GameMode.MaxLife = HealthComp.MaxHealth;
         }
+        
+        Tags.Add(UZTags::IsTraceCompVisible);       
 
         HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateGameModeHealth");
     }

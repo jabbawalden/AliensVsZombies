@@ -1,6 +1,7 @@
 import WorldFiles.UZProtectionPoint;
 import GameFiles.UZGameMode;
 import GameFiles.UZStaticData;
+import WorldFiles.UZObstacle;
 
 enum MovementState {Forward, Left, Right}
 
@@ -29,7 +30,8 @@ class UUZMovementComp : UActorComponent
     TArray<AUZProtectionPoint> ProtectionPointArray;
 
     float PriorityDistance;
-    float PriorityMinDistance = 100.f;
+    float PriorityMinDistance = 250.f;
+    float PriorityActorCheckDistance = 1000000.f;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -158,10 +160,16 @@ class UUZMovementComp : UActorComponent
         {
             if (Hit.Actor.Tags.Contains(UZTags::Obstacle))
             {
-                Print("We found an obstacle", 0.f);
-            }
+                AUZObstacle Obstacle = Cast<AUZObstacle>(Hit.Actor);
+                
+                if (Obstacle == nullptr)
+                return;
 
-            //if our target, fire out a trace to each location point until one hits - then break out of the for loop
+                if (PriorityTarget == nullptr)
+                    HitObstacleResponse(Obstacle);
+                else
+                    Print("Found point to move to", 10.f);
+            }
         }
         else
         {
@@ -170,7 +178,17 @@ class UUZMovementComp : UActorComponent
     }
 
     UFUNCTION()
-    void RunPriorityCheck()
+    void HitObstacleResponse(AUZObstacle Obstacle)
+    {
+        for (int i = 0; i < Obstacle.PriorityLocationArray.Num(); i++)
+        {
+            RunPriorityCheck(Obstacle.PriorityLocationArray[i].ActorLocation);
+            Print("running priority check" + Obstacle.PriorityLocationArray.Num(), 0.f);
+        }
+    }
+
+    UFUNCTION()
+    void RunPriorityCheck(FVector DestinationLoc)
     {
         TArray<AActor> IgnoredActors;
 		IgnoredActors.Add(Owner);
@@ -179,16 +197,21 @@ class UUZMovementComp : UActorComponent
 		FVector StartLocation = Owner.ActorLocation;
         FVector EndLocation;
 
-        //get direction
-        //fire traceline
-        //if it hits the scene component, make that priority target
-        //else continue firing
+        EndLocation.Normalize();
 
-        EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * MovementTraceDistance);
+        EndLocation = DestinationLoc - Owner.ActorLocation * PriorityActorCheckDistance;
 
-        if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::None, Hit, true))
+        if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::ForDuration, Hit, true))
         {
-            Print("" + Hit.Actor.Name, 0.f);
+            if (Hit.Actor.Tags.Contains(UZTags::PriorityTarget))
+            {
+                Print("We found our priority location", 15.f);
+                PriorityTarget = Hit.Actor;
+            }
+            else 
+            {
+                Print("Priority not check found at " +  Hit.Actor.Name, 0.f);
+            }
             //if our target, fire out a trace to each location point until one hits - then break out of the for loop
         }
         else

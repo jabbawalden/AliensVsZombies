@@ -1,3 +1,4 @@
+import GameFiles.UZStaticData;
 enum TraceDirection {Up, Down, Forward}
 
 class UUZTraceCheckComp : UActorComponent
@@ -46,8 +47,11 @@ class UUZTraceCheckComp : UActorComponent
 
         if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::None, Hit, true))
         {
-            bIsInRangeOfTarget = true;
-            HitTargetActor = Hit.Actor;
+            if (Hit.Actor.Tags.Contains(UZTags::IsTraceCompVisible))
+            {
+                bIsInRangeOfTarget = true;
+                HitTargetActor = Hit.Actor;
+            }
         }
         else
         {

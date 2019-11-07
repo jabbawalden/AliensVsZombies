@@ -8,6 +8,9 @@ class AUZZombieBaseClass : AActor
 {
     AUZGameMode GameMode;
 
+    UPROPERTY(DefaultComponent, RootComponent)
+    USceneComponent SceneComp;
+
     UPROPERTY(DefaultComponent)
     UUZHealthComp HealthComp;
 

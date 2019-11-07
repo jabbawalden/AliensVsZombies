@@ -2,7 +2,7 @@ import EnemyFiles.UZZombieBaseClass;
 
 class AUZZombie : AUZZombieBaseClass
 {
-    UPROPERTY(DefaultComponent, RootComponent)
+    UPROPERTY(DefaultComponent, Attach = SceneComp)
     UCapsuleComponent CapsuleComp;
     default CapsuleComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 

@@ -28,16 +28,23 @@ class AUZObstacle : AActor
     USceneComponent Corner4;
 
     UPROPERTY()
+    TSubclassOf<AActor> ActorClass;
+    AActor ActorRef;
+
+    UPROPERTY()
     TArray<USceneComponent> SceneCompArray;
 
-    int DistanceCheckCount;
+    UPROPERTY()
+    TArray<AActor> ActorArray;
 
     TArray<AUZProtectionPoint> ProtectionPointArray;
 
     AUZProtectionPoint ProtectionPointRef;
 
+    int IndexSize;
+
     UPROPERTY()
-    TArray<FVector> PriorityLocationArray;
+    TArray<AActor> PriorityLocationArray;
 
     //used to ensure that the correct locations are being added in the right order
     UPROPERTY()
@@ -63,36 +70,43 @@ class AUZObstacle : AActor
         SceneCompArray.Add(Corner3);
         SceneCompArray.Add(Corner4);
 
-        DistanceCheckCount = SceneCompArray.Num();
-
-        for(int i = 0; i < DistanceCheckCount; i++)
+        for (int a = 0; a < SceneCompArray.Num(); a++)
         {
-            Print("" + DistanceCheckCount, 5.f);
+            ActorRef = SpawnActor(ActorClass, SceneCompArray[a].GetWorldLocation());
+            ActorArray.Add(ActorRef);
+        }
+
+        IndexSize = ActorArray.Num();
+
+        for(int i = 0; i < IndexSize; i++)
+        {
             float DistanceChecker = 500400.f;
-            int SceneCompIndex = 0;
+            int ActorArrayIndex = 0;
             
-            for (int c = 0; c < SceneCompArray.Num(); c++)
+            for (int c = 0; c < ActorArray.Num(); c++)
             {
-                if (DistanceToProtectionPoint(ProtectionPointRef, SceneCompArray[c]) < DistanceChecker)
+                if (DistanceToProtectionPoint(ProtectionPointRef, ActorArray[c]) < DistanceChecker)
                 {
-                    DistanceChecker = DistanceToProtectionPoint(ProtectionPointRef, SceneCompArray[c]);
-                    SceneCompIndex = c;
+                    DistanceChecker = DistanceToProtectionPoint(ProtectionPointRef, ActorArray[c]);
+                    ActorArrayIndex = c;
                 }
             }
             
-            FVector NextLocation = SceneCompArray[SceneCompIndex].GetWorldLocation();
-            PriorityLocationArray.Add(NextLocation);
-            PriorityDistanceArray.Add(DistanceToProtectionPoint(ProtectionPointRef, SceneCompArray[SceneCompIndex]));
-            SceneCompArray.RemoveAt(SceneCompIndex);         
+            // FVector NextLocation = ActorArray[ActorArrayIndex].ActorLocation;
+            PriorityLocationArray.Add(ActorArray[ActorArrayIndex]);
+            PriorityDistanceArray.Add(DistanceToProtectionPoint(ProtectionPointRef, ActorArray[ActorArrayIndex]));     
+            ActorArray.RemoveAt(ActorArrayIndex);  
         }
+
+  
     }
 
     UFUNCTION()
-    float DistanceToProtectionPoint(AUZProtectionPoint ProtectionPoint, USceneComponent Point)
+    float DistanceToProtectionPoint(AUZProtectionPoint ProtectionPoint, AActor Point)
     {
         float Distance = 0.f;
 
-        Distance = (ProtectionPoint.ActorLocation - Point.GetWorldLocation()).Size();   
+        Distance = (ProtectionPoint.ActorLocation - Point.ActorLocation).Size();   
 
         return Distance;
     }

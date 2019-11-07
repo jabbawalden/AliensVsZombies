@@ -96,7 +96,7 @@ class AUZEnemySpawner : AActor
     {
         float XPosOffset = FMath::RandRange(-MaxSpawnDistance, MaxSpawnDistance);
         float YPosOffset = FMath::RandRange(-MaxSpawnDistance, MaxSpawnDistance);
-        SpawnRef = SpawnActor(SpawnClass, FVector(ActorLocation.X + XPosOffset, ActorLocation.Y + YPosOffset, ActorLocation.Z + 50.f));
+        SpawnRef = SpawnActor(SpawnClass, FVector(ActorLocation.X + XPosOffset, ActorLocation.Y + YPosOffset, ActorLocation.Z));
     }
 
     UFUNCTION()
