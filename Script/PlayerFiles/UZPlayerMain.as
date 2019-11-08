@@ -28,9 +28,6 @@ class AUZPlayerMain : APawn
     UFloatingPawnMovement FloatingPawnComp;
     default FloatingPawnComp.MaxSpeed = 1500.f;
 
-    AUZGameMode GameMode;
-    APlayerController PlayerController;
-
     UPROPERTY()
     TSubclassOf<AActor> LaserBeamClass;
     AActor LaserBeamRef;
@@ -68,6 +65,16 @@ class AUZPlayerMain : APawn
     //TODO Implement this
     UPROPERTY()
     TSubclassOf<UUserWidget> EndWidget;
+
+    UPROPERTY()
+    FLinearColor LightBuildTrue;
+
+    UPROPERTY()
+    FLinearColor LightBuildFalse;
+
+    AUZGameMode GameMode;
+
+    APlayerController PlayerController;
 
     UPROPERTY()
     float SpawnTurretRate = 0.5f;
@@ -113,7 +120,7 @@ class AUZPlayerMain : APawn
     void Tick(float DeltaSeconds)
     {
         SetMeshRotation(DeltaSeconds);
-        Print("" + TraceCheckComp.bIsInRangeOfTarget, 0.f);
+        SpotLightColor(TraceCheckComp.bIsInRangeOfTarget);
     }
     
     UFUNCTION()
@@ -325,6 +332,15 @@ class AUZPlayerMain : APawn
         float YawValue = CurrentMeshRot.Yaw + MeshRotateSpeed * DeltaTime;
         FRotator NextRot = FRotator(0, YawValue, 0);
         MeshComp.SetRelativeRotation(NextRot);
+    }
+
+    UFUNCTION()
+    void SpotLightColor(bool CanBuild)
+    {
+        if (CanBuild)
+            SpotLightComp.LightColor = LightBuildTrue;
+        else
+            SpotLightComp.LightColor = LightBuildFalse;
     }
 
     UFUNCTION()

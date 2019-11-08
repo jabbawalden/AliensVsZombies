@@ -32,7 +32,6 @@ class AUZEnemySpawner : AActor
 
         GameMode.EventEndGame.AddUFunction(this, n"EndSpawn");
         GameMode.EventStartGame.AddUFunction(this, n"StartSpawn");
-
     }
 
     UFUNCTION(BlueprintOverride)
