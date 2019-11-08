@@ -2,9 +2,10 @@ import GameFiles.UZStaticData;
 
 class AUZGround : AActor
 {
-    UPROPERTY(DefaultComponent, RootComponent)
+    UPROPERTY(DefaultComponent, DefaultComponent)
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+    default MeshComp.SetCollisionObjectType(ECollisionChannel::ECC_WorldStatic);
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()

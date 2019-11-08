@@ -7,6 +7,7 @@ class AUZProtectionPoint : AActor
     UPROPERTY(DefaultComponent, RootComponent)
     USphereComponent SphereComp;
     default SphereComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block); 
+    default SphereComp.SetCollisionObjectType(ECollisionChannel::ECC_WorldStatic);
 
     UPROPERTY(DefaultComponent, Attach = SphereComp)
     UStaticMeshComponent MeshComp;
@@ -20,17 +21,8 @@ class AUZProtectionPoint : AActor
     void BeginPlay()
     {
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
-
-        // if (GameMode != nullptr)
-        // {
-        //     // GameMode.Life = HealthComp.MaxHealth;
-        //     // GameMode.MaxLife = HealthComp.MaxHealth;
-        //     // GameMode.Life = 5.f;
-        //     // GameMode.MaxLife = 5.f;
-        // }
         
         Tags.Add(UZTags::IsTracableByEnemy);       
-        Tags.Add(UZTags::IsTracableByPlayer);     
 
         HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateGameModeLife");
     }

@@ -98,8 +98,6 @@ class AUZPlayerMain : APawn
         if (GameMode == nullptr)
         return;
 
-        GameMode.EventStartGame.AddUFunction(this, n"StartGame");
-
         PlayerGameModeSetUp();
         PlayerCamSetup();
         PlayerInputSetup();
@@ -132,10 +130,8 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PlayerGameModeSetUp()
     {
-        if (GameMode != nullptr)
-        {
-            GameMode.EventEndGame.AddUFunction(this, n"DisablePlayerControls");
-        }
+        GameMode.EventEndGame.AddUFunction(this, n"DisablePlayerControls");
+        GameMode.EventStartGame.AddUFunction(this, n"StartGame");
     }
 
     UFUNCTION()
@@ -143,15 +139,17 @@ class AUZPlayerMain : APawn
     {
         AUZCameraActor::GetAll(CameraArray);
         PlayerController = Gameplay::GetPlayerController(0);
-        if (PlayerController != nullptr)
+
+        if (PlayerController == nullptr)
+        return;
+
+        PlayerController.SetViewTargetWithBlend(CameraArray[0], 0.f);
+        CameraObj = CameraArray[0];
+        if (CameraObj != nullptr)
         {
-            PlayerController.SetViewTargetWithBlend(CameraArray[0], 0.f);
-            CameraObj = CameraArray[0];
-            if (CameraObj != nullptr)
-            {
-                CameraObj.GetPlayerReference(this); 
-            }
+            CameraObj.GetPlayerReference(this); 
         }
+
     }
 
     UFUNCTION()
