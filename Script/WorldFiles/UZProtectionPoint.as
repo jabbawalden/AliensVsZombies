@@ -20,19 +20,23 @@ class AUZProtectionPoint : AActor
     void BeginPlay()
     {
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
-        if (GameMode != nullptr)
-        {
-            GameMode.Life = HealthComp.MaxHealth;
-            GameMode.MaxLife = HealthComp.MaxHealth;
-        }
-        
-        Tags.Add(UZTags::IsTraceCompVisible);       
 
-        HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateGameModeHealth");
+        // if (GameMode != nullptr)
+        // {
+        //     // GameMode.Life = HealthComp.MaxHealth;
+        //     // GameMode.MaxLife = HealthComp.MaxHealth;
+        //     // GameMode.Life = 5.f;
+        //     // GameMode.MaxLife = 5.f;
+        // }
+        
+        Tags.Add(UZTags::IsTracableByEnemy);       
+        Tags.Add(UZTags::IsTracableByPlayer);     
+
+        HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateGameModeLife");
     }
 
     UFUNCTION()
-    void UpdateGameModeHealth()
+    void UpdateGameModeLife()
     {
         GameMode.Life = HealthComp.CurrentHealth;
         GameMode.EventUpdateLife.Broadcast(); 

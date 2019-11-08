@@ -15,101 +15,101 @@ class AUZObstacle : AActor
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
-    UPROPERTY(DefaultComponent, Attach = SceneComp)
-    USceneComponent Corner1;
+    // UPROPERTY(DefaultComponent, Attach = SceneComp)
+    // USceneComponent Corner1;
 
-    UPROPERTY(DefaultComponent, Attach = SceneComp)
-    USceneComponent Corner2;
+    // UPROPERTY(DefaultComponent, Attach = SceneComp)
+    // USceneComponent Corner2;
 
-    UPROPERTY(DefaultComponent, Attach = SceneComp)
-    USceneComponent Corner3;
+    // UPROPERTY(DefaultComponent, Attach = SceneComp)
+    // USceneComponent Corner3;
 
-    UPROPERTY(DefaultComponent, Attach = SceneComp)
-    USceneComponent Corner4;
+    // UPROPERTY(DefaultComponent, Attach = SceneComp)
+    // USceneComponent Corner4;
 
-    UPROPERTY()
-    TSubclassOf<AActor> ActorClass;
-    AActor ActorRef;
+    // UPROPERTY()
+    // TSubclassOf<AActor> ActorClass;
+    // AActor ActorRef;
 
-    UPROPERTY()
-    TArray<USceneComponent> SceneCompArray;
+    // UPROPERTY()
+    // TArray<USceneComponent> SceneCompArray;
 
-    UPROPERTY()
-    TArray<AActor> ActorArray;
+    // UPROPERTY()
+    // TArray<AActor> ActorArray;
 
-    TArray<AUZProtectionPoint> ProtectionPointArray;
+    // TArray<AUZProtectionPoint> ProtectionPointArray;
 
-    AUZProtectionPoint ProtectionPointRef;
+    // AUZProtectionPoint ProtectionPointRef;
 
-    int IndexSize;
+    // int IndexSize;
 
-    UPROPERTY()
-    TArray<AActor> PriorityLocationArray;
+    // UPROPERTY()
+    // TArray<AActor> PriorityLocationArray;
 
-    //used to ensure that the correct locations are being added in the right order
-    UPROPERTY()
-    TArray<float> PriorityDistanceArray; 
+    // //used to ensure that the correct locations are being added in the right order
+    // UPROPERTY()
+    // TArray<float> PriorityDistanceArray; 
 
-    UFUNCTION(BlueprintOverride)
-    void BeginPlay()
-    {
-        AUZProtectionPoint::GetAll(ProtectionPointArray);
-        ProtectionPointRef = ProtectionPointArray[0];
-        BuildPriorityArray();
-        Tags.Add(UZTags::Obstacle);
-    }
+    // UFUNCTION(BlueprintOverride)
+    // void BeginPlay()
+    // {
+    //     // AUZProtectionPoint::GetAll(ProtectionPointArray);
+    //     // ProtectionPointRef = ProtectionPointArray[0];
+    //     // BuildPriorityArray();
+    //     // Tags.Add(UZTags::IsTracableByPlayer);
+    // }
 
-    UFUNCTION()
-    void BuildPriorityArray()
-    {
-        if (ProtectionPointRef == nullptr)
-        return; 
+    // UFUNCTION()
+    // void BuildPriorityArray()
+    // {
+    //     if (ProtectionPointRef == nullptr)
+    //     return; 
         
-        SceneCompArray.Add(Corner1);
-        SceneCompArray.Add(Corner2);
-        SceneCompArray.Add(Corner3);
-        SceneCompArray.Add(Corner4);
+    //     SceneCompArray.Add(Corner1);
+    //     SceneCompArray.Add(Corner2);
+    //     SceneCompArray.Add(Corner3);
+    //     SceneCompArray.Add(Corner4);
 
-        for (int a = 0; a < SceneCompArray.Num(); a++)
-        {
-            ActorRef = SpawnActor(ActorClass, SceneCompArray[a].GetWorldLocation());
-            ActorArray.Add(ActorRef);
-        }
+    //     for (int a = 0; a < SceneCompArray.Num(); a++)
+    //     {
+    //         ActorRef = SpawnActor(ActorClass, SceneCompArray[a].GetWorldLocation());
+    //         ActorArray.Add(ActorRef);
+    //     }
 
-        IndexSize = ActorArray.Num();
+    //     IndexSize = ActorArray.Num();
 
-        for(int i = 0; i < IndexSize; i++)
-        {
-            float DistanceChecker = 500400.f;
-            int ActorArrayIndex = 0;
+    //     for(int i = 0; i < IndexSize; i++)
+    //     {
+    //         float DistanceChecker = 500400.f;
+    //         int ActorArrayIndex = 0;
             
-            for (int c = 0; c < ActorArray.Num(); c++)
-            {
-                if (DistanceToProtectionPoint(ProtectionPointRef, ActorArray[c]) < DistanceChecker)
-                {
-                    DistanceChecker = DistanceToProtectionPoint(ProtectionPointRef, ActorArray[c]);
-                    ActorArrayIndex = c;
-                }
-            }
+    //         for (int c = 0; c < ActorArray.Num(); c++)
+    //         {
+    //             if (DistanceToProtectionPoint(ProtectionPointRef, ActorArray[c]) < DistanceChecker)
+    //             {
+    //                 DistanceChecker = DistanceToProtectionPoint(ProtectionPointRef, ActorArray[c]);
+    //                 ActorArrayIndex = c;
+    //             }
+    //         }
             
-            // FVector NextLocation = ActorArray[ActorArrayIndex].ActorLocation;
-            PriorityLocationArray.Add(ActorArray[ActorArrayIndex]);
-            PriorityDistanceArray.Add(DistanceToProtectionPoint(ProtectionPointRef, ActorArray[ActorArrayIndex]));     
-            ActorArray.RemoveAt(ActorArrayIndex);  
-        }
+    //         // FVector NextLocation = ActorArray[ActorArrayIndex].ActorLocation;
+    //         PriorityLocationArray.Add(ActorArray[ActorArrayIndex]);
+    //         PriorityDistanceArray.Add(DistanceToProtectionPoint(ProtectionPointRef, ActorArray[ActorArrayIndex]));     
+    //         ActorArray.RemoveAt(ActorArrayIndex);  
+    //     }
 
   
-    }
+    // }
 
-    UFUNCTION()
-    float DistanceToProtectionPoint(AUZProtectionPoint ProtectionPoint, AActor Point)
-    {
-        float Distance = 0.f;
+    // UFUNCTION()
+    // float DistanceToProtectionPoint(AUZProtectionPoint ProtectionPoint, AActor Point)
+    // {
+    //     float Distance = 0.f;
 
-        Distance = (ProtectionPoint.ActorLocation - Point.ActorLocation).Size();   
+    //     Distance = (ProtectionPoint.ActorLocation - Point.ActorLocation).Size();   
 
-        return Distance;
-    }
+    //     return Distance;
+    // }
 
     //check in order which is closest and furtherest from the protection point
 

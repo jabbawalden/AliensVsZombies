@@ -15,6 +15,7 @@ class UUZHealthComp : UActorComponent
 
     UPROPERTY()
     float MaxHealth = 15.f;
+    UPROPERTY()
     float CurrentHealth;
 
 

@@ -81,7 +81,7 @@ class UUZMovementComp : UActorComponent
                 bCanMove = true;
             }
 
-            System::DrawDebugArrow(Owner.GetActorLocation(), NextPathPoint, 32.0f, FLinearColor::Red, 1.0f, 2.0f);
+            //System::DrawDebugArrow(Owner.GetActorLocation(), NextPathPoint, 32.0f, FLinearColor::Red, 1.0f, 2.0f);
         }
     }
 

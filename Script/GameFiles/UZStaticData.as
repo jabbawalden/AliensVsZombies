@@ -5,7 +5,12 @@ namespace UZTags
     const FName PickUp = n"PickUp";
     const FName Obstacle = n"Obstacle";
     const FName PriorityTarget = n"PriorityTarget";
-    const FName IsTraceCompVisible = n"IsTraceCompVisible";
+    const FName IsTracableByEnemy = n"IsTracableByEnemy";
+    const FName IsTracableByPlayer = n"IsTracableByPlayer";
 }
+
+
+
+
 
 

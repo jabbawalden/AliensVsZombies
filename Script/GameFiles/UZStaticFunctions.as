@@ -30,3 +30,41 @@ void AddMainWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWid
     UUserWidget UserWidget = WidgetBlueprint::CreateWidget(WidgetClass, PlayerController);
     UserWidget.AddToViewport();
 }
+
+//Used to randomize map layout.
+//Not an ideal way - inital thinking was to generate map procedurally and then build navmesh dynamically. Had trouble making this work and needed to prioritize tasks
+//Dynamic setting on Navmesh was too performance costly when objects were spawned
+//The benefit of this method is that map design can be more thought out
+FName UZMaps(int Index)
+{
+    FName MapOutput;
+
+    switch (Index)
+    {
+        case 1:
+        MapOutput = n"MainMap1";
+        break;
+        
+        case 2:
+        MapOutput = n"MainMap2";
+        break;
+        
+        case 3:
+        MapOutput = n"MainMap3";
+        break;
+        
+        case 4:  
+        MapOutput = n"MainMap4";    
+        break;
+
+        case 5:
+        MapOutput = n"MainMap5";
+        break;
+        
+        case 6:  
+        MapOutput = n"MainMap6";    
+        break;
+    }
+
+    return MapOutput; 
+}

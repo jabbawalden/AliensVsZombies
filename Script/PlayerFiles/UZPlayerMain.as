@@ -48,6 +48,9 @@ class AUZPlayerMain : APawn
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
 
+    UPROPERTY(DefaultComponent)
+    UUZTraceCheckComp TraceCheckComp;
+
     UPROPERTY()
     TArray<AUZCameraActor> CameraArray;
     AUZCameraActor CameraObj;
@@ -104,7 +107,7 @@ class AUZPlayerMain : APawn
         if (PlayerController != nullptr)
         {
             AddMainWidgetToHUD(PlayerController, MainWidget);
-            //AddStartWidgetToHUD(PlayerController, StartWidget);
+            AddStartWidgetToHUD(PlayerController, StartWidget);
         }
     }
 
@@ -112,6 +115,7 @@ class AUZPlayerMain : APawn
     void Tick(float DeltaSeconds)
     {
         SetMeshRotation(DeltaSeconds);
+        Print("" + TraceCheckComp.bIsInRangeOfTarget, 0.f);
     }
     
     UFUNCTION()
@@ -172,7 +176,9 @@ class AUZPlayerMain : APawn
 
         if (GameMode.bGameEnded)
         {
-            Gameplay::OpenLevel(n"MainMap");
+            int R = FMath::RandRange(1,6);
+            Print("Our Map Index is: " + R, 5.f);
+            Gameplay::OpenLevel(UZMaps(R));
         }
         else
         {
@@ -271,6 +277,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnTurret(FKey Key)
     {
+        if (!TraceCheckComp.bIsInRangeOfTarget)
+        return;
+
         if (GameMode == nullptr)
         return;
 
@@ -291,6 +300,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnStunTrap(FKey Key)
     {
+        if (!TraceCheckComp.bIsInRangeOfTarget)
+        return;
+
         if (GameMode == nullptr)
         return;
 

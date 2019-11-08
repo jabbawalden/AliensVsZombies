@@ -54,7 +54,7 @@ class AUZRemoteCannon : AActor
     UPROPERTY(DefaultComponent)
     UUZTraceCheckComp TraceCheckComp;
     default TraceCheckComp.TraceDistance = 80.f; 
-    default TraceCheckComp.traceDirectionType = TraceDirection::Down; 
+    default TraceCheckComp.TraceDirectionType = TraceDirection::Down; 
 
     UPROPERTY()
     AActor TargetActor;
@@ -100,10 +100,8 @@ class AUZRemoteCannon : AActor
         }
 
         Tags.Add(UZTags::Turret); 
-        Tags.Add(UZTags::IsTraceCompVisible); 
-
-        // Print("" + UZTags::Turret, 5.f);
-
+        Tags.Add(UZTags::IsTracableByEnemy); 
+        
         RemoteCannonSetup();
         WidgetCompSetup();
     }

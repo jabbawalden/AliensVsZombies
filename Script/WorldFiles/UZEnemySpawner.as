@@ -2,7 +2,7 @@ import GameFiles.UZGameMode;
 
 class AUZEnemySpawner : AActor
 {
-    float MaxSpawnDistance = 800.f;
+    float MaxSpawnDistance = 200.f;
 
     AUZGameMode GameMode;
 

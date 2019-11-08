@@ -43,6 +43,7 @@ class AUZZombieBaseClass : AActor
         }
         else if (TraceCheckComp.bIsInRangeOfTarget)
         {
+            Print("Attacking", 0.f);
             AttackBehaviour();
         }
 

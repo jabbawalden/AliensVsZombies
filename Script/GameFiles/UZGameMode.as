@@ -19,6 +19,7 @@ class AUZGameMode : AGameModeBase
     //LIFE
     UPROPERTY()
     float Life;
+
     float MaxLife = 4500.f;
 
     //CITIZENS SAVED
@@ -76,6 +77,7 @@ class AUZGameMode : AGameModeBase
 
     UPROPERTY()
     float ZombieNewHealthRate = 10.f;
+
     float ZombieNewHealthTime;
 
     float GlobalMovementSpeed = 105.f;
@@ -100,6 +102,7 @@ class AUZGameMode : AGameModeBase
     void BeginPlay()
     {
         Resources = 1000;
+        Life = MaxLife;
         System::SetTimer(this, n"BroadCastWidgetEvents", 0.2f,false);
     }
 

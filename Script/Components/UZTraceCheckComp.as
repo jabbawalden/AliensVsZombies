@@ -1,10 +1,16 @@
 import GameFiles.UZStaticData;
 enum TraceDirection {Up, Down, Forward}
+enum TraceOrigin {Enemy, Player}
 
 class UUZTraceCheckComp : UActorComponent
 {
     UPROPERTY()
-    TraceDirection traceDirectionType; 
+    TraceDirection TraceDirectionType; 
+
+    UPROPERTY()
+    TraceOrigin TraceOriginType; 
+
+    FName TagTarget;
 
     UPROPERTY()
     float TraceDistance = 90.f;
@@ -13,6 +19,21 @@ class UUZTraceCheckComp : UActorComponent
 
     UPROPERTY()
     AActor HitTargetActor;
+
+    UFUNCTION(BlueprintOverride)
+    void BeginPlay()
+    {
+        switch (TraceOriginType)
+        {
+            case TraceOrigin::Enemy:
+            TagTarget = UZTags::IsTracableByEnemy;
+            break;
+
+            case TraceOrigin::Player:
+            TagTarget = UZTags::IsTracableByPlayer;
+            break;
+        }
+    }
 
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
@@ -30,7 +51,7 @@ class UUZTraceCheckComp : UActorComponent
 		FVector StartLocation = Owner.ActorLocation;
         FVector EndLocation;
         
-        switch (traceDirectionType)
+        switch (TraceDirectionType)
         {
             case TraceDirection::Up:
             EndLocation = Owner.ActorLocation + (Owner.GetActorUpVector() * TraceDistance);
@@ -47,10 +68,15 @@ class UUZTraceCheckComp : UActorComponent
 
         if (System::LineTraceSingle(StartLocation, EndLocation, ETraceTypeQuery::Visibility, true, IgnoredActors, EDrawDebugTrace::None, Hit, true))
         {
-            if (Hit.Actor.Tags.Contains(UZTags::IsTraceCompVisible))
+            //if tracable, have found target, else no target found
+            if (Hit.Actor.Tags.Contains(TagTarget))
             {
                 bIsInRangeOfTarget = true;
                 HitTargetActor = Hit.Actor;
+            }
+            else
+            {
+                bIsInRangeOfTarget = false;
             }
         }
         else
