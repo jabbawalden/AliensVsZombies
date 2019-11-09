@@ -13,12 +13,11 @@ class AUZGameMode : AGameModeBase
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
     FUpdateCitizenCountUI EventUpdateCitizenCountUI;
 
-    //STORE UI REFERENCES FOR DEPARENTING FROM PLAYER
+    //STORE UI REFERENCES FOR DEPARENTING OR ALTERATION
     UUserWidget StartWidgetReference;
     UUserWidget EndWidgetReference;
 
     //LIFE
-
     UPROPERTY()
     float Life;
 
@@ -36,10 +35,10 @@ class AUZGameMode : AGameModeBase
     //RESOURCE COSTS
 
     UPROPERTY()
-    float TurretCost = 450.f;
+    float TurretCost = 400.f;
 
     UPROPERTY()
-    float StunTrapCost = 50.f;
+    float StunTrapCost = 25.f;
 
     //GAME STATE INFO
 
@@ -53,10 +52,10 @@ class AUZGameMode : AGameModeBase
     float EnemyMaxSpawnTime = 4.1f;
 
     UPROPERTY()
-    float SpawnIncreaseDividerMin = 1.03f;
+    float SpawnIncreaseDividerMin = 1.02f;
 
     UPROPERTY()
-    float SpawnIncreaseDividerMax = 1.08f;
+    float SpawnIncreaseDividerMax = 1.05f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 10.f;
@@ -81,19 +80,20 @@ class AUZGameMode : AGameModeBase
     float GlobalMovementSpeedMultiplierMin = 1.03f;
 
     UPROPERTY()
-    float GlobalMovementSpeedMultiplierMax = 1.06f;
+    float GlobalMovementSpeedMultiplierMax = 1.04f;
 
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
 
     float ZombieNewMoveSpeedTime;
 
-    //RESOURCE OBJECTS
+    //PICK UP OBJECTS
     UPROPERTY()
     int MaxResourcesInLevel = 5;
 
     int CurrentResourcesInLevel;
 
+    UPROPERTY()
     int MaxCitizenPods = 3;
 
     int CurrentCitizenPods;

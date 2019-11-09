@@ -6,7 +6,7 @@ import GameFiles.UZGameMode;
 import Components.UZHealthComp;
 import Components.UZMovementComp;
 import GameFiles.UZTurretWidget;
-import GameFiles.UZStaticData;
+import Statics.UZStaticData;
 
 class AUZRemoteCannon : AActor
 {
@@ -89,12 +89,8 @@ class AUZRemoteCannon : AActor
         HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateHealth");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
 
-        // Print("Our Test Number is = ", 5.f);
-
         if (GameMode != nullptr)
-        {
             GameMode.EventEndGame.AddUFunction(this, n"EndShoot");
-        }
 
         Tags.Add(UZTags::Turret); 
         Tags.Add(UZTags::IsTracableByEnemy); 
@@ -108,7 +104,6 @@ class AUZRemoteCannon : AActor
     {
         SetTarget();
         RotateTurret(DeltaSeconds);
-        //GradualDestruction();
 
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
@@ -136,22 +131,22 @@ class AUZRemoteCannon : AActor
     {
         TurretWidgetClass = Cast<UUZTurretWidget>(TurretWidget.GetUserWidgetObject());
 
-        if (TurretWidgetClass != nullptr)
-        {
-            UpdateHealth();
-        }
+        if (TurretWidgetClass == nullptr)
+        return;
+
+        UpdateHealth();
     }
 
-    UFUNCTION()
-    void GradualDestruction()
-    {
-        if (NewDestructionTime <= Gameplay::TimeSeconds)
-        {
-            HealthComp.CurrentHealth -= DestructionDamage;
-            UpdateHealth();
-            NewDestructionTime = Gameplay::TimeSeconds + DestructionRate;
-        }
-    }
+    // UFUNCTION()
+    // void GradualDestruction()
+    // {
+    //     if (NewDestructionTime <= Gameplay::TimeSeconds)
+    //     {
+    //         HealthComp.CurrentHealth -= DestructionDamage;
+    //         UpdateHealth();
+    //         NewDestructionTime = Gameplay::TimeSeconds + DestructionRate;
+    //     }
+    // }
 
     UFUNCTION()
     void UpdateHealth()
@@ -163,13 +158,9 @@ class AUZRemoteCannon : AActor
     void RotateTurret(float DeltaTime)
     {
         if (TargetActor != nullptr)
-        {
             ObjectRotationComp.SetOwnerRotation(DeltaTime, TargetActor.ActorLocation); 
-        }
         else
-        {
             ObjectRotationComp.SetOwnerRotation(DeltaTime, FVector(0)); 
-        }
     }
 
     UFUNCTION()
@@ -202,10 +193,10 @@ class AUZRemoteCannon : AActor
         for(int i = 0; i < EnemyArray.Num(); i++)
         {
             UUZMovementComp EnemyMoveComp = UUZMovementComp::Get(EnemyArray[i]);
-            if (EnemyMoveComp != nullptr)
-            {
+
+            if (EnemyMoveComp != nullptr)      
                 EnemyMoveComp.SetTargetToFinal();
-            }
+
         }
 
         DestroyActor();
@@ -224,7 +215,9 @@ class AUZRemoteCannon : AActor
             UUZMovementComp EnemyMoveComp = UUZMovementComp::Get(OtherActor);
             if (EnemyMoveComp != nullptr)
             {
-                EnemyMoveComp.CurrentTarget = this; 
+                //instead, add to array then get enemy to move to closest turret?
+                // EnemyMoveComp.CurrentTarget = this; 
+                EnemyMoveComp.TargetArray.Add(this);
             }
         }
     }
@@ -241,7 +234,9 @@ class AUZRemoteCannon : AActor
             UUZMovementComp EnemyMoveComp = UUZMovementComp::Get(OtherActor);
             if (EnemyMoveComp != nullptr)
             {
-                EnemyMoveComp.SetTargetToFinal();
+                EnemyMoveComp.TargetArray.Remove(this);
+                //instead, remove this from array?
+                // EnemyMoveComp.SetTargetToFinal();
             }
         }
     }

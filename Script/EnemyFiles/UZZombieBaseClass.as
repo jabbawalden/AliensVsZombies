@@ -39,19 +39,16 @@ class AUZZombieBaseClass : AActor
         if (!TraceCheckComp.bIsInRangeOfTarget)
         {
             if (MovementComp.bCanMove)
+            {
                 MovementComp.MoveAI(DeltaSeconds); 
+            }
+
         }
         else if (TraceCheckComp.bIsInRangeOfTarget)
         {
             Print("Attacking", 0.f);
             AttackBehaviour();
         }
-
-        if (LocalRole == ENetRole::ROLE_Authority)
-        {
-            //float DistanceToTarget = (GetActorLocation() - NextPathPoint).Size();
-        }
-        //float DistanceToTarget = (GetActorLocation() - NextPathPoint).Size();
     }
 
     UFUNCTION()

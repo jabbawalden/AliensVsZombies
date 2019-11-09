@@ -1,4 +1,4 @@
-import GameFiles.UZStaticFunctions;
+import Statics.UZStaticFunctions;
 
 class AUZMainMenuManager : AActor
 {

@@ -1,6 +1,6 @@
 import GameFiles.UZGameMode;
 import Components.UZHealthComp;
-import GameFiles.UZStaticData;
+import Statics.UZStaticData;
 
 class AUZProtectionPoint : AActor
 {

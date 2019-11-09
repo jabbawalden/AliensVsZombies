@@ -11,7 +11,7 @@ class UUZShootComp : UActorComponent
     TSubclassOf<AActor> ProjectileClass;
     AActor ProjectileReference;
 
-    AUZProjectile ProjectileCast;
+    AUZProjectile Projectile;
 
     UFUNCTION()
     void FireProjectile(TArray<USceneComponent> ShootOriginArray)
@@ -23,11 +23,11 @@ class UUZShootComp : UActorComponent
             for (int i = 0; i < ShootOriginArray.Num(); i++)
             {
                 ProjectileReference = SpawnActor(ProjectileClass, ShootOriginArray[i].GetWorldLocation()); 
-                ProjectileCast = Cast<AUZProjectile>(ProjectileReference);
+                Projectile = Cast<AUZProjectile>(ProjectileReference);
 
-                if (ProjectileCast != nullptr)
+                if (Projectile != nullptr)
                 {
-                    ProjectileCast.ShootDirection = Owner.GetActorForwardVector(); 
+                    Projectile.ShootDirection = Owner.GetActorForwardVector(); 
                 }
             }
         }

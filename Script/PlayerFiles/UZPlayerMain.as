@@ -5,7 +5,7 @@ import GameFiles.UZGameMode;
 import WorldFiles.UZPickUpObject;
 import PlayerFiles.UZRemoteCannon;
 import GameFiles.UZPlayerWidget;
-import GameFiles.UZStaticFunctions;
+import Statics.UZStaticFunctions;
 import GameFiles.UZMainMenuManager;
 import GameFiles.UZEndGameWidget;
 

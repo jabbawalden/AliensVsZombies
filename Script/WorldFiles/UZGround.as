@@ -1,4 +1,4 @@
-import GameFiles.UZStaticData;
+import Statics.UZStaticData;
 
 class AUZGround : AActor
 {

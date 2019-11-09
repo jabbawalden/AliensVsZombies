@@ -1,6 +1,6 @@
 import WorldFiles.UZPickUpObject;
 import Components.UZHealthComp;
-import GameFiles.UZStaticData;
+import Statics.UZStaticData;
 
 class AUZPullBeam : AActor
 {

@@ -1,7 +1,7 @@
 import Components.UZTraceCheckComp;
 import Components.UZMovementComp;
 import Components.UZHealthComp;
-import GameFiles.UZStaticData;
+import Statics.UZStaticData;
 
 class AUZStunTrap : AActor
 {

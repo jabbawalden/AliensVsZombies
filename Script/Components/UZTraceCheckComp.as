@@ -1,4 +1,5 @@
-import GameFiles.UZStaticData;
+import Statics.UZStaticData;
+
 enum TraceDirection {Up, Down, Forward}
 enum TraceOrigin {Enemy, Player}
 
