@@ -17,12 +17,14 @@ class AUZGameMode : AGameModeBase
     UUserWidget StartWidgetReference;
 
     //LIFE
+
     UPROPERTY()
     float Life;
 
     float MaxLife = 4500.f;
 
     //CITIZENS SAVED
+
     UPROPERTY()
     int CitizenSaveCount = 0;
 
@@ -31,6 +33,7 @@ class AUZGameMode : AGameModeBase
     float NewCitizenUpTime;
 
     //RESOURCE COSTS
+
     UPROPERTY()
     float TurretCost = 450.f;
 
@@ -38,7 +41,9 @@ class AUZGameMode : AGameModeBase
     float StunTrapCost = 100.f;
 
     //GAME STATE INFO
+
     bool bGameEnded;
+
     bool bGameStarted;
 
     UPROPERTY()
@@ -48,32 +53,41 @@ class AUZGameMode : AGameModeBase
 
     UPROPERTY()
     float SpawnIncreaseDividerMin = 1.03f;
+
     UPROPERTY()
     float SpawnIncreaseDividerMax = 1.07f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 10.f;
+
     float NewIncreaseSpawnTime;
 
     int SpawnDifficulty = 0;
 
     UPROPERTY()
     int Enemy2SpawnDifficulty = 8;
+
     UPROPERTY()
     int Enemy3SpawnDifficulty = 16;
 
     bool bCanSpawnEnemy2;
+
     bool bCanSpawnEnemy3;
 
     //ZOMBIE VALUES
+
     UPROPERTY()
     float ZombieBasicMaxHealth = 20.f;
+
     UPROPERTY()
     float ZombieLargeMaxHealth = 55.f;
+
     UPROPERTY()
     float ZombieAdvancedMaxHealth = 35.f;
+
     UPROPERTY()
     float ZombieHealthMultiplier = 1.005f;
+
 
     UPROPERTY()
     float ZombieNewHealthRate = 10.f;
@@ -84,18 +98,23 @@ class AUZGameMode : AGameModeBase
 
     UPROPERTY()
     float GlobalMovementSpeedMultiplierMin = 1.02f;
+
     UPROPERTY()
     float GlobalMovementSpeedMultiplierMax = 1.08f;
 
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
+
     float ZombieNewMoveSpeedTime;
 
     //RESOURCE OBJECTS
     UPROPERTY()
     int MaxResourcesInLevel = 5;
+
     int CurrentResourcesInLevel;
+
     int MaxCitizenPods = 3;
+
     int CurrentCitizenPods;
 
     UFUNCTION(BlueprintOverride)

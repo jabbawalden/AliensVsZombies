@@ -2,8 +2,6 @@ import GameFiles.UZStartGameWidget;
 import GameFiles.UZGameMode;
 
 
-
-
 UFUNCTION(Category = "Player HUD")
 void AddStartWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidget> WidgetClass)
 {

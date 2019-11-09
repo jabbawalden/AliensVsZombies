@@ -38,7 +38,8 @@ class AUZPullBeam : AActor
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        HealTurrets();
+
+        // HealTurrets();
 
         if (!IsActive)
         {
@@ -52,21 +53,21 @@ class AUZPullBeam : AActor
         AttachToActor(TargetActor);
     }
 
-    UFUNCTION()
-    void HealTurrets()
-    {
-        if (HealthCompArray.Num() == 0)
-        return;
+    // UFUNCTION()
+    // void HealTurrets()
+    // {
+    //     if (HealthCompArray.Num() == 0)
+    //     return;
 
-        if (NewHealTime < Gameplay::TimeSeconds)
-        {
-            NewHealTime = Gameplay::TimeSeconds + HealRate;
-            for (int i = 0; i < HealthCompArray.Num(); i++)
-            {
-                HealthCompArray[i].Heal(HealAmount); 
-            }
-        }
-    }
+    //     if (NewHealTime < Gameplay::TimeSeconds)
+    //     {
+    //         NewHealTime = Gameplay::TimeSeconds + HealRate;
+    //         for (int i = 0; i < HealthCompArray.Num(); i++)
+    //         {
+    //             HealthCompArray[i].Heal(HealAmount); 
+    //         }
+    //     }
+    // }
 
     UFUNCTION()
     void TriggerOnBeginOverlap(
@@ -87,16 +88,18 @@ class AUZPullBeam : AActor
             
         }
 
-        if (OtherActor.Tags.Contains(UZTags::Turret))
-        {
-            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
+        //healing turets - testing new mechanic
 
-            if (HealthComp == nullptr)
-            return;
+        // if (OtherActor.Tags.Contains(UZTags::Turret))
+        // {
+        //     UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
 
-            HealthCompArray.Add(HealthComp);
-            Print("Added Turret", 5.f);
-        }
+        //     if (HealthComp == nullptr)
+        //     return;
+
+        //     HealthCompArray.Add(HealthComp);
+        //     Print("Added Turret", 5.f);
+        // }
     }
 
     UFUNCTION()
@@ -115,15 +118,17 @@ class AUZPullBeam : AActor
             }
         }
 
-        if (OtherActor.Tags.Contains(UZTags::Turret))
-        {
-            UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
+        //healing turets - testing new mechanic
 
-            if (HealthComp == nullptr)
-            return;
+        // if (OtherActor.Tags.Contains(UZTags::Turret))
+        // {
+        //     UUZHealthComp HealthComp = UUZHealthComp::Get(OtherActor);
 
-            HealthCompArray.Remove(HealthComp);
-            Print("Removed Turret", 5.f);
-        }
+        //     if (HealthComp == nullptr)
+        //     return;
+
+        //     HealthCompArray.Remove(HealthComp);
+        //     Print("Removed Turret", 5.f);
+        // }
     }
 }

@@ -6,6 +6,7 @@ import WorldFiles.UZPickUpObject;
 import PlayerFiles.UZRemoteCannon;
 import GameFiles.UZPlayerWidget;
 import GameFiles.UZStaticFunctions;
+import GameFiles.UZMainMenuManager;
 
 class AUZPlayerMain : APawn
 {
@@ -96,6 +97,11 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     float MeshRotateSpeed = 100.f;
 
+    UPROPERTY()
+    TArray<AUZMainMenuManager> MainMenuArray;
+
+    AUZMainMenuManager MainMenu;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -105,15 +111,28 @@ class AUZPlayerMain : APawn
         if (GameMode == nullptr)
         return;
 
+        PlayerController = Gameplay::GetPlayerController(0);
+
+        if (PlayerController == nullptr)
+        return;
+
         PlayerGameModeSetUp();
         PlayerCamSetup();
         PlayerInputSetup();
 
-        if (PlayerController != nullptr)
+        AUZMainMenuManager::GetAll(MainMenuArray);
+
+        if (MainMenuArray.Num() > 0)
         {
-            AddMainWidgetToHUD(PlayerController, MainWidget);
-            AddStartWidgetToHUD(PlayerController, StartWidget);
+            MainMenu = MainMenuArray[0];
         }
+
+        if (MainMenu != nullptr)
+        return;
+
+        AddMainWidgetToHUD(PlayerController, MainWidget);
+        AddStartWidgetToHUD(PlayerController, StartWidget);
+        
     }
 
     UFUNCTION(BlueprintOverride)
@@ -144,19 +163,21 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PlayerCamSetup()
     {
-        AUZCameraActor::GetAll(CameraArray);
-        PlayerController = Gameplay::GetPlayerController(0);
-
         if (PlayerController == nullptr)
         return;
 
-        PlayerController.SetViewTargetWithBlend(CameraArray[0], 0.f);
-        CameraObj = CameraArray[0];
-        if (CameraObj != nullptr)
-        {
-            CameraObj.GetPlayerReference(this); 
-        }
+        AUZCameraActor::GetAll(CameraArray);
 
+        if (CameraArray.Num() > 0)
+        {
+            PlayerController.SetViewTargetWithBlend(CameraArray[0], 0.f);
+            CameraObj = CameraArray[0];
+
+            if (CameraObj != nullptr)
+            {
+                CameraObj.GetPlayerReference(this); 
+            }
+        }
     }
 
     UFUNCTION()
@@ -179,10 +200,14 @@ class AUZPlayerMain : APawn
         if (GameMode == nullptr)
         return;
 
-        if (GameMode.bGameEnded)
+        int R = FMath::RandRange(1,6);
+
+        if (MainMenu != nullptr)
         {
-            int R = FMath::RandRange(1,6);
-            Print("Our Map Index is: " + R, 5.f);
+            Gameplay::OpenLevel(UZMaps(R));
+        }
+        else if (GameMode.bGameEnded)
+        {
             Gameplay::OpenLevel(UZMaps(R));
         }
         else
@@ -194,6 +219,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void MovePForward(float AxisValue)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!bIsActive)
         return;
         
@@ -207,6 +235,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void MovePRight(float AxisValue)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!bIsActive)
         return;
 
@@ -219,6 +250,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void LaserCannonOn(FKey Key)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!bIsActive)
         return;
 
@@ -237,6 +271,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void LaserCannonOff(FKey Key)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!bIsActive)
         return;
 
@@ -250,6 +287,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PullBeamOn(FKey Key)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!bIsActive)
         return;
 
@@ -269,6 +309,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PullBeamOff(FKey Key)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!bIsActive)
         return;
 
@@ -282,6 +325,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnTurret(FKey Key)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!TraceCheckComp.bIsInRangeOfTarget)
         return;
 
@@ -305,6 +351,9 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnStunTrap(FKey Key)
     {
+        if (MainMenu != nullptr)
+        return;
+
         if (!TraceCheckComp.bIsInRangeOfTarget)
         return;
 
@@ -373,7 +422,6 @@ class AUZPlayerMain : APawn
                     GameMode.CurrentResourcesInLevel--;
                     break;
                 }
-
             }
 
             PickUpTarget.DestroyActor();
@@ -383,7 +431,6 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void DisablePlayerControls()
     {
-
         if (PlayerController != nullptr)
         {
             bIsActive = false;
