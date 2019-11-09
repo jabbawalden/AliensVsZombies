@@ -5,15 +5,31 @@ import GameFiles.UZGameMode;
 UFUNCTION(Category = "Player HUD")
 void AddStartWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidget> WidgetClass)
 {
-    UUserWidget WidgetGetRef = WidgetBlueprint::CreateWidget(WidgetClass, PlayerController);
+    UUserWidget UserWidget = WidgetBlueprint::CreateWidget(WidgetClass, PlayerController);
 
     AUZGameMode GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
+
     if (GameMode == nullptr)
     return;
 
-    GameMode.StartWidgetReference = WidgetGetRef; 
+    GameMode.StartWidgetReference = UserWidget; 
 
-    WidgetGetRef.AddToViewport();
+    UserWidget.AddToViewport();
+}
+
+UFUNCTION(Category = "Player HUD")
+void AddEndWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidget> WidgetClass)
+{
+    UUserWidget UserWidget = WidgetBlueprint::CreateWidget(WidgetClass, PlayerController);
+
+    AUZGameMode GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
+
+    if (GameMode == nullptr)
+    return;
+
+    GameMode.EndWidgetReference = UserWidget; 
+
+    UserWidget.AddToViewport();
 }
 
 UFUNCTION(Category = "Player HUD")
@@ -23,7 +39,7 @@ void RemoveStartWidgetFromHUD(APlayerController PlayerController, UUZStartGameWi
 }
 
 UFUNCTION(Category = "Player HUD")
-void AddMainWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidget> WidgetClass)
+void AddWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidget> WidgetClass)
 {
     UUserWidget UserWidget = WidgetBlueprint::CreateWidget(WidgetClass, PlayerController);
     UserWidget.AddToViewport();

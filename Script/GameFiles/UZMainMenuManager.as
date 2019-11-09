@@ -18,7 +18,7 @@ class AUZMainMenuManager : AActor
         if (PlayerController == nullptr)
         return;
 
-        AddMainWidgetToHUD(PlayerController, MenuWidget);
+        AddWidgetToHUD(PlayerController, MenuWidget);
 
         // BindStartInput();
     }

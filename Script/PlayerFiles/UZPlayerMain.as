@@ -7,6 +7,7 @@ import PlayerFiles.UZRemoteCannon;
 import GameFiles.UZPlayerWidget;
 import GameFiles.UZStaticFunctions;
 import GameFiles.UZMainMenuManager;
+import GameFiles.UZEndGameWidget;
 
 class AUZPlayerMain : APawn
 {
@@ -14,6 +15,9 @@ class AUZPlayerMain : APawn
     USceneComponent SceneComp;
 
     UPROPERTY(DefaultComponent, Attach = SceneComp)
+    USceneComponent MeshHolder;
+
+    UPROPERTY(DefaultComponent, Attach = MeshHolder)
     UStaticMeshComponent MeshComp;
 
     UPROPERTY(DefaultComponent, Attach = SceneComp)
@@ -67,6 +71,8 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     TSubclassOf<UUserWidget> EndWidget;
 
+    UUZEndgameWidget EndWidgetRef;
+
     UPROPERTY()
     FLinearColor LightBuildTrue;
 
@@ -76,6 +82,11 @@ class AUZPlayerMain : APawn
     AUZGameMode GameMode;
 
     APlayerController PlayerController;
+
+    UPROPERTY()
+    TArray<AUZMainMenuManager> MainMenuArray;
+
+    AUZMainMenuManager MainMenu;
 
     UPROPERTY()
     float SpawnTurretRate = 0.5f;
@@ -97,10 +108,10 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     float MeshRotateSpeed = 100.f;
 
-    UPROPERTY()
-    TArray<AUZMainMenuManager> MainMenuArray;
-
-    AUZMainMenuManager MainMenu;
+    float PitchRot;
+    float RollRot;
+    float RotDegreeMultiplier = 20.f;
+    float RotInterpSpeed = 4.f;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -130,9 +141,8 @@ class AUZPlayerMain : APawn
         if (MainMenu != nullptr)
         return;
 
-        AddMainWidgetToHUD(PlayerController, MainWidget);
+        AddWidgetToHUD(PlayerController, MainWidget);
         AddStartWidgetToHUD(PlayerController, StartWidget);
-        
     }
 
     UFUNCTION(BlueprintOverride)
@@ -140,23 +150,14 @@ class AUZPlayerMain : APawn
     {
         SetMeshRotation(DeltaSeconds);
         SpotLightColor(TraceCheckComp.bIsInRangeOfTarget);
+        InputRotationMovement(DeltaSeconds);
     }
     
-    UFUNCTION()
-    void StartGame()
-    {
-        bIsActive = true;
-
-        if (GameMode.StartWidgetReference == nullptr)
-        return;
-
-        GameMode.StartWidgetReference.RemoveFromParent(); 
-    }
 
     UFUNCTION()
     void PlayerGameModeSetUp()
     {
-        GameMode.EventEndGame.AddUFunction(this, n"DisablePlayerControls");
+        GameMode.EventEndGame.AddUFunction(this, n"EndGame");
         GameMode.EventStartGame.AddUFunction(this, n"StartGame");
     }
 
@@ -195,6 +196,15 @@ class AUZPlayerMain : APawn
     }
 
     UFUNCTION()
+    void InputRotationMovement(float DeltaSeconds)
+    {
+        float InterPitch = FMath::FInterpTo(MeshHolder.GetRelativeRotation().Pitch, -PitchRot, DeltaSeconds, RotInterpSpeed);
+        float InterpRoll = FMath::FInterpTo(MeshHolder.GetRelativeRotation().Roll, RollRot, DeltaSeconds, RotInterpSpeed);
+        FRotator NewMeshRot = FRotator(InterPitch, 0, InterpRoll);
+        MeshHolder.SetRelativeRotation(NewMeshRot);
+    }
+
+    UFUNCTION()
     void StartPressed(FKey Key)
     {
         if (GameMode == nullptr)
@@ -229,7 +239,8 @@ class AUZPlayerMain : APawn
             AddMovementInput(ControlRotation.ForwardVector, AxisValue);
         else if (ActorLocation.X < XLocAllowedMovement && AxisValue > 0)  
             AddMovementInput(ControlRotation.ForwardVector, AxisValue);
-        
+
+        PitchRot = AxisValue * RotDegreeMultiplier;
     }
 
     UFUNCTION()
@@ -244,7 +255,9 @@ class AUZPlayerMain : APawn
         if (ActorLocation.Y > -YLocAllowedMovement && AxisValue < 0)
             AddMovementInput(ControlRotation.RightVector, AxisValue); 
         else if (ActorLocation.Y < YLocAllowedMovement && AxisValue > 0)  
-            AddMovementInput(ControlRotation.RightVector, AxisValue);       
+            AddMovementInput(ControlRotation.RightVector, AxisValue);    
+
+        RollRot = AxisValue * RotDegreeMultiplier;   
     }
 
     UFUNCTION()
@@ -391,10 +404,33 @@ class AUZPlayerMain : APawn
         else
             SpotLightComp.LightColor = LightBuildFalse;
     }
+
+    UFUNCTION()
+    void StartGame()
+    {
+        bIsActive = true;
+
+        if (GameMode.StartWidgetReference == nullptr)
+        return;
+
+        GameMode.StartWidgetReference.RemoveFromParent(); 
+    }
     
     UFUNCTION()
-    void DisablePlayerControls()
+    void EndGame()
     {
+        AddEndWidgetToHUD(PlayerController, EndWidget);
+
+        if (GameMode.EndWidgetReference == nullptr)
+        return;
+
+        EndWidgetRef = Cast<UUZEndgameWidget>(GameMode.EndWidgetReference);
+
+        if (EndWidgetRef != nullptr)
+            EndWidgetRef.SetCitizensDisplayText(); 
+        else
+            Print("End Widget Ref NOT Found", 5.f);
+
         if (PlayerController != nullptr)
         {
             bIsActive = false;

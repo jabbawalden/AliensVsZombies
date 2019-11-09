@@ -15,13 +15,14 @@ class AUZGameMode : AGameModeBase
 
     //STORE UI REFERENCES FOR DEPARENTING FROM PLAYER
     UUserWidget StartWidgetReference;
+    UUserWidget EndWidgetReference;
 
     //LIFE
 
     UPROPERTY()
     float Life;
 
-    float MaxLife = 2000.f;
+    float MaxLife = 1.f;
 
     //CITIZENS SAVED
 
@@ -74,13 +75,13 @@ class AUZGameMode : AGameModeBase
 
     bool bCanSpawnEnemy3;
 
-    float GlobalMovementSpeed = 105.f;
+    float GlobalMovementSpeed = 108.f;
 
     UPROPERTY()
-    float GlobalMovementSpeedMultiplierMin = 1.02f;
+    float GlobalMovementSpeedMultiplierMin = 1.03f;
 
     UPROPERTY()
-    float GlobalMovementSpeedMultiplierMax = 1.04f;
+    float GlobalMovementSpeedMultiplierMax = 1.06f;
 
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
@@ -191,18 +192,6 @@ class AUZGameMode : AGameModeBase
             }
         }
     }
-
-    // UFUNCTION()
-    // void SetNewZombieMaxHealth()
-    // {
-    //     if (ZombieNewHealthTime <= Gameplay::TimeSeconds)
-    //     {
-    //         ZombieBasicMaxHealth *= ZombieHealthMultiplier;
-    //         ZombieLargeMaxHealth *= ZombieHealthMultiplier;
-    //         ZombieAdvancedMaxHealth *= ZombieHealthMultiplier;
-    //         ZombieNewHealthTime = Gameplay::TimeSeconds + ZombieNewHealthRate; 
-    //     }
-    // }
 
     UFUNCTION()
     void SetNewZombieSpeed()
