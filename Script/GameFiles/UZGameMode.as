@@ -56,7 +56,7 @@ class AUZGameMode : AGameModeBase
     float SpawnIncreaseDividerMin = 1.03f;
 
     UPROPERTY()
-    float SpawnIncreaseDividerMax = 1.05f;
+    float SpawnIncreaseDividerMax = 1.08f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 10.f;

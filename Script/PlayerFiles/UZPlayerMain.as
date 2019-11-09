@@ -110,7 +110,7 @@ class AUZPlayerMain : APawn
 
     float PitchRot;
     float RollRot;
-    float RotDegreeMultiplier = 20.f;
+    float RotDegreeMultiplier = 15.f;
     float RotInterpSpeed = 4.f;
 
     UFUNCTION(BlueprintOverride)

@@ -20,19 +20,5 @@ class AUZMainMenuManager : AActor
 
         AddWidgetToHUD(PlayerController, MenuWidget);
 
-        // BindStartInput();
     }
-
-    // UFUNCTION()
-    // void BindStartInput()
-    // {
-    //     Print("Bind Called", 5.f);
-    //     InputComp.BindAction(n"StartButton", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"StartGame")); 
-    // }
-
-    // UFUNCTION()
-    // void StartGame(FKey Key)
-    // {
-    //     Print("Start game called", 5.f);
-    // }
 }
