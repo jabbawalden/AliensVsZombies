@@ -22,37 +22,16 @@ class UUZHealthComp : UActorComponent
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
-        if (GameMode != nullptr)
+        if (OurHealthType == HealthType::ProtectionPoint)
         {
-            switch (OurHealthType)
-            {
-                case HealthType::ProtectionPoint:
+            GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
+            if (GameMode != nullptr)
                 MaxHealth = GameMode.MaxLife;
-                break;
-
-                case HealthType::ZombieBasic:
-                MaxHealth = GameMode.ZombieBasicMaxHealth;
-                break;
-
-                case HealthType::ZombieLarge:
-                MaxHealth = GameMode.ZombieLargeMaxHealth;
-                break;
-
-                case HealthType::ZombieAdvanced:
-                MaxHealth = GameMode.ZombieAdvancedMaxHealth;
-                break;
-            }
-            
-            CurrentHealth = MaxHealth;
         }
+
+        CurrentHealth = MaxHealth;
+
     }
-
-    // UFUNCTION(BlueprintOverride)
-    // void Tick(float DeltaSeconds)
-    // {
-
-    // }
 
     UFUNCTION()
     void DamageHealth(float Amount)

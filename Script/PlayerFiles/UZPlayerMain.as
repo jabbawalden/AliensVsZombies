@@ -391,6 +391,25 @@ class AUZPlayerMain : APawn
         else
             SpotLightComp.LightColor = LightBuildFalse;
     }
+    
+    UFUNCTION()
+    void DisablePlayerControls()
+    {
+        if (PlayerController != nullptr)
+        {
+            bIsActive = false;
+
+            if (PullBeam != nullptr)
+            {
+                PullBeam.IsActive = false;
+            }
+
+            if (LaserBeam != nullptr)
+            {
+                LaserBeam.IsActive = false;
+            }
+        }
+    }
 
     UFUNCTION()
     void TriggerOnBeginOverlap(
@@ -428,22 +447,4 @@ class AUZPlayerMain : APawn
         }
     }
 
-    UFUNCTION()
-    void DisablePlayerControls()
-    {
-        if (PlayerController != nullptr)
-        {
-            bIsActive = false;
-
-            if (PullBeam != nullptr)
-            {
-                PullBeam.IsActive = false;
-            }
-
-            if (LaserBeam != nullptr)
-            {
-                LaserBeam.IsActive = false;
-            }
-        }
-    }
 }

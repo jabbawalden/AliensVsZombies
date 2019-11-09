@@ -18,7 +18,7 @@ class AUZProjectile : AActor
     float Damage = 8.f;
 
     UPROPERTY()
-    float MoveSpeed = 2960.f;
+    float MoveSpeed = 3960.f;
 
     float KillTime = 1.3f;
 

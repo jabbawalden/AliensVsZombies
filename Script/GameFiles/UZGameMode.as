@@ -21,7 +21,7 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float Life;
 
-    float MaxLife = 4500.f;
+    float MaxLife = 2000.f;
 
     //CITIZENS SAVED
 
@@ -38,7 +38,7 @@ class AUZGameMode : AGameModeBase
     float TurretCost = 450.f;
 
     UPROPERTY()
-    float StunTrapCost = 100.f;
+    float StunTrapCost = 50.f;
 
     //GAME STATE INFO
 
@@ -55,7 +55,7 @@ class AUZGameMode : AGameModeBase
     float SpawnIncreaseDividerMin = 1.03f;
 
     UPROPERTY()
-    float SpawnIncreaseDividerMax = 1.07f;
+    float SpawnIncreaseDividerMax = 1.05f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 10.f;
@@ -74,33 +74,13 @@ class AUZGameMode : AGameModeBase
 
     bool bCanSpawnEnemy3;
 
-    //ZOMBIE VALUES
-
-    UPROPERTY()
-    float ZombieBasicMaxHealth = 20.f;
-
-    UPROPERTY()
-    float ZombieLargeMaxHealth = 55.f;
-
-    UPROPERTY()
-    float ZombieAdvancedMaxHealth = 35.f;
-
-    UPROPERTY()
-    float ZombieHealthMultiplier = 1.005f;
-
-
-    UPROPERTY()
-    float ZombieNewHealthRate = 10.f;
-
-    float ZombieNewHealthTime;
-
     float GlobalMovementSpeed = 105.f;
 
     UPROPERTY()
     float GlobalMovementSpeedMultiplierMin = 1.02f;
 
     UPROPERTY()
-    float GlobalMovementSpeedMultiplierMax = 1.08f;
+    float GlobalMovementSpeedMultiplierMax = 1.04f;
 
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
@@ -136,7 +116,6 @@ class AUZGameMode : AGameModeBase
         else if (Life > 0 && bGameStarted)
         {
             SetNewSpawnRates();
-            SetNewZombieMaxHealth();
             SetNewCitizenCount();
             SetNewZombieSpeed();
         }
@@ -213,17 +192,17 @@ class AUZGameMode : AGameModeBase
         }
     }
 
-    UFUNCTION()
-    void SetNewZombieMaxHealth()
-    {
-        if (ZombieNewHealthTime <= Gameplay::TimeSeconds)
-        {
-            ZombieBasicMaxHealth *= ZombieHealthMultiplier;
-            ZombieLargeMaxHealth *= ZombieHealthMultiplier;
-            ZombieAdvancedMaxHealth *= ZombieHealthMultiplier;
-            ZombieNewHealthTime = Gameplay::TimeSeconds + ZombieNewHealthRate; 
-        }
-    }
+    // UFUNCTION()
+    // void SetNewZombieMaxHealth()
+    // {
+    //     if (ZombieNewHealthTime <= Gameplay::TimeSeconds)
+    //     {
+    //         ZombieBasicMaxHealth *= ZombieHealthMultiplier;
+    //         ZombieLargeMaxHealth *= ZombieHealthMultiplier;
+    //         ZombieAdvancedMaxHealth *= ZombieHealthMultiplier;
+    //         ZombieNewHealthTime = Gameplay::TimeSeconds + ZombieNewHealthRate; 
+    //     }
+    // }
 
     UFUNCTION()
     void SetNewZombieSpeed()
