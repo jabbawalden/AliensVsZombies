@@ -21,7 +21,7 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float Life;
 
-    float MaxLife = 1.f;
+    float MaxLife = 2500.f;
 
     //CITIZENS SAVED
 
