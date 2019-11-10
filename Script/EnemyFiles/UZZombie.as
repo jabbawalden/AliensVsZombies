@@ -26,15 +26,18 @@ class AUZZombie : AUZZombieBaseClass
         Super::Tick(DeltaSeconds);
     }
 
-    UFUNCTION(BlueprintEvent)
+    UFUNCTION()
     void ZombieDeathCall()
     {
         if (GameMode != nullptr)
         {
             GameMode.AddRemoveResources(ResourceAmount);
+            //SpawnEmitterBPEvent();
             ParticleFXRef = SpawnActor(ParticleFX, ActorLocation);
             DestroyActor();
         }
     }
+
+
 
 }

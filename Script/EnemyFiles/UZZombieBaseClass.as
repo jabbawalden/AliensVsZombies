@@ -68,4 +68,10 @@ class AUZZombieBaseClass : AActor
         }
     }
 
+    UFUNCTION(BlueprintEvent)
+    void SpawnEmitterBPEvent()
+    {
+
+    }
+
 }

@@ -35,6 +35,7 @@ class UUZShootComp : UActorComponent
                 }
 
                 ParticleFXRef = SpawnActor(ParticleFX, ShootOriginArray[i].GetWorldLocation(), ShootOriginArray[i].GetWorldRotation());
+                ParticleFXRef.AttachToComponent(ShootOriginArray[i]);
             }
         }
     }

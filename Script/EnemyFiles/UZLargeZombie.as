@@ -46,19 +46,20 @@ class AUZLargeZombie : AUZZombieBaseClass
     UFUNCTION(BlueprintEvent)
     void LargeZombieDeathCall()
     {
-        ZombieRef = SpawnActor(ZombieClass, Spawn1.GetWorldLocation());
-        ZombieRef = SpawnActor(ZombieClass, Spawn2.GetWorldLocation());
-        ZombieRef = SpawnActor(ZombieClass, Spawn3.GetWorldLocation());
-        ZombieRef = SpawnActor(ZombieClass, Spawn4.GetWorldLocation());
+        // ERROR - Causing issues with bomb traps - solve later.
+
+        // ZombieRef = SpawnActor(ZombieClass, Spawn1.GetWorldLocation());
+        // ZombieRef = SpawnActor(ZombieClass, Spawn2.GetWorldLocation());
+        // ZombieRef = SpawnActor(ZombieClass, Spawn3.GetWorldLocation());
+        // ZombieRef = SpawnActor(ZombieClass, Spawn4.GetWorldLocation());
 
         if (GameMode != nullptr)
         {
             GameMode.AddRemoveResources(ResourceAmount);
+            // SpawnEmitterBPEvent();
             ParticleFXRef = SpawnActor(ParticleFX, ActorLocation); 
             ParticleFXRef.SetActorScale3D(FVector(2));
             DestroyActor();
         }
-
-        DestroyActor();
     }
 }

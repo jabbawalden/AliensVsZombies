@@ -51,8 +51,8 @@ class AUZPlayerMain : APawn
     AUZPullBeam PullBeam;
 
     UPROPERTY()
-    TSubclassOf<AActor> StunTrapClass;
-    AActor StunTrapRef;
+    TSubclassOf<AActor> BombTrap;
+    AActor BombTrapRef;
 
     UPROPERTY()
     TArray<AUZCameraActor> CameraArray;
@@ -388,7 +388,7 @@ class AUZPlayerMain : APawn
             if (NewSpawnStunTrapTime <= Gameplay::TimeSeconds)
             {
                 NewSpawnStunTrapTime = Gameplay::TimeSeconds + SpawnSunTrapRate;
-                StunTrapRef = SpawnActor(StunTrapClass, SpawnObjectOrigin.GetWorldLocation());
+                BombTrapRef = SpawnActor(BombTrap, SpawnObjectOrigin.GetWorldLocation());
                 GameMode.AddRemoveResources(-GameMode.StunTrapCost); 
             }    
         }
@@ -457,7 +457,6 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void SpawnPickUpObjUI(PickUpObjectType ObjectType, int Amount)
     {
-        Print("SpawnPickUpObjUI called", 5.f);
         PopUpUIRef = SpawnActor(PopUpUI, ActorLocation);
         PopUpUIRef.AttachToActor(this);
 

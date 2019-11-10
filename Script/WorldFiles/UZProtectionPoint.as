@@ -15,6 +15,9 @@ class AUZProtectionPoint : AActor
     UPROPERTY(DefaultComponent)
     UUZHealthComp HealthComp;
 
+    UPROPERTY(DefaultComponent, Attach = SphereComp)
+    UWidgetComponent WidgetComp;
+
     AUZGameMode GameMode;
 
     UFUNCTION(BlueprintOverride)

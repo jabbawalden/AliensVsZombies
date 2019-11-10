@@ -27,7 +27,6 @@ class UUZEndgameWidget : UUserWidget
     UFUNCTION()
     void SetCitizensDisplayText()
     {
-        Print("Display citizen text called", 15.f);
         UTextBlock CitizenDisplay = GetCitizensDisplayText();
         CitizenDisplay.Text = FText::FromString("" + GameMode.CitizenSaveCount + " Citizens were saved!!");
     }
