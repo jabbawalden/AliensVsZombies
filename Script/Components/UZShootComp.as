@@ -33,7 +33,7 @@ class UUZShootComp : UActorComponent
                 {
                     Projectile.ShootDirection = Owner.GetActorForwardVector(); 
                 }
-
+                
                 ParticleFXRef = SpawnActor(ParticleFX, ShootOriginArray[i].GetWorldLocation(), ShootOriginArray[i].GetWorldRotation());
                 ParticleFXRef.AttachToComponent(ShootOriginArray[i]);
             }

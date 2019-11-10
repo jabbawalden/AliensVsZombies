@@ -5,6 +5,7 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     int Resources = 0;
 
+    //TODO if time, refactor later to namespace for global events
     FGameEndEvent EventEndGame;
     FGameStartEvent EventStartGame;
     FUpdateResources EventUpdateResources;

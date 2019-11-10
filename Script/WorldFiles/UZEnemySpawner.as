@@ -67,6 +67,9 @@ class AUZEnemySpawner : AActor
 
             int SpawnIndexChance = FMath::RandRange(MinRandom, MaxRandom);
 
+
+            //TODO see if a system with TMap would be better?
+            
             switch(SpawnIndexChance)
             {
                 case 1:
