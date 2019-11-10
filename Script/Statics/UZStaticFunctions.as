@@ -46,8 +46,10 @@ void AddWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidget>
 }
 
 //Used to randomize map layout.
-//Not an ideal way - inital thinking was to generate map procedurally and then build navmesh dynamically. Had trouble making this work and needed to prioritize tasks
+//Not an ideal way - inital thinking was to generate map procedurally and then build navmesh dynamically. 
+//Had trouble making this work and needed to prioritize other tasks
 //Dynamic setting on Navmesh was too performance costly when objects were spawned
+
 //The benefit of this method is that map design can be more thought out
 FName UZMaps(int Index)
 {

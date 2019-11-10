@@ -62,12 +62,14 @@ class AUZProjectile : AActor
             if (HealthComp == nullptr)
             {
                 DestroyActor(); 
+                return;
             }
             else if (HealthComp.OurHealthType != HealthType::ProtectionPoint)
             {
                 HealthComp.DamageHealth(Damage);
-                DestroyActor(); 
             }
+
+            DestroyActor(); 
         }
     }
 

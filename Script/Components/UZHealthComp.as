@@ -1,7 +1,7 @@
 import GameFiles.UZEvents;
 import GameFiles.UZGameMode;
 
-enum HealthType {ProtectionPoint, ZombieBasic, ZombieLarge, ZombieAdvanced, Turret};
+enum HealthType {ProtectionPoint, Zombie, Turret};
 
 class UUZHealthComp : UActorComponent
 {

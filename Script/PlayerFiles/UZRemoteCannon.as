@@ -141,16 +141,8 @@ class AUZRemoteCannon : AActor
         UpdateHealth();
     }
 
-    // UFUNCTION()
-    // void GradualDestruction()
-    // {
-    //     if (NewDestructionTime <= Gameplay::TimeSeconds)
-    //     {
-    //         HealthComp.CurrentHealth -= DestructionDamage;
-    //         UpdateHealth();
-    //         NewDestructionTime = Gameplay::TimeSeconds + DestructionRate;
-    //     }
-    // }
+
+
 
     UFUNCTION()
     void UpdateHealth()

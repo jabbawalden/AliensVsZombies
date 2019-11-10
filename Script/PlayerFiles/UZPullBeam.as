@@ -25,9 +25,6 @@ class AUZPullBeam : AActor
 
     AActor PlayerRef;
 
-    bool IsActive = true;
-
-
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -38,13 +35,7 @@ class AUZPullBeam : AActor
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-
         // HealTurrets();
-
-        if (!IsActive)
-        {
-            DestroyActor();
-        }
     }
 
     UFUNCTION()
@@ -52,22 +43,6 @@ class AUZPullBeam : AActor
     {
         AttachToActor(TargetActor);
     }
-
-    // UFUNCTION()
-    // void HealTurrets()
-    // {
-    //     if (HealthCompArray.Num() == 0)
-    //     return;
-
-    //     if (NewHealTime < Gameplay::TimeSeconds)
-    //     {
-    //         NewHealTime = Gameplay::TimeSeconds + HealRate;
-    //         for (int i = 0; i < HealthCompArray.Num(); i++)
-    //         {
-    //             HealthCompArray[i].Heal(HealAmount); 
-    //         }
-    //     }
-    // }
 
     UFUNCTION()
     void TriggerOnBeginOverlap(

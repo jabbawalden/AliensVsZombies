@@ -38,7 +38,7 @@ class AUZGameMode : AGameModeBase
     float TurretCost = 400.f;
 
     UPROPERTY()
-    float StunTrapCost = 25.f;
+    float StunTrapCost = 100.f;
 
     //GAME STATE INFO
 
@@ -49,13 +49,13 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float EnemyMinSpawnTime = 1.9f;
     UPROPERTY()
-    float EnemyMaxSpawnTime = 4.1f;
+    float EnemyMaxSpawnTime = 3.9f;
 
     UPROPERTY()
-    float SpawnIncreaseDividerMin = 1.02f;
+    float SpawnIncreaseDividerMin = 1.03f;
 
     UPROPERTY()
-    float SpawnIncreaseDividerMax = 1.05f;
+    float SpawnIncreaseDividerMax = 1.04f;
 
     UPROPERTY()
     float IncreaseSpawnTimeRate = 10.f;
@@ -70,17 +70,27 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     int Enemy3SpawnDifficulty = 16;
 
+    UPROPERTY()
+    int Enemy4SpawnDifficulty = 25;
+
+    UPROPERTY()
+    int Enemy5SpawnDIfficulty = 33;
+
     bool bCanSpawnEnemy2;
 
     bool bCanSpawnEnemy3;
 
-    float GlobalMovementSpeed = 108.f;
+    bool bCanSpawnEnemy4;
+
+    bool bCanSpawnEnemy5;
+
+    float GlobalMovementSpeed = 115.f;
 
     UPROPERTY()
-    float GlobalMovementSpeedMultiplierMin = 1.03f;
+    float GlobalMovementSpeedMultiplierMin = 1.015f;
 
     UPROPERTY()
-    float GlobalMovementSpeedMultiplierMax = 1.04f;
+    float GlobalMovementSpeedMultiplierMax = 1.03f;
 
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
@@ -189,6 +199,16 @@ class AUZGameMode : AGameModeBase
             if (SpawnDifficulty >= Enemy3SpawnDifficulty)
             {
                 bCanSpawnEnemy3 = true;
+            }
+
+            if (SpawnDifficulty >= Enemy4SpawnDifficulty)
+            {
+                bCanSpawnEnemy4 = true;
+            }
+
+            if (SpawnDifficulty >= Enemy5SpawnDIfficulty)
+            {
+                bCanSpawnEnemy5 = true;
             }
         }
     }

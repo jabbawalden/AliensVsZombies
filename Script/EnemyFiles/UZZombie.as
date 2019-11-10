@@ -32,12 +32,8 @@ class AUZZombie : AUZZombieBaseClass
         if (GameMode != nullptr)
         {
             GameMode.AddRemoveResources(ResourceAmount);
-            //SpawnEmitterBPEvent();
             ParticleFXRef = SpawnActor(ParticleFX, ActorLocation);
             DestroyActor();
         }
     }
-
-
-
 }

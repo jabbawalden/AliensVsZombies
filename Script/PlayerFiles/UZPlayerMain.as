@@ -299,7 +299,7 @@ class AUZPlayerMain : APawn
 
         if (LaserBeam != nullptr)
         {
-            LaserBeam.IsActive = false;
+            LaserBeam.DestroyActor();
             bLaserOn = false;
         }
     }
@@ -335,11 +335,8 @@ class AUZPlayerMain : APawn
         if (!bIsActive)
         return;
 
-        if (PullBeam != nullptr)
-        {
-            PullBeam.IsActive = false;
-            bPullOn = false;
-        }
+        PullBeamRef.DestroyActor();
+        bPullOn = false;
     }
 
     UFUNCTION()
@@ -444,12 +441,12 @@ class AUZPlayerMain : APawn
 
             if (PullBeam != nullptr)
             {
-                PullBeam.IsActive = false;
+                PullBeam.DestroyActor();
             }
 
             if (LaserBeam != nullptr)
             {
-                LaserBeam.IsActive = false;
+                LaserBeam.DestroyActor();
             }
         }
     }

@@ -30,14 +30,13 @@ class AUZBombExplosion : AActor
     UFUNCTION()
     void DestroyExplosion()
     {
-        Print("Destroy explosion bomb", 5.f);
         DestroyActor();
     }
 
     UFUNCTION(BlueprintEvent)
     void BPEventSpawnParticle()
     {
-
+        //spawn partcile in blueprint
     }
 
     UFUNCTION()

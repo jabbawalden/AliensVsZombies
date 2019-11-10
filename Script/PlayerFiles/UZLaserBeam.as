@@ -27,10 +27,10 @@ class AUZLaserBeam : AActor
     UPROPERTY()
     float Damage = 16.5f;
 
-    float NewDamageTime;
+    UPROPERTY()
     float DamageRate = 0.07f;
 
-    bool IsActive = true;
+    float NewDamageTime;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -42,17 +42,10 @@ class AUZLaserBeam : AActor
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        if (IsActive)
+        if (NewDamageTime <= Gameplay::TimeSeconds)
         {
-            if (NewDamageTime <= Gameplay::TimeSeconds)
-            {
-                NewDamageTime = Gameplay::TimeSeconds + DamageRate;
-                DamageEnemies();
-            }
-        }
-        else
-        {
-            DestroyActor();
+            NewDamageTime = Gameplay::TimeSeconds + DamageRate;
+            DamageEnemies();
         }
     }
 

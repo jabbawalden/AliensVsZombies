@@ -22,6 +22,17 @@ class AUZEnemySpawner : AActor
     TSubclassOf<AActor> EnemySpawn3;
     AActor EnemySpawn3Ref;
 
+    UPROPERTY()
+    TSubclassOf<AActor> EnemySpawn4;
+    AActor EnemySpawn4Ref;
+
+    UPROPERTY()
+    TSubclassOf<AActor> EnemySpawn5;
+    AActor EnemySpawn5Ref;
+
+    int MinRandom = 1;
+    int MaxRandom = 8;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -41,7 +52,6 @@ class AUZEnemySpawner : AActor
         {
             SpawnEnemyBehaviour();
         }
-
     }
 
     UFUNCTION()
@@ -55,24 +65,39 @@ class AUZEnemySpawner : AActor
             float NewRate = FMath::RandRange(GameMode.EnemyMinSpawnTime, GameMode.EnemyMaxSpawnTime);
             NewSpawnTime = Gameplay::TimeSeconds + NewRate;
 
-            int SpawnIndexChance = FMath::RandRange(1, 8);
+            int SpawnIndexChance = FMath::RandRange(MinRandom, MaxRandom);
 
             switch(SpawnIndexChance)
             {
                 case 1:
-                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    if (!GameMode.bCanSpawnEnemy5)
+                        SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    else
+                        SpawnEnemy(EnemySpawn5Ref, EnemySpawn5);
                     break;
                 case 2:
-                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    if (!GameMode.bCanSpawnEnemy5)
+                        SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    else
+                        SpawnEnemy(EnemySpawn5Ref, EnemySpawn5);
                     break;
                 case 3:
-                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    if (!GameMode.bCanSpawnEnemy4)
+                        SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    else
+                        SpawnEnemy(EnemySpawn4Ref, EnemySpawn4);
                     break;
                 case 4:
-                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    if (!GameMode.bCanSpawnEnemy4)
+                        SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    else
+                        SpawnEnemy(EnemySpawn4Ref, EnemySpawn4);
                     break;
                 case 5:
-                    SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    if (!GameMode.bCanSpawnEnemy4)
+                        SpawnEnemy(EnemySpawn1Ref, EnemySpawn1);
+                    else
+                        SpawnEnemy(EnemySpawn4Ref, EnemySpawn4);
                     break;
                 case 6:
                     if (GameMode.bCanSpawnEnemy2)
@@ -86,6 +111,7 @@ class AUZEnemySpawner : AActor
                     if (GameMode.bCanSpawnEnemy3)
                         SpawnEnemy(EnemySpawn3Ref, EnemySpawn3);
                     break;
+
             }
         }
     }

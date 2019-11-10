@@ -17,22 +17,12 @@ class UUZShootComp : UActorComponent
 
     AUZProjectile Projectile;
 
-    UPROPERTY()
-    USoundCue SoundComp;
-
-    UFUNCTION()
-    void PlaySound()
-    {
-        Gameplay::PlaySoundAtLocation(SoundComp, Owner.ActorLocation, Owner.ActorRotation, 1.f); 
-    }
-
     UFUNCTION()
     void FireProjectile(TArray<USceneComponent> ShootOriginArray)
     {
         if (NewTime <= Gameplay::TimeSeconds)
         {
             NewTime = Gameplay::TimeSeconds + FireRate;
-            PlaySound();
 
             for (int i = 0; i < ShootOriginArray.Num(); i++)
             {
