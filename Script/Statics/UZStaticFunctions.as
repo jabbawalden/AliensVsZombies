@@ -1,4 +1,4 @@
-import GameFiles.UZStartGameWidget;
+import Widgets.UZStartGameWidget;
 import GameFiles.UZGameMode;
 
 

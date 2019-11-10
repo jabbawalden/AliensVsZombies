@@ -5,7 +5,7 @@ import Components.UZTraceCheckComp;
 import GameFiles.UZGameMode;
 import Components.UZHealthComp;
 import Components.UZMovementComp;
-import GameFiles.UZTurretWidget;
+import Widgets.UZTurretWidget;
 import Statics.UZStaticData;
 
 class AUZRemoteCannon : AActor
@@ -71,6 +71,10 @@ class AUZRemoteCannon : AActor
 
     UPROPERTY()
     float InterpSpeed = 2.5f;
+
+    UPROPERTY()
+    TSubclassOf<AActor> ParticleFX;
+    AActor ParticleFXRef;
 
     int ShootTargetIndex;
 
@@ -196,8 +200,9 @@ class AUZRemoteCannon : AActor
 
             if (EnemyMoveComp != nullptr)      
                 EnemyMoveComp.SetTargetToFinal();
-
         }
+
+        ParticleFXRef = SpawnActor(ParticleFX, ActorLocation);
 
         DestroyActor();
     }

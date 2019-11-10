@@ -57,13 +57,9 @@ class AUZStunTrap : AActor
     {
         if (TraceComp.bIsInRangeOfTarget)
         {
-            Print("target detected", 0.f);
             BoxComp.SetSimulatePhysics(false);
         }
-        else 
-        {
-            Print("target null", 0.f);
-        }
+
     }
 
     UFUNCTION()

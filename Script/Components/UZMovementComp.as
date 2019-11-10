@@ -39,7 +39,6 @@ class UUZMovementComp : UActorComponent
 
     bool bCanMove = true;
 
-    // int PathPointIndex = 1;
 
     TArray<AActor> TargetArray;
 

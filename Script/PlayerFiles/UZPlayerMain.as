@@ -4,11 +4,11 @@ import PlayerFiles.UZPullBeam;
 import GameFiles.UZGameMode;
 import WorldFiles.UZPickUpObject;
 import PlayerFiles.UZRemoteCannon;
-import GameFiles.UZPlayerWidget;
+import Widgets.UZPlayerWidget;
 import Statics.UZStaticFunctions;
 import GameFiles.UZMainMenuManager;
-import GameFiles.UZEndGameWidget;
-import GameFiles.UZPopUpUI;
+import Widgets.UZEndGameWidget;
+import Widgets.UZPopUpUI;
 
 class AUZPlayerMain : APawn
 {
@@ -32,7 +32,7 @@ class AUZPlayerMain : APawn
 
     UPROPERTY(DefaultComponent)
     UFloatingPawnMovement FloatingPawnComp;
-    default FloatingPawnComp.MaxSpeed = 1500.f;
+    default FloatingPawnComp.MaxSpeed = 1550.f;
 
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
@@ -108,9 +108,9 @@ class AUZPlayerMain : APawn
     bool bPullOn;
 
     UPROPERTY()
-    float XLocAllowedMovement = 3200.f;
+    float XLocAllowedMovement = 3400.f;
     UPROPERTY()
-    float YLocAllowedMovement = 3000.f;
+    float YLocAllowedMovement = 3300.f;
 
     UPROPERTY()
     float MeshRotateSpeed = 100.f;

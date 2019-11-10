@@ -24,6 +24,10 @@ class AUZZombieBaseClass : AActor
     UUZMovementComp MovementComp;
 
     UPROPERTY()
+    TSubclassOf<AActor> ParticleFX;
+    AActor ParticleFXRef;
+
+    UPROPERTY()
     int ResourceAmount = 1;
 
     UFUNCTION(BlueprintOverride)
@@ -46,7 +50,6 @@ class AUZZombieBaseClass : AActor
         }
         else if (TraceCheckComp.bIsInRangeOfTarget)
         {
-            Print("Attacking", 0.f);
             AttackBehaviour();
         }
     }

@@ -9,7 +9,11 @@ class UUZShootComp : UActorComponent
 
     UPROPERTY()
     TSubclassOf<AActor> ProjectileClass;
-    AActor ProjectileReference;
+    AActor ProjectileRef;
+
+    UPROPERTY()
+    TSubclassOf<AActor> ParticleFX;
+    AActor ParticleFXRef;
 
     AUZProjectile Projectile;
 
@@ -22,13 +26,15 @@ class UUZShootComp : UActorComponent
 
             for (int i = 0; i < ShootOriginArray.Num(); i++)
             {
-                ProjectileReference = SpawnActor(ProjectileClass, ShootOriginArray[i].GetWorldLocation()); 
-                Projectile = Cast<AUZProjectile>(ProjectileReference);
+                ProjectileRef = SpawnActor(ProjectileClass, ShootOriginArray[i].GetWorldLocation()); 
+                Projectile = Cast<AUZProjectile>(ProjectileRef);
 
                 if (Projectile != nullptr)
                 {
                     Projectile.ShootDirection = Owner.GetActorForwardVector(); 
                 }
+
+                ParticleFXRef = SpawnActor(ParticleFX, ShootOriginArray[i].GetWorldLocation(), ShootOriginArray[i].GetWorldRotation());
             }
         }
     }

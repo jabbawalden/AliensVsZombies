@@ -1,4 +1,4 @@
-import GameFiles.UZPopUpWidget;
+import Widgets.UZPopUpWidget;
 
 class AUZPopUpUI : AActor
 {
@@ -27,14 +27,10 @@ class AUZPopUpUI : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Print("Pop Up Actor Spawned", 6.f);
-
         PopUpWidget = Cast<UUZPopUpWidget>(UserWidget.GetUserWidgetObject());
 
         if (PopUpWidget == nullptr)
         return;
-
-        Print("Pop Up Widget Cast Success", 5.f);
 
         System::SetTimer(this, n"MoveUpFalse", MoveUpTime, false);
     }

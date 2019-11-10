@@ -43,7 +43,7 @@ class AUZLargeZombie : AUZZombieBaseClass
         Super::Tick(DeltaSeconds);
     }
 
-    UFUNCTION()
+    UFUNCTION(BlueprintEvent)
     void LargeZombieDeathCall()
     {
         ZombieRef = SpawnActor(ZombieClass, Spawn1.GetWorldLocation());
@@ -54,6 +54,8 @@ class AUZLargeZombie : AUZZombieBaseClass
         if (GameMode != nullptr)
         {
             GameMode.AddRemoveResources(ResourceAmount);
+            ParticleFXRef = SpawnActor(ParticleFX, ActorLocation); 
+            ParticleFXRef.SetActorScale3D(FVector(2));
             DestroyActor();
         }
 

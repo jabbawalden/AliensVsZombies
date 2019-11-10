@@ -68,8 +68,6 @@ class AUZProjectile : AActor
                 HealthComp.DamageHealth(Damage);
                 DestroyActor(); 
             }
-
-
         }
     }
 
