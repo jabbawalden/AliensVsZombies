@@ -10,11 +10,16 @@ class AUZPopUpUI : AActor
 
     UUZPopUpWidget PopUpWidget;
 
-    UPROPERTY()
-    float MovementSpeed = 110.f;
+    FString TextInput;
 
     UPROPERTY()
-    float DestructionTime = 0.8f;
+    float MovementSpeed = 550.f;
+
+    UPROPERTY()
+    float DestructionTime = 0.5f;
+
+    UPROPERTY()
+    float MoveUpTime = 1.f;
 
     bool bMoveUp = true;
     bool bTimerSet;
@@ -22,7 +27,16 @@ class AUZPopUpUI : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        
+        Print("Pop Up Actor Spawned", 6.f);
+
+        PopUpWidget = Cast<UUZPopUpWidget>(UserWidget.GetUserWidgetObject());
+
+        if (PopUpWidget == nullptr)
+        return;
+
+        Print("Pop Up Widget Cast Success", 5.f);
+
+        System::SetTimer(this, n"MoveUpFalse", MoveUpTime, false);
     }
 
     UFUNCTION(BlueprintOverride)
@@ -41,9 +55,21 @@ class AUZPopUpUI : AActor
     }
 
     UFUNCTION()
+    void MoveUpFalse()
+    {
+        bMoveUp = false;
+    }
+
+    UFUNCTION()
     void DestroyUI()
     {
         DestroyActor();
+    }
+
+    UFUNCTION()
+    void SetWidgetText()
+    {
+        PopUpWidget.UpdatePopUpText(TextInput); 
     }
 
 }

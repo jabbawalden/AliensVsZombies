@@ -8,6 +8,7 @@ import GameFiles.UZPlayerWidget;
 import Statics.UZStaticFunctions;
 import GameFiles.UZMainMenuManager;
 import GameFiles.UZEndGameWidget;
+import GameFiles.UZPopUpUI;
 
 class AUZPlayerMain : APawn
 {
@@ -24,7 +25,7 @@ class AUZPlayerMain : APawn
     USpotLightComponent SpotLightComp;
 
     UPROPERTY(DefaultComponent, Attach = SceneComp)
-    USphereComponent SphereCompResourceCatch;
+    USphereComponent SphereCompCatchPickUps;
 
     UPROPERTY(DefaultComponent, Attach = SceneComp)
     USceneComponent SpawnObjectOrigin;
@@ -32,6 +33,12 @@ class AUZPlayerMain : APawn
     UPROPERTY(DefaultComponent)
     UFloatingPawnMovement FloatingPawnComp;
     default FloatingPawnComp.MaxSpeed = 1500.f;
+
+    UPROPERTY(DefaultComponent)
+    UInputComponent InputComp;
+
+    UPROPERTY(DefaultComponent)
+    UUZTraceCheckComp TraceCheckComp;
 
     UPROPERTY()
     TSubclassOf<AActor> LaserBeamClass;
@@ -47,12 +54,6 @@ class AUZPlayerMain : APawn
     TSubclassOf<AActor> StunTrapClass;
     AActor StunTrapRef;
 
-    UPROPERTY(DefaultComponent)
-    UInputComponent InputComp;
-
-    UPROPERTY(DefaultComponent)
-    UUZTraceCheckComp TraceCheckComp;
-
     UPROPERTY()
     TArray<AUZCameraActor> CameraArray;
     AUZCameraActor CameraObj;
@@ -60,6 +61,12 @@ class AUZPlayerMain : APawn
     UPROPERTY()
     TSubclassOf<AActor> RemoteCannonClass;
     AActor RemoteCannonRef;
+
+    UPROPERTY()
+    TSubclassOf<AActor> PopUpUI;
+    AActor PopUpUIRef;
+
+    AUZPopUpUI PopUpUIClass;
 
     UPROPERTY()
     TSubclassOf<UUserWidget> MainWidget;
@@ -116,7 +123,7 @@ class AUZPlayerMain : APawn
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        SphereCompResourceCatch.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
+        SphereCompCatchPickUps.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
         if (GameMode == nullptr)
@@ -448,6 +455,33 @@ class AUZPlayerMain : APawn
     }
 
     UFUNCTION()
+    void SpawnPickUpObjUI(PickUpObjectType ObjectType, int Amount)
+    {
+        Print("SpawnPickUpObjUI called", 5.f);
+        PopUpUIRef = SpawnActor(PopUpUI, ActorLocation);
+        PopUpUIRef.AttachToActor(this);
+
+        PopUpUIClass = Cast<AUZPopUpUI>(PopUpUIRef);
+
+        if (PopUpUIClass == nullptr)
+        return;
+
+        switch (ObjectType)
+        {
+            case PickUpObjectType::CitizenPod:
+            PopUpUIClass.TextInput = "+" + Amount + " CITIZENS";
+            PopUpUIClass.SetWidgetText();
+            break;
+
+            case PickUpObjectType::Resource:
+            PopUpUIClass.TextInput = "" + Amount + " RESOURCES";
+            PopUpUIClass.SetWidgetText();          
+            break;
+        }
+
+    }
+
+    UFUNCTION()
     void TriggerOnBeginOverlap(
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
@@ -462,11 +496,6 @@ class AUZPlayerMain : APawn
                 //rework depending on object type
                 switch (PickUpTarget.ObjectType)
                 {
-                    case PickUpObjectType::Car:
-                    GameMode.AddRemoveResources(PickUpTarget.AddAmount);
-                    GameMode.CurrentResourcesInLevel--;
-                    break;
-
                     case PickUpObjectType::CitizenPod:
                     GameMode.AddCitizenCount(PickUpTarget.AddAmount);
                     GameMode.CurrentCitizenPods--;
@@ -477,6 +506,8 @@ class AUZPlayerMain : APawn
                     GameMode.CurrentResourcesInLevel--;
                     break;
                 }
+
+                SpawnPickUpObjUI(PickUpTarget.ObjectType, PickUpTarget.AddAmount);
             }
 
             PickUpTarget.DestroyActor();
