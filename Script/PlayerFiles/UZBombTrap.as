@@ -32,6 +32,9 @@ class AUZBombTrap : AActor
     TSubclassOf<AActor> BombExplosion;
     AActor BombExplosionRef; 
 
+    UPROPERTY()
+    USoundCue SoundComp;
+
     // UPROPERTY()
     // float ZOffset = 20.f;
 
@@ -66,6 +69,7 @@ class AUZBombTrap : AActor
     {
         FVector Spawnloc = ActorLocation; //FVector(ActorLocation.X, ActorLocation.Y, ActorLocation.Z);
         BombExplosionRef = SpawnActor(BombExplosion, Spawnloc);
+        Gameplay::PlaySoundAtLocation(SoundComp, ActorLocation, ActorRotation, 1.f); 
         DestroyActor();
 
         // if (!bHaveActivated)
