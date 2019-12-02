@@ -28,9 +28,11 @@ class AUZPickUpObject : AActor
     int AddAmount = 75;
 
     int ResourceAmountMin = 32;
+    
     int ResourceAmountMax = 85;
 
     int CitizenAddAmountMin = 40;
+
     int CitizenAddAmountMax = 100;
 
     bool IsCollecting;

@@ -9,7 +9,7 @@ class UUZEndgameWidget : UUserWidget
     {
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());
 
-        //construct does not seem to be adding funcs to events in time before they're broadcasted
+        //construct does not seem to be adding funcs to events before they're broadcasted
         // if (GameMode != nullptr)
         // {
         //     GameMode.EventEndGame.AddUFunction(this, n"SetCitizensDisplayText");

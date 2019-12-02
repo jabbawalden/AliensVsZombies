@@ -3,11 +3,6 @@ import PlayerFiles.UZProjectile;
 class UUZShootComp : UActorComponent
 {
     UPROPERTY()
-    float FireRate = 0.22f;
-
-    float NewTime;
-
-    UPROPERTY()
     TSubclassOf<AActor> ProjectileClass;
     AActor ProjectileRef;
 
@@ -16,6 +11,11 @@ class UUZShootComp : UActorComponent
     AActor ParticleFXRef;
 
     AUZProjectile Projectile;
+
+    UPROPERTY()
+    float FireRate = 0.22f;
+
+    float NewTime;
 
     UFUNCTION()
     void FireProjectile(TArray<USceneComponent> ShootOriginArray)

@@ -2,8 +2,6 @@ import GameFiles.UZEvents;
 
 class AUZGameMode : AGameModeBase
 {
-    UPROPERTY()
-    int Resources = 0;
 
     //TODO if time, refactor later to namespace for global events
     FGameEndEvent EventEndGame;
@@ -14,15 +12,20 @@ class AUZGameMode : AGameModeBase
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
     FUpdateCitizenCountUI EventUpdateCitizenCountUI;
 
+
     //STORE UI REFERENCES FOR DEPARENTING OR ALTERATION
     UUserWidget StartWidgetReference;
     UUserWidget EndWidgetReference;
 
-    //LIFE
+
+    //GLOBAL PROPERTIES
     UPROPERTY()
     float Life;
 
     float MaxLife = 2500.f;
+
+    UPROPERTY()
+    int Resources = 0;
 
     //CITIZENS SAVED
 
@@ -31,7 +34,9 @@ class AUZGameMode : AGameModeBase
 
     UPROPERTY()
     float CitizenUpRate = 0.5f;
+
     float NewCitizenUpTime;
+
 
     //RESOURCE COSTS
 
@@ -41,14 +46,19 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float StunTrapCost = 100.f;
 
+
     //GAME STATE INFO
 
     bool bGameEnded;
 
     bool bGameStarted;
 
+
+    //ENEMY SPAWN TIMES
+
     UPROPERTY()
     float EnemyMinSpawnTime = 1.9f;
+
     UPROPERTY()
     float EnemyMaxSpawnTime = 3.9f;
 
@@ -63,6 +73,8 @@ class AUZGameMode : AGameModeBase
 
     float NewIncreaseSpawnTime;
 
+
+    //ENEMY SPAWN CHECKS
     int SpawnDifficulty = 0;
 
     UPROPERTY()
@@ -85,7 +97,8 @@ class AUZGameMode : AGameModeBase
 
     bool bCanSpawnEnemy5;
 
-    float GlobalMovementSpeed = 115.f;
+
+    //ENEMY MOVEMENT SPEED
 
     UPROPERTY()
     float GlobalMovementSpeedMultiplierMin = 1.015f;
@@ -93,10 +106,13 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float GlobalMovementSpeedMultiplierMax = 1.03f;
 
+    float GlobalMovementSpeed = 115.f;
+
     UPROPERTY()
     float ZombieNewMoveSpeedRate = 8.f;
 
     float ZombieNewMoveSpeedTime;
+
 
     //PICK UP OBJECTS
     UPROPERTY()
@@ -108,6 +124,7 @@ class AUZGameMode : AGameModeBase
     int MaxCitizenPods = 3;
 
     int CurrentCitizenPods;
+    
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -220,7 +237,6 @@ class AUZGameMode : AGameModeBase
         if (ZombieNewMoveSpeedTime <= Gameplay::TimeSeconds)
         {
             float GlobalMovementSpeedMultiplier = FMath::RandRange(GlobalMovementSpeedMultiplierMin, GlobalMovementSpeedMultiplierMax);
-
             GlobalMovementSpeed *= GlobalMovementSpeedMultiplier;
             ZombieNewMoveSpeedTime = Gameplay::TimeSeconds + ZombieNewMoveSpeedRate; 
         }    

@@ -7,12 +7,6 @@ enum MovementState {Forward, Left, Right}
 
 class UUZMovementComp : UActorComponent
 {
-    float MoveSpeed;
-    float DefaultMoveSpeed = 110.f;
-
-    UPROPERTY()
-    float InterpSpeed = 2.4f;
-
     UPROPERTY()
     float SlerpSpeed = 0.04f;
 
@@ -22,26 +16,25 @@ class UUZMovementComp : UActorComponent
     UPROPERTY()
     AActor CurrentTarget;
 
-    FVector NextPathLocation;
-
-    float MinDistanceToNextLocation = 10.f;
-
-    UPROPERTY()
-    AActor PriorityTarget;
-
-    UPROPERTY()
-    float MovementTraceDistance = 250.f; 
-
     AUZGameMode GameMode;
 
     TArray<AUZProtectionPoint> ProtectionPointArray;
 
-    float PriorityDistance;
-    float PriorityMinDistance = 250.f;
-    float PriorityActorCheckDistance = 1000000.f;
+    FVector NextPathLocation;
+
+    float MoveSpeed;
+
+    float DefaultMoveSpeed = 110.f;
+
+    UPROPERTY()
+    float InterpSpeed = 2.4f;
+
+    float MinDistanceToNextLocation = 10.f;
+
+    UPROPERTY()
+    float MovementTraceDistance = 250.f; 
 
     bool bCanMove = true;
-
 
     TArray<AActor> TargetArray;
 

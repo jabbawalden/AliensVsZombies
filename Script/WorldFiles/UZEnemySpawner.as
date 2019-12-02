@@ -2,14 +2,6 @@ import GameFiles.UZGameMode;
 
 class AUZEnemySpawner : AActor
 {
-    float MaxSpawnDistance = 300.f;
-
-    AUZGameMode GameMode;
-
-    bool bCanSpawn;
-
-    float NewSpawnTime;
-
     UPROPERTY()
     TSubclassOf<AActor> EnemySpawn1;
     AActor EnemySpawn1Ref;
@@ -29,6 +21,15 @@ class AUZEnemySpawner : AActor
     UPROPERTY()
     TSubclassOf<AActor> EnemySpawn5;
     AActor EnemySpawn5Ref;
+
+    AUZGameMode GameMode;
+
+    UPROPERTY()
+    float MaxSpawnDistance = 300.f;
+
+    bool bCanSpawn;
+
+    float NewSpawnTime;
 
     int MinRandom = 1;
     int MaxRandom = 8;

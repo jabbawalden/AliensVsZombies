@@ -7,10 +7,6 @@ class AUZBombExplosion : AActor
     USphereComponent SphereComp;
     default SphereComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 
-    // UPROPERTY()
-    // TSubclassOf<AActor> ParticleFX;
-    // AActor ParticleFXRef;
-
     UPROPERTY()
     float Damage = 100.f;
 
@@ -21,7 +17,7 @@ class AUZBombExplosion : AActor
     void BeginPlay()
     {
         SphereComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlapSphere");
-        // ParticleFXRef = SpawnActor(ParticleFX, ActorLocation); 
+        
         BPEventSpawnParticle();
 
         System::SetTimer(this, n"DestroyExplosion", DestructionTime, false);

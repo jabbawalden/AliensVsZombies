@@ -28,7 +28,7 @@ void AddEndWidgetToHUD(APlayerController PlayerController, TSubclassOf<UUserWidg
     return;
 
     GameMode.EndWidgetReference = UserWidget; 
-
+    
     UserWidget.AddToViewport();
 }
 

@@ -15,11 +15,6 @@ class AUZBombTrap : AActor
     UStaticMeshComponent MeshComp;
     default MeshComp.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
-    // UPROPERTY(DefaultComponent, Attach = BoxComp)
-    // UBoxComponent TrapAOE;
-    // default TrapAOE.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-    // default TrapAOE.SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
-
     UPROPERTY(DefaultComponent, Attach = BoxComp)
     UBoxComponent BoxCompActivation;
     default BoxCompActivation.SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);

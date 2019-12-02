@@ -9,6 +9,11 @@ class AUZPickUpObjectSpawner : AActor
     AActor ObjectToSpawnRef;
 
     UPROPERTY()
+    SpawnType OurSpawnType;
+
+    AUZGameMode GameMode;
+
+    UPROPERTY()
     float SpawnMaxDistance = 1900.f;
 
     bool bCanSpawn;
@@ -21,10 +26,6 @@ class AUZPickUpObjectSpawner : AActor
 
     float NewSpawnTime;
 
-    UPROPERTY()
-    SpawnType OurSpawnType;
-
-    AUZGameMode GameMode;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()

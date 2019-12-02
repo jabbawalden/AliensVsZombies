@@ -6,6 +6,7 @@ enum HealthType {ProtectionPoint, Zombie, Turret};
 class UUZHealthComp : UActorComponent
 {
     FEnemyDeathEvent EventDeath;
+    
     FUpdateLife EventUpdateLife;
 
     AUZGameMode GameMode;
@@ -15,6 +16,7 @@ class UUZHealthComp : UActorComponent
 
     UPROPERTY()
     float MaxHealth = 15.f;
+
     UPROPERTY()
     float CurrentHealth;
 

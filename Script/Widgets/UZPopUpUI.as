@@ -22,6 +22,7 @@ class AUZPopUpUI : AActor
     float MoveUpTime = 1.f;
 
     bool bMoveUp = true;
+    
     bool bTimerSet;
 
     UFUNCTION(BlueprintOverride)
