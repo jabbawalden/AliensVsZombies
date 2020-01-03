@@ -14,3 +14,10 @@ event void FUpdateStunTrapBorder();
 
 event void FUpdateCitizenCountUI(int count); 
 
+event void FTurretExplosionFeedback();
+
+event void FBombTrapExplosionFeedback(); 
+
+event void FEnemyKillFeedback(); 
+
+event void FPickUpFeedback(); 

@@ -9,6 +9,7 @@ import Statics.UZStaticFunctions;
 import GameFiles.UZMainMenuManager;
 import Widgets.UZEndGameWidget;
 import Widgets.UZPopUpUI;
+import Statics.UZStaticData;
 
 class AUZPlayerMain : APawn
 {
@@ -41,7 +42,16 @@ class AUZPlayerMain : APawn
     UUZTraceCheckComp TraceCheckComp;
 
     UPROPERTY()
-    UForceFeedbackEffect ForceFeedback;
+    UForceFeedbackEffect TurrentExplosionFeedback;
+
+    UPROPERTY()
+    UForceFeedbackEffect BombTrapExplosionFeedback;
+
+    UPROPERTY()
+    UForceFeedbackEffect EnemyKillFeedback;
+
+    UPROPERTY()
+    UForceFeedbackEffect PickUpFeedback;
 
     UPROPERTY()
     float TestFloat;
@@ -137,6 +147,11 @@ class AUZPlayerMain : APawn
         if (GameMode == nullptr)
         return;
 
+        GameMode.EventTurretExplosionFeedback.AddUFunction(this, n"ControllerTurretExplosionFeedback");
+        GameMode.EventBombTrapExplosionFeedback.AddUFunction(this, n"ControllerBombTrapExplosionFeedback");
+        GameMode.EventEnemyKillFeedback.AddUFunction(this, n"ControllerEnemyKillFeedback");
+        // GameMode.EventPickUpFeedback.AddUFunction(this, n"ControllerPickUpFeedback");
+
         PlayerController = Gameplay::GetPlayerController(0);
 
         if (PlayerController == nullptr)
@@ -167,12 +182,12 @@ class AUZPlayerMain : APawn
         SpotLightColor(TraceCheckComp.bIsInRangeOfTarget);
         InputRotationMovement(DeltaSeconds);
     }
-    
 
     UFUNCTION()
     void PlayerGameModeSetUp()
     {
-        GameMode.EventEndGame.AddUFunction(this, n"EndGame");
+        //GameMode.EventEndGame.AddUFunction(this, n"EndGame");
+        //UZGlobalEvents::EventEndGame.AddUFunction(this, n"EndGame");
         GameMode.EventStartGame.AddUFunction(this, n"StartGame");
     }
 
@@ -207,7 +222,7 @@ class AUZPlayerMain : APawn
         InputComp.BindAction(n"PullBeam", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"PullBeamOn"));
         InputComp.BindAction(n"PullBeam", EInputEvent::IE_Released, FInputActionHandlerDynamicSignature(this, n"PullBeamOff"));    
         InputComp.BindAction(n"BuildTurret", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"SpawnTurret")); 
-        InputComp.BindAction(n"BuildStunTrap", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"SpawnStunTrap")); 
+        InputComp.BindAction(n"BuildStunTrap", EInputEvent::IE_Pressed, FInputActionHandlerDynamicSignature(this, n"SpawnBombTrap")); 
     }
 
     UFUNCTION()
@@ -374,13 +389,11 @@ class AUZPlayerMain : APawn
                 GameMode.AddRemoveResources(-GameMode.TurretCost); 
             }    
         }
-
         //TEST CONTROLLER RUMBLE
-        PlayerController.ClientPlayForceFeedback(ForceFeedback, NAME_None, false, true, false);
     }
 
     UFUNCTION()
-    void SpawnStunTrap(FKey Key)
+    void SpawnBombTrap(FKey Key)
     {
         if (MainMenu != nullptr)
         return;
@@ -488,7 +501,30 @@ class AUZPlayerMain : APawn
             PopUpUIClass.SetWidgetText();          
             break;
         }
+    }
 
+    UFUNCTION()
+    void ControllerTurretExplosionFeedback()
+    {
+        PlayerController.ClientPlayForceFeedback(TurrentExplosionFeedback, NAME_None, false, true, false);
+    }
+
+    UFUNCTION()
+    void ControllerBombTrapExplosionFeedback()
+    {
+        PlayerController.ClientPlayForceFeedback(BombTrapExplosionFeedback, NAME_None, false, true, false);
+    }
+
+    UFUNCTION()
+    void ControllerEnemyKillFeedback()
+    {
+        PlayerController.ClientPlayForceFeedback(EnemyKillFeedback, NAME_None, false, true, false);
+    }
+
+    UFUNCTION()
+    void ControllerPickUpFeedback()
+    {
+        PlayerController.ClientPlayForceFeedback(PickUpFeedback, NAME_None, false, true, false);
     }
 
     UFUNCTION()
@@ -518,6 +554,7 @@ class AUZPlayerMain : APawn
                 }
 
                 SpawnPickUpObjUI(PickUpTarget.ObjectType, PickUpTarget.AddAmount);
+                ControllerPickUpFeedback(); 
             }
 
             PickUpTarget.DestroyActor();

@@ -33,6 +33,13 @@ class AUZZombie : AUZZombieBaseClass
         {
             GameMode.AddRemoveResources(ResourceAmount);
             ParticleFXRef = SpawnActor(ParticleFX, ActorLocation);
+
+            if (HealthComp.bLaserBeam)
+            {
+                GameMode.EventEnemyKillFeedback.Broadcast();
+                Print("Enemy Died from laser beam", 5.f);
+            }
+            
             DestroyActor();
         }
     }

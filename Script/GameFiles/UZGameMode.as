@@ -1,4 +1,5 @@
 import GameFiles.UZEvents;
+import Statics.UZStaticData; 
 
 class AUZGameMode : AGameModeBase
 {
@@ -11,7 +12,11 @@ class AUZGameMode : AGameModeBase
     FUpdateTurretBorder EventUpdateTurretBorder;
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
     FUpdateCitizenCountUI EventUpdateCitizenCountUI;
-
+    
+    FTurretExplosionFeedback EventTurretExplosionFeedback;
+    FBombTrapExplosionFeedback EventBombTrapExplosionFeedback;
+    FEnemyKillFeedback EventEnemyKillFeedback;
+    // FPickUpFeedback EventPickUpFeedback;
 
     //STORE UI REFERENCES FOR DEPARENTING OR ALTERATION
     UUserWidget StartWidgetReference;
@@ -186,6 +191,7 @@ class AUZGameMode : AGameModeBase
     void EndGame()
     {
         EventEndGame.Broadcast();
+        //UZGlobalEvents::EventEndGame.Broadcast();
         bGameEnded = true;
     }
 

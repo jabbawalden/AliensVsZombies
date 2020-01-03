@@ -2,6 +2,7 @@ import Components.UZTraceCheckComp;
 import Components.UZMovementComp;
 import Components.UZHealthComp;
 import Statics.UZStaticData;
+import GameFiles.UZGameMode;
 
 class AUZBombTrap : AActor
 {
@@ -29,9 +30,13 @@ class AUZBombTrap : AActor
 
     bool bHaveActivated;
 
+    AUZGameMode GameMode;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        GameMode = Cast<AUZGameMode>(Gameplay::GameMode); 
+
         BoxCompActivation.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlapSphere");
         BoxComp.SetSimulatePhysics(true);
     }
@@ -50,6 +55,10 @@ class AUZBombTrap : AActor
     {
         FVector Spawnloc = ActorLocation;
         BombExplosionRef = SpawnActor(BombExplosion, Spawnloc);
+
+        if (GameMode != nullptr)
+            GameMode.EventBombTrapExplosionFeedback.Broadcast();
+
         DestroyActor();
     }
 

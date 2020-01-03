@@ -1,5 +1,6 @@
 import EnemyFiles.UZZombie;
 import Components.UZHealthComp;
+import GameFiles.UZGameMode;
 
 class AUZLaserBeam : AActor
 {
@@ -24,6 +25,8 @@ class AUZLaserBeam : AActor
 
     AActor TargetLocation;
 
+    AUZGameMode GameMode;
+
     UPROPERTY()
     float Damage = 16.5f;
 
@@ -31,10 +34,11 @@ class AUZLaserBeam : AActor
     float DamageRate = 0.07f;
 
     float NewDamageTime;
-
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        GameMode = Cast<AUZGameMode>(Gameplay::GameMode);
+
         BoxComp.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         BoxComp.OnComponentEndOverlap.AddUFunction(this, n"TriggerOnEndOverlap");
     }
@@ -77,6 +81,7 @@ class AUZLaserBeam : AActor
             if (HealthComp != nullptr)
             {
                 ZombieArray.Add(HealthComp);
+                HealthComp.bLaserBeam = true;
             }
         }
     }
@@ -92,7 +97,9 @@ class AUZLaserBeam : AActor
 
             if (HealthComp != nullptr)
             {
+                HealthComp.bLaserBeam = false;
                 ZombieArray.Remove(HealthComp);
+
             }
         }
 

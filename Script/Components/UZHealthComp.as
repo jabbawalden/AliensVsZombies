@@ -20,10 +20,13 @@ class UUZHealthComp : UActorComponent
     UPROPERTY()
     float CurrentHealth;
 
+    bool bLaserBeam;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        bLaserBeam = false;
+        
         if (OurHealthType == HealthType::ProtectionPoint)
         {
             GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode());

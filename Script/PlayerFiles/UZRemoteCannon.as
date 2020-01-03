@@ -7,6 +7,7 @@ import Components.UZHealthComp;
 import Components.UZMovementComp;
 import Widgets.UZTurretWidget;
 import Statics.UZStaticData;
+import GameFiles.UZEvents; 
 
 class AUZRemoteCannon : AActor
 {
@@ -95,6 +96,7 @@ class AUZRemoteCannon : AActor
 
         if (GameMode != nullptr)
             GameMode.EventEndGame.AddUFunction(this, n"EndShoot");
+        //UZGlobalEvents::EventEndGame.AddUFunction(this, n"EndShoot");
 
         Tags.Add(UZTags::Turret); 
         Tags.Add(UZTags::IsTracableByEnemy); 
@@ -140,9 +142,6 @@ class AUZRemoteCannon : AActor
 
         UpdateHealth();
     }
-
-
-
 
     UFUNCTION()
     void UpdateHealth()
@@ -195,6 +194,8 @@ class AUZRemoteCannon : AActor
         }
 
         ParticleFXRef = SpawnActor(ParticleFX, ActorLocation);
+
+        GameMode.EventTurretExplosionFeedback.Broadcast();
 
         DestroyActor();
     }

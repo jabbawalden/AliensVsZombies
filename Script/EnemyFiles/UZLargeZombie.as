@@ -59,6 +59,13 @@ class AUZLargeZombie : AUZZombieBaseClass
             // SpawnEmitterBPEvent();
             ParticleFXRef = SpawnActor(ParticleFX, ActorLocation); 
             ParticleFXRef.SetActorScale3D(FVector(2));
+
+            if (HealthComp.bLaserBeam)
+            {
+                GameMode.EventEnemyKillFeedback.Broadcast();
+                Print("Enemy Died from laser beam", 5.f);
+            }
+
             DestroyActor();
         }
     }
