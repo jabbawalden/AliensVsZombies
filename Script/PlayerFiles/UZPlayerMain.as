@@ -41,6 +41,12 @@ class AUZPlayerMain : APawn
     UUZTraceCheckComp TraceCheckComp;
 
     UPROPERTY()
+    UForceFeedbackEffect ForceFeedback;
+
+    UPROPERTY()
+    float TestFloat;
+
+    UPROPERTY()
     TSubclassOf<AActor> LaserBeamClass;
     AActor LaserBeamRef;
     AUZLaserBeam LaserBeam;
@@ -123,6 +129,8 @@ class AUZPlayerMain : APawn
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        Print("PLAYER HAS STARTED", 5.f);
+
         SphereCompCatchPickUps.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
@@ -183,7 +191,7 @@ class AUZPlayerMain : APawn
 
             if (CameraObj != nullptr)
             {
-                CameraObj.GetPlayerReference(this); 
+                CameraObj.GetPlayerReference(this);
             }
         }
     }
@@ -280,11 +288,14 @@ class AUZPlayerMain : APawn
         {
             LaserBeamRef = SpawnActor(LaserBeamClass, ActorLocation);
             LaserBeam = Cast<AUZLaserBeam>(LaserBeamRef);
+
             if (LaserBeam != nullptr)
             {
                 LaserBeam.SetFollowTarget(this); 
                 bLaserOn = true;
             }
+
+            Print("Playing Feedback", 5.f);
         }
     }
 
@@ -363,6 +374,9 @@ class AUZPlayerMain : APawn
                 GameMode.AddRemoveResources(-GameMode.TurretCost); 
             }    
         }
+
+        //TEST CONTROLLER RUMBLE
+        PlayerController.ClientPlayForceFeedback(ForceFeedback, NAME_None, false, true, false);
     }
 
     UFUNCTION()
