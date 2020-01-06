@@ -71,6 +71,9 @@ class AUZRemoteCannon : AActor
     USoundBase TurretFire; 
 
     UPROPERTY()
+    USoundCue TurretFireV2; 
+
+    UPROPERTY()
     FRotator LookAtRotation;
 
     UPROPERTY()
@@ -130,7 +133,7 @@ class AUZRemoteCannon : AActor
     void PlayTurretFire()
     {
         //Gameplay::PlaySoundAtLocation(TurretFire, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f, nullptr, nullptr, this);
-        Gameplay::PlaySoundAtLocation(TurretFire, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f);
+        Gameplay::PlaySoundAtLocation(TurretFireV2, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f);
     }
 
     UFUNCTION()

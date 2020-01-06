@@ -14,8 +14,8 @@ class AUZMusicManager : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        //AudioComp1.Play();
-
+        AudioComp1.Play();
+        AudioComp2.Play();
     }
 
 }
