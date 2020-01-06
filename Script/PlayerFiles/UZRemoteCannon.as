@@ -68,6 +68,9 @@ class AUZRemoteCannon : AActor
     AUZGameMode GameMode;
 
     UPROPERTY()
+    USoundBase TurretFire; 
+
+    UPROPERTY()
     FRotator LookAtRotation;
 
     UPROPERTY()
@@ -100,7 +103,8 @@ class AUZRemoteCannon : AActor
 
         Tags.Add(UZTags::Turret); 
         Tags.Add(UZTags::IsTracableByEnemy); 
-        
+        ShootComp.PlayShootSound.AddUFunction(this, n"PlayTurretFire");
+
         RemoteCannonSetup();
         WidgetCompSetup();
     }
@@ -113,13 +117,20 @@ class AUZRemoteCannon : AActor
 
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
-            ShootComp.FireProjectile(ShootOriginArray);
+            ShootComp.FireProjectile(ShootOriginArray); 
         }
 
         if (TraceCheckComp.bIsInRangeOfTarget)
         {
             BoxComp.SetSimulatePhysics(false);
         }
+    }
+
+    UFUNCTION()
+    void PlayTurretFire()
+    {
+        //Gameplay::PlaySoundAtLocation(TurretFire, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f, nullptr, nullptr, this);
+        Gameplay::PlaySoundAtLocation(TurretFire, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f);
     }
 
     UFUNCTION()

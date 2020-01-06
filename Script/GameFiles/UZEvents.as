@@ -21,3 +21,5 @@ event void FBombTrapExplosionFeedback();
 event void FEnemyKillFeedback(); 
 
 event void FPickUpFeedback(); 
+
+event void FPlayShootCompSound();
