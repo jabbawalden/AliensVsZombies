@@ -10,6 +10,7 @@ import GameFiles.UZMainMenuManager;
 import Widgets.UZEndGameWidget;
 import Widgets.UZPopUpUI;
 import Statics.UZStaticData;
+import GameFiles.UZEvents; 
 
 class AUZPlayerMain : APawn
 {
@@ -101,6 +102,9 @@ class AUZPlayerMain : APawn
 
     UPROPERTY()
     FLinearColor LightBuildFalse;
+
+    UPROPERTY()
+    USoundCue SpawnTurretSound;
 
     AUZGameMode GameMode;
 
@@ -387,6 +391,7 @@ class AUZPlayerMain : APawn
                 NewSpawnTurretTime = Gameplay::TimeSeconds + SpawnTurretRate;
                 RemoteCannonRef = SpawnActor(RemoteCannonClass, SpawnObjectOrigin.GetWorldLocation());
                 GameMode.AddRemoveResources(-GameMode.TurretCost); 
+                Gameplay::PlaySound2D(SpawnTurretSound, 1.f, 1.f, 0.f); 
             }    
         }
         //TEST CONTROLLER RUMBLE

@@ -15,7 +15,7 @@ class AUZMusicManager : AActor
     void BeginPlay()
     {
         AudioComp1.Play();
-        AudioComp2.Play();
+        // AudioComp2.Play();
     }
 
 }

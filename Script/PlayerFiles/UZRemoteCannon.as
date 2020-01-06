@@ -71,7 +71,7 @@ class AUZRemoteCannon : AActor
     USoundBase TurretFire; 
 
     UPROPERTY()
-    USoundCue TurretFireV2; 
+    USoundCue TurretExplosion; 
 
     UPROPERTY()
     FRotator LookAtRotation;
@@ -85,7 +85,7 @@ class AUZRemoteCannon : AActor
 
     int ShootTargetIndex;
 
-    bool bCanShoot = true;
+    bool bCanShoot = false;
 
     float DestructionRate = 1.4f;
     float DestructionDamage = 0.22f;
@@ -118,22 +118,24 @@ class AUZRemoteCannon : AActor
         SetTarget();
         RotateTurret(DeltaSeconds);
 
+        if (TraceCheckComp.bIsInRangeOfTarget)
+        {
+            BoxComp.SetSimulatePhysics(false);
+            bCanShoot = true;
+        }
+
         if (EnemyArray.Num() > 0 && bCanShoot)
         {
             ShootComp.FireProjectile(ShootOriginArray); 
         }
 
-        if (TraceCheckComp.bIsInRangeOfTarget)
-        {
-            BoxComp.SetSimulatePhysics(false);
-        }
     }
 
     UFUNCTION()
     void PlayTurretFire()
     {
         //Gameplay::PlaySoundAtLocation(TurretFire, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f, nullptr, nullptr, this);
-        Gameplay::PlaySoundAtLocation(TurretFireV2, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f);
+        Gameplay::PlaySoundAtLocation(TurretFire, ActorLocation, ActorRotation, 0.8f, 1.f, 0.f);
     }
 
     UFUNCTION()
@@ -210,6 +212,7 @@ class AUZRemoteCannon : AActor
         ParticleFXRef = SpawnActor(ParticleFX, ActorLocation);
 
         GameMode.EventTurretExplosionFeedback.Broadcast();
+        Gameplay::PlaySoundAtLocation(TurretExplosion, ActorLocation, ActorRotation, 1.f, 1.f, 0.f);
 
         DestroyActor();
     }
