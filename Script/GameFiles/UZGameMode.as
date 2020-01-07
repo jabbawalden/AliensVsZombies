@@ -4,13 +4,24 @@ import Statics.UZStaticData;
 class AUZGameMode : AGameModeBase
 {
 
-    //TODO if time, refactor later to namespace for global events
+
     FGameEndEvent EventEndGame;
     FGameStartEvent EventStartGame;
+
+    ///Place below events into Global Event NAMESPACE
+    //Global Event [place in namespace instead]
     FUpdateResources EventUpdateResources;
+
+    //Global Event [place in namespace instead]
     FUpdateLife EventUpdateLife;
+
+    //Global Event [place in namespace instead]
     FUpdateTurretBorder EventUpdateTurretBorder;
+
+    //Global Event [place in namespace instead]
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
+
+    //Global Event [place in namespace instead]
     FUpdateCitizenCountUI EventUpdateCitizenCountUI;
     
     FTurretExplosionFeedback EventTurretExplosionFeedback;
@@ -24,11 +35,14 @@ class AUZGameMode : AGameModeBase
 
 
     //GLOBAL PROPERTIES
+
+    ///Place below values into protection point instead.
     UPROPERTY()
     float Life;
 
     float MaxLife = 2500.f;
 
+    ///Place below value into Global Event NAMESPACE
     UPROPERTY()
     int Resources = 0;
 
@@ -142,9 +156,11 @@ class AUZGameMode : AGameModeBase
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
+        //place life and end game function call from protection point instead (when health values are moved there)
+        //check if bGameStarted && !bGameEnded, then call Set Spawn/Citien/Zombie functions
+        
         if (Life <= 0 && !bGameEnded)
         {
-            bGameEnded = true;
             EndGame();
         }
         else if (Life > 0 && bGameStarted)
@@ -155,6 +171,7 @@ class AUZGameMode : AGameModeBase
         }
     }
 
+    ///Place below function into Global Event NAMESPACE
     UFUNCTION()
     void BroadCastWidgetEvents()
     {
@@ -165,6 +182,7 @@ class AUZGameMode : AGameModeBase
         EventUpdateCitizenCountUI.Broadcast(CitizenSaveCount);
     }
 
+    ///Place below function into Global Event NAMESPACE
     UFUNCTION()
     void AddRemoveResources(int InputResources)
     {
@@ -174,6 +192,7 @@ class AUZGameMode : AGameModeBase
         EventUpdateTurretBorder.Broadcast();
     }
 
+    ///Place below function into Global Event NAMESPACE
     UFUNCTION()
     void AddCitizenCount(int Amount)
     {
@@ -195,6 +214,7 @@ class AUZGameMode : AGameModeBase
         bGameEnded = true;
     }
 
+    ///Place below function into Global Event NAMESPACE
     UFUNCTION()
     float LifePercent()
     {

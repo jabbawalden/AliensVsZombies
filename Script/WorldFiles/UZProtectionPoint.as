@@ -30,11 +30,14 @@ class AUZProtectionPoint : AActor
         HealthComp.EventUpdateLife.AddUFunction(this, n"UpdateGameModeLife");
     }
 
+    //perhaps life should be set in this comp instead properly - then when it reaches 0, call end game event instead.
     UFUNCTION()
     void UpdateGameModeLife()
     {
         GameMode.Life = HealthComp.CurrentHealth;
         GameMode.EventUpdateLife.Broadcast(); 
+        //if life equal or below 0, call EndGame event from game mode
     }
+
 
 }

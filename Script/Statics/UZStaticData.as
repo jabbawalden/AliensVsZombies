@@ -11,16 +11,16 @@ namespace UZTags
     const FName IsTracableByPlayer = n"IsTracableByPlayer";
 }
 
-namespace UZGlobalEvents 
-{
-    const FGameEndEvent EventEndGame;
-    const FGameStartEvent EventStartGame;
-    const FUpdateResources EventUpdateResources;
-    const FUpdateLife EventUpdateLife;
-    const FUpdateTurretBorder EventUpdateTurretBorder;
-    const FUpdateStunTrapBorder EventUpdateStunTrapBorder;
-    const FUpdateCitizenCountUI EventUpdateCitizenCountUI;
-}
+// namespace UZGlobalEvents 
+// {
+//     const FGameEndEvent EventEndGame;
+//     const FGameStartEvent EventStartGame;
+//     const FUpdateResources EventUpdateResources;
+//     const FUpdateLife EventUpdateLife;
+//     const FUpdateTurretBorder EventUpdateTurretBorder;
+//     const FUpdateStunTrapBorder EventUpdateStunTrapBorder;
+//     const FUpdateCitizenCountUI EventUpdateCitizenCountUI;
+// }
 
 
 
