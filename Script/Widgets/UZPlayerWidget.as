@@ -10,6 +10,10 @@ class UUZPlayerMainWidget : UUserWidget
     UPROPERTY()
     FLinearColor NoBuildColor;
 
+    bool bTurretAnimNotify;
+
+    bool bBombAnimNotify;
+
     UFUNCTION(BlueprintOverride)
     void Construct()
     {
@@ -20,8 +24,9 @@ class UUZPlayerMainWidget : UUserWidget
             GameMode.EventUpdateLife.AddUFunction(this, n"UpdateLifeBar");
             GameMode.EventUpdateResources.AddUFunction(this, n"UpdateResourcesText");
             GameMode.EventUpdateTurretBorder.AddUFunction(this, n"UpdateCanBuildTurret");
-            GameMode.EventUpdateStunTrapBorder.AddUFunction(this, n"UpdateCanBuildStunTrap");
+            GameMode.EventUpdateStunTrapBorder.AddUFunction(this, n"UpdateCanBuildBombTrap");
             GameMode.EventUpdateCitizenCountUI.AddUFunction(this, n"UpdateCitizenCount");
+            GameMode.EventResourcePickUpFeedback.AddUFunction(this, n"ResourcesAnim");
         } 
     }
 
@@ -68,28 +73,53 @@ class UUZPlayerMainWidget : UUserWidget
         {
             UBorder OurBorder = GetBorderTurret();
             OurBorder.SetBrushColor(CanBuilColor);
+            if (bTurretAnimNotify)
+            {
+                bTurretAnimNotify = false;
+                TurretAnim();              
+            }
         }
         else
         {
             UBorder OurBorder = GetBorderTurret();
             OurBorder.SetBrushColor(NoBuildColor);
+            bTurretAnimNotify = true;
         }
         //else set border color
     }
 
+    UFUNCTION(BlueprintEvent)
+    void TurretAnim()
+    {
+
+    }
+
+
     UFUNCTION()
-    void UpdateCanBuildStunTrap()
+    void UpdateCanBuildBombTrap()
     {
         if (GameMode.Resources >= GameMode.StunTrapCost)
         {
             UBorder OurBorder = GetBorderStunTrap();
             OurBorder.SetBrushColor(CanBuilColor);
+            if (bBombAnimNotify)
+            {
+                bBombAnimNotify = false;
+                BombAnim();
+            }
         }
         else
         {
             UBorder OurBorder = GetBorderStunTrap();
             OurBorder.SetBrushColor(NoBuildColor);
+            bBombAnimNotify = true;
         }
+    }
+
+    UFUNCTION(BlueprintEvent)
+    void BombAnim()
+    {
+        
     }
 
     UFUNCTION()
@@ -97,6 +127,12 @@ class UUZPlayerMainWidget : UUserWidget
     {
         UTextBlock ResourceDisplay = GetResourceWidgetText();
         ResourceDisplay.Text = FText::FromString("" + GameMode.Resources); 
+    }
+
+    UFUNCTION(BlueprintEvent)
+    void ResourcesAnim()
+    {
+        
     }
 
     UFUNCTION()
@@ -112,5 +148,6 @@ class UUZPlayerMainWidget : UUserWidget
         UTextBlock CitizenDisplay = GetCitizenCountText();
         CitizenDisplay.Text = FText::FromString("Citizen Count: " + CitizenCount);
     }
+
 }
 

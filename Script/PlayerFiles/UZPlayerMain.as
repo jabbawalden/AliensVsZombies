@@ -11,6 +11,7 @@ import Widgets.UZEndGameWidget;
 import Widgets.UZPopUpUI;
 import Statics.UZStaticData;
 import GameFiles.UZEvents; 
+import Components.UZPlayerSoundComp;
 
 class AUZPlayerMain : APawn
 {
@@ -40,6 +41,9 @@ class AUZPlayerMain : APawn
     UInputComponent InputComp;
 
     UPROPERTY(DefaultComponent)
+    UUZPlayerSoundComp PlayerSoundComp;
+
+    UPROPERTY(DefaultComponent)
     UUZTraceCheckComp TraceCheckComp;
 
     UPROPERTY()
@@ -53,6 +57,9 @@ class AUZPlayerMain : APawn
 
     UPROPERTY()
     UForceFeedbackEffect PickUpFeedback;
+    
+    UPROPERTY()
+    UForceFeedbackEffect BuildFeedback;
 
     UPROPERTY()
     float TestFloat;
@@ -388,6 +395,7 @@ class AUZPlayerMain : APawn
                 RemoteCannonRef = SpawnActor(RemoteCannonClass, SpawnObjectOrigin.GetWorldLocation());
                 GameMode.AddRemoveResources(-GameMode.TurretCost); 
                 Gameplay::PlaySound2D(SpawnTurretSound, 1.f, 1.f, 0.f); 
+                ControllerBuildFeedback();
             }    
         }
         //TEST CONTROLLER RUMBLE
@@ -415,6 +423,7 @@ class AUZPlayerMain : APawn
                 NewSpawnStunTrapTime = Gameplay::TimeSeconds + SpawnSunTrapRate;
                 BombTrapRef = SpawnActor(BombTrap, SpawnObjectOrigin.GetWorldLocation());
                 GameMode.AddRemoveResources(-GameMode.StunTrapCost); 
+                ControllerBuildFeedback();
             }    
         }
     }
@@ -528,6 +537,12 @@ class AUZPlayerMain : APawn
     }
 
     UFUNCTION()
+    void ControllerBuildFeedback()
+    {
+        PlayerController.ClientPlayForceFeedback(BuildFeedback, NAME_None, false, true, false);
+    }
+
+    UFUNCTION()
     void TriggerOnBeginOverlap(
         UPrimitiveComponent OverlappedComponent, AActor OtherActor,
         UPrimitiveComponent OtherComponent, int OtherBodyIndex, 
@@ -545,11 +560,13 @@ class AUZPlayerMain : APawn
                     case PickUpObjectType::CitizenPod:
                     GameMode.AddCitizenCount(PickUpTarget.AddAmount);
                     GameMode.CurrentCitizenPods--;
+                    GameMode.EventCitizenPickUpFeedback.Broadcast();
                     break;
 
                     case PickUpObjectType::Resource:
                     GameMode.AddRemoveResources(PickUpTarget.AddAmount);
                     GameMode.CurrentResourcesInLevel--;
+                    GameMode.EventResourcePickUpFeedback.Broadcast();
                     break;
                 }
 

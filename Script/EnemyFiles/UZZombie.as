@@ -37,7 +37,6 @@ class AUZZombie : AUZZombieBaseClass
             if (HealthComp.bLaserBeam)
             {
                 GameMode.EventEnemyKillFeedback.Broadcast();
-                Print("Enemy Died from laser beam", 5.f);
             }
             
             DestroyActor();

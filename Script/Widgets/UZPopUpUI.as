@@ -13,7 +13,7 @@ class AUZPopUpUI : AActor
     FString TextInput;
 
     UPROPERTY()
-    float MovementSpeed = 550.f;
+    float MovementSpeed = 850.f;
 
     UPROPERTY()
     float DestructionTime = 0.5f;
@@ -42,6 +42,7 @@ class AUZPopUpUI : AActor
         if (bMoveUp)
         {
             FVector NextLoc = ActorLocation + FVector(0,0,MovementSpeed * DeltaSeconds);
+            MovementSpeed *= 0.98f;
             SetActorLocation(NextLoc);
         }
         else if (!bMoveUp && !bTimerSet)

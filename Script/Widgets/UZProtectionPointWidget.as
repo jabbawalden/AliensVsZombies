@@ -12,7 +12,9 @@ class UUZProtectionPointWidget : UUserWidget
         if (GameMode != nullptr)
         {
             GameMode.EventUpdateLife.AddUFunction(this, n"UpdateLifeBar");
+            GameMode.EventUpdateLife.AddUFunction(this, n"ProtectionPointFeedback");
             GameMode.EventUpdateCitizenCountUI.AddUFunction(this, n"UpdateCitizenCount");
+            GameMode.EventCitizenPickUpFeedback.AddUFunction(this, n"CitizenCountFeedback");
         } 
     }
 
@@ -43,4 +45,17 @@ class UUZProtectionPointWidget : UUserWidget
         UTextBlock CitizenDisplay = GetCitizenCountText();
         CitizenDisplay.Text = FText::FromString("Citizens Saved: " + CitizenCount);
     }
+
+    UFUNCTION(BlueprintEvent)
+    void ProtectionPointFeedback()
+    {
+
+    }
+
+    UFUNCTION(BlueprintEvent)
+    void CitizenCountFeedback()
+    {
+
+    }
+
 }
