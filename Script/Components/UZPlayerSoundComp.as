@@ -24,7 +24,6 @@ class UUZPlayerSoundComp : UActorComponent
 
     float MinVol = 0.0001f;
     float MaxVol = 1.0f;
-
     float FadeInterpSpeed = 2.5f;
 
     bool bLaserBeamPlay;
@@ -61,6 +60,7 @@ class UUZPlayerSoundComp : UActorComponent
         bLaserBeamPlay = Mode;
     }
 
+    //called by player to switch on or off
     UFUNCTION()
     void PullBeamMode(bool Mode)
     {
