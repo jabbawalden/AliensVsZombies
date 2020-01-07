@@ -40,7 +40,8 @@ class AUZGameMode : AGameModeBase
     UPROPERTY()
     float Life;
 
-    float MaxLife = 2500.f;
+    // float MaxLife = 2500.f;
+    float MaxLife = 1.f;
 
     ///Place below value into Global Event NAMESPACE
     UPROPERTY()
@@ -210,6 +211,7 @@ class AUZGameMode : AGameModeBase
     void EndGame()
     {
         EventEndGame.Broadcast();
+        Print("End game called", 5.f);
         //UZGlobalEvents::EventEndGame.Broadcast();
         bGameEnded = true;
     }

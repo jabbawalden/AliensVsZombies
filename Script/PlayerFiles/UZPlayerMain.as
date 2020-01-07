@@ -143,8 +143,6 @@ class AUZPlayerMain : APawn
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        Print("PLAYER HAS STARTED", 5.f);
-
         SphereCompCatchPickUps.OnComponentBeginOverlap.AddUFunction(this, n"TriggerOnBeginOverlap");
         GameMode = Cast<AUZGameMode>(Gameplay::GetGameMode()); 
 
@@ -190,7 +188,7 @@ class AUZPlayerMain : APawn
     UFUNCTION()
     void PlayerGameModeSetUp()
     {
-        //GameMode.EventEndGame.AddUFunction(this, n"EndGame");
+        GameMode.EventEndGame.AddUFunction(this, n"EndGame");
         //UZGlobalEvents::EventEndGame.AddUFunction(this, n"EndGame");
         GameMode.EventStartGame.AddUFunction(this, n"StartGame");
     }
@@ -313,8 +311,6 @@ class AUZPlayerMain : APawn
                 LaserBeam.SetFollowTarget(this); 
                 bLaserOn = true;
             }
-
-            Print("Playing Feedback", 5.f);
         }
     }
 
@@ -464,8 +460,7 @@ class AUZPlayerMain : APawn
 
         if (EndWidgetRef != nullptr)
             EndWidgetRef.SetCitizensDisplayText(); 
-        else
-            Print("End Widget Ref NOT Found", 5.f);
+
 
         if (PlayerController != nullptr)
         {
