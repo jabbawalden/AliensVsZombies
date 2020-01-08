@@ -21,7 +21,7 @@ class AUZCameraActor : AActor
     float InterpSpeed = 1.5f;
 
     UPROPERTY()
-    float CamShakeInterpSpeed = 4.3f;
+    float CamShakeInterpSpeed = 6.3f;
 
     UPROPERTY()
     float ZOffset = -14450.f;
@@ -35,10 +35,10 @@ class AUZCameraActor : AActor
     bool bCanCameraShake;
     float CurrentShakeMagnitude;
 
-    float BombExplosionMagnitude = 160.f;
-    float TurretExplosionMagnitude = 250.f;
-    float BombExplosionTime = 0.5f;
-    float TurretExplosionTime = 0.9f;
+    float BombExplosionMagnitude = 140.f;
+    float TurretExplosionMagnitude = 220.f;
+    float BombExplosionTime = 0.4f;
+    float TurretExplosionTime = 0.7f;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -94,7 +94,7 @@ class AUZCameraActor : AActor
 
         FVector NewRelativeLocation = FVector(XInterp, YInterp, ZInterp);
         CameraComp.SetRelativeLocation(NewRelativeLocation); 
-        CurrentShakeMagnitude *= 0.992f;
+        CurrentShakeMagnitude *= 0.9915f;
     }
 
     UFUNCTION()
