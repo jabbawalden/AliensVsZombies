@@ -3,41 +3,20 @@ import Statics.UZStaticData;
 
 class AUZGameMode : AGameModeBase
 {
-
-
     FGameEndEvent EventEndGame;
     FGameStartEvent EventStartGame;
-
-    ///Place below events into Global Event NAMESPACE
-    //Global Event [place in namespace instead]
     FUpdateResources EventUpdateResources;
-
-    //Global Event [place in namespace instead]
     FUpdateLife EventUpdateLife;
-
-    //Global Event [place in namespace instead]
     FUpdateTurretBorder EventUpdateTurretBorder;
-
-    //Global Event [place in namespace instead]
     FUpdateStunTrapBorder EventUpdateStunTrapBorder;
-
-    //Global Event [place in namespace instead]
     FUpdateCitizenCountUI EventUpdateCitizenCountUI;
-    
     FTurretExplosionFeedback EventTurretExplosionFeedback;
     FBombTrapExplosionFeedback EventBombTrapExplosionFeedback;
     FEnemyKillFeedback EventEnemyKillFeedback;
-    // FPickUpFeedback EventPickUpFeedback;
-
     FResourcePickUpFeedback EventResourcePickUpFeedback;
     FCitizenPickUpFeedback EventCitizenPickUpFeedback;
-
-    //STORE UI REFERENCES FOR DEPARENTING OR ALTERATION
     UUserWidget StartWidgetReference;
     UUserWidget EndWidgetReference;
-
-
-    //GLOBAL PROPERTIES
 
     ///Place below values into protection point instead.
     UPROPERTY()
@@ -64,7 +43,7 @@ class AUZGameMode : AGameModeBase
     //RESOURCE COSTS
 
     UPROPERTY()
-    float TurretCost = 400.f;
+    float TurretCost = 600.f;
 
     UPROPERTY()
     float StunTrapCost = 100.f;

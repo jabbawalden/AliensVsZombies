@@ -28,11 +28,12 @@ class AUZMusicManager : AActor
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-        L1Health = MinVol;
-        L2Health = MinVol;
-        AudioComp1.Play();
-        AudioComp2.Play();
-        FadeLayer(1, true);
+        // L1Health = MinVol;
+        // L2Health = MinVol;
+        // AudioComp1.Play();
+        // AudioComp2.Play();
+        // FadeLayer(1, true);
+        // FadeLayer(2, true);
     }
 
     UFUNCTION(BlueprintOverride)

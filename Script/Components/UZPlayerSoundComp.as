@@ -1,16 +1,13 @@
 class UUZPlayerSoundComp : UActorComponent
 {
     //these may need to be audio components instead
-    UPROPERTY()
-    USoundCue LaserBeamSound;
+
     UPROPERTY()
     USoundCue LaserActivatonSound;
     UPROPERTY()
     USoundCue LaserDeactivateSound;
     
     //these may need to be audio components instead
-    UPROPERTY()
-    USoundCue PullBeamSound;
     UPROPERTY()
     USoundCue PullActivatonSound;
     UPROPERTY()
@@ -24,7 +21,7 @@ class UUZPlayerSoundComp : UActorComponent
 
     float MinVol = 0.0001f;
     float MaxVol = 1.0f;
-    float FadeInterpSpeed = 2.5f;
+    float FadeInterpSpeed = 12.5f;
 
     bool bLaserBeamPlay;
     bool bPullBeamPlay;
@@ -38,7 +35,7 @@ class UUZPlayerSoundComp : UActorComponent
     UFUNCTION(BlueprintOverride)
     void Tick(float DeltaSeconds)
     {
-        //VolumeUpdate(DeltaSeconds);
+
     }
 
     UFUNCTION()
@@ -58,6 +55,11 @@ class UUZPlayerSoundComp : UActorComponent
     void LaserBeamMode(bool Mode)
     {
         bLaserBeamPlay = Mode;
+
+        if (Mode)
+            Gameplay::PlaySound2D(LaserActivatonSound);
+        else
+            Gameplay::PlaySound2D(LaserDeactivateSound);
     }
 
     //called by player to switch on or off
@@ -65,19 +67,12 @@ class UUZPlayerSoundComp : UActorComponent
     void PullBeamMode(bool Mode)
     {
         bPullBeamPlay = Mode;
+
+        if (Mode)
+            Gameplay::PlaySound2D(PullActivatonSound);
+        else
+            Gameplay::PlaySound2D(PullDeactivateSound);
     }
 
-    UFUNCTION()
-    void VolumeUpdate(float DeltaTime)
-    {
-        if (bLaserBeamPlay)
-            LaserBeamSound.VolumeMultiplier = FMath::FInterpTo(LaserBeamSound.VolumeMultiplier, MaxVol, DeltaTime, FadeInterpSpeed);
-        else
-            LaserBeamSound.VolumeMultiplier = FMath::FInterpTo(LaserBeamSound.VolumeMultiplier, MinVol, DeltaTime, FadeInterpSpeed);  
 
-        if (bPullBeamPlay)
-            PullBeamSound.VolumeMultiplier = FMath::FInterpTo(PullBeamSound.VolumeMultiplier, MaxVol, DeltaTime, FadeInterpSpeed);
-        else
-            PullBeamSound.VolumeMultiplier = FMath::FInterpTo(PullBeamSound.VolumeMultiplier, MinVol, DeltaTime, FadeInterpSpeed);      
-    }
 }

@@ -65,6 +65,20 @@ class UUZPlayerMainWidget : UUserWidget
         return nullptr;
     }
 
+    UFUNCTION(BlueprintEvent)
+    UTextBlock GetTurretCost()
+    {
+        throw("You must use override GetTurretCost from the widget blueprint to return the correct text widget.");
+        return nullptr;
+    }
+
+    UFUNCTION(BlueprintEvent)
+    UTextBlock GetBombCost()
+    {
+        throw("You must use override GetBombCost from the widget blueprint to return the correct text widget.");
+        return nullptr;
+    }
+
     UFUNCTION()
     void UpdateCanBuildTurret()
     {

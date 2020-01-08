@@ -40,6 +40,12 @@ class AUZPlayerMain : APawn
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
 
+    UPROPERTY(DefaultComponent, Attach = SceneComp)
+    UAudioComponent LaserBeamSound;
+
+    UPROPERTY(DefaultComponent, Attach = SceneComp)
+    UAudioComponent PullBeamSound;
+
     UPROPERTY(DefaultComponent)
     UUZPlayerSoundComp PlayerSoundComp;
 
@@ -182,6 +188,11 @@ class AUZPlayerMain : APawn
 
         AddWidgetToHUD(PlayerController, MainWidget);
         AddStartWidgetToHUD(PlayerController, StartWidget);
+
+        LaserBeamSound.Play();
+        PullBeamSound.Play();
+        LaserBeamSound.VolumeMultiplier = PlayerSoundComp.MinVol;
+        PullBeamSound.VolumeMultiplier = PlayerSoundComp.MinVol;
     }
 
     UFUNCTION(BlueprintOverride)
@@ -190,6 +201,7 @@ class AUZPlayerMain : APawn
         SetMeshRotation(DeltaSeconds);
         SpotLightColor(TraceCheckComp.bIsInRangeOfTarget);
         InputRotationMovement(DeltaSeconds);
+        LaserPullBeamsVolumeUpdate(DeltaSeconds); 
     }
 
     UFUNCTION()
@@ -317,6 +329,7 @@ class AUZPlayerMain : APawn
             {
                 LaserBeam.SetFollowTarget(this); 
                 bLaserOn = true;
+                PlayerSoundComp.LaserBeamMode(true);
             }
         }
     }
@@ -334,6 +347,7 @@ class AUZPlayerMain : APawn
         {
             LaserBeam.DestroyActor();
             bLaserOn = false;
+            PlayerSoundComp.LaserBeamMode(false);
         }
     }
 
@@ -355,6 +369,7 @@ class AUZPlayerMain : APawn
             {
                 PullBeam.SetFollowTarget(this); 
                 bPullOn = true;
+                PlayerSoundComp.PullBeamMode(true);
             }
         }
     }
@@ -368,8 +383,29 @@ class AUZPlayerMain : APawn
         if (!bIsActive)
         return;
 
+        if (PullBeam == nullptr)
+        return;
+
         PullBeamRef.DestroyActor();
         bPullOn = false;
+        PlayerSoundComp.PullBeamMode(false);
+    }
+
+    UFUNCTION()
+    void LaserPullBeamsVolumeUpdate(float DeltaTime)
+    {
+        if (PlayerSoundComp.bLaserBeamPlay)
+            LaserBeamSound.VolumeMultiplier = FMath::FInterpTo(LaserBeamSound.VolumeMultiplier, PlayerSoundComp.MaxVol, DeltaTime, PlayerSoundComp.FadeInterpSpeed);
+        else
+            LaserBeamSound.VolumeMultiplier = FMath::FInterpTo(LaserBeamSound.VolumeMultiplier, PlayerSoundComp.MinVol, DeltaTime, PlayerSoundComp.FadeInterpSpeed);  
+
+        if (PlayerSoundComp.bPullBeamPlay)
+            PullBeamSound.VolumeMultiplier = FMath::FInterpTo(PullBeamSound.VolumeMultiplier, PlayerSoundComp.MaxVol, DeltaTime, PlayerSoundComp.FadeInterpSpeed);
+        else
+            PullBeamSound.VolumeMultiplier = FMath::FInterpTo(PullBeamSound.VolumeMultiplier, PlayerSoundComp.MinVol, DeltaTime, PlayerSoundComp.FadeInterpSpeed);   
+
+        Print("Laser Beam Volume: " + LaserBeamSound.VolumeMultiplier);
+        Print("Pull Beam Volume: " + PullBeamSound.VolumeMultiplier);   
     }
 
     UFUNCTION()

@@ -2,6 +2,8 @@ import EnemyFiles.UZZombie;
 import Components.UZHealthComp;
 import GameFiles.UZGameMode;
 
+enum UpgradeType {MultiSpin, MassSuction, AfterBurn, Alliance}
+
 class AUZLaserBeam : AActor
 {
     UPROPERTY(DefaultComponent, RootComponent)
@@ -34,6 +36,9 @@ class AUZLaserBeam : AActor
     float DamageRate = 0.07f;
 
     float NewDamageTime;
+
+    bool bHasUpgrade;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
