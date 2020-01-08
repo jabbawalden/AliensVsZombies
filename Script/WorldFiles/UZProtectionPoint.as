@@ -18,6 +18,11 @@ class AUZProtectionPoint : AActor
     UPROPERTY(DefaultComponent, Attach = SphereComp)
     UWidgetComponent WidgetComp;
 
+    UPROPERTY()
+    USoundCue AlertSound;
+
+    bool bAlertSoundPlaying;
+
     AUZGameMode GameMode;
 
     UFUNCTION(BlueprintOverride)
@@ -35,9 +40,28 @@ class AUZProtectionPoint : AActor
     void UpdateGameModeLife()
     {
         GameMode.Life = HealthComp.CurrentHealth;
-        GameMode.EventUpdateLife.Broadcast(); 
+        GameMode.EventUpdateLife.Broadcast();
+        PlayAlert();
         //if life equal or below 0, call EndGame event from game mode
     }
 
+    UFUNCTION() 
+    void PlayAlert()
+    {
+        if (!bAlertSoundPlaying)
+        {
+            Gameplay::PlaySound2D(AlertSound);
+            bAlertSoundPlaying = true; 
+            System::SetTimer(this, n"SetAlertToFalse", 1.2f, false);
+
+            Print("Alert Sound Play", 5.f); 
+        }
+    }
+
+    UFUNCTION()
+    void SetAlertToFalse()
+    {
+        bAlertSoundPlaying = false;
+    }
 
 }

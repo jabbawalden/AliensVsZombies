@@ -402,10 +402,7 @@ class AUZPlayerMain : APawn
         if (PlayerSoundComp.bPullBeamPlay)
             PullBeamSound.VolumeMultiplier = FMath::FInterpTo(PullBeamSound.VolumeMultiplier, PlayerSoundComp.MaxVol, DeltaTime, PlayerSoundComp.FadeInterpSpeed);
         else
-            PullBeamSound.VolumeMultiplier = FMath::FInterpTo(PullBeamSound.VolumeMultiplier, PlayerSoundComp.MinVol, DeltaTime, PlayerSoundComp.FadeInterpSpeed);   
-
-        Print("Laser Beam Volume: " + LaserBeamSound.VolumeMultiplier);
-        Print("Pull Beam Volume: " + PullBeamSound.VolumeMultiplier);   
+            PullBeamSound.VolumeMultiplier = FMath::FInterpTo(PullBeamSound.VolumeMultiplier, PlayerSoundComp.MinVol, DeltaTime, PlayerSoundComp.FadeInterpSpeed);     
     }
 
     UFUNCTION()
@@ -597,12 +594,14 @@ class AUZPlayerMain : APawn
                     GameMode.AddCitizenCount(PickUpTarget.AddAmount);
                     GameMode.CurrentCitizenPods--;
                     GameMode.EventCitizenPickUpFeedback.Broadcast();
+                    PlayerSoundComp.PlayCitizenPickUpSound();
                     break;
 
                     case PickUpObjectType::Resource:
                     GameMode.AddRemoveResources(PickUpTarget.AddAmount);
                     GameMode.CurrentResourcesInLevel--;
                     GameMode.EventResourcePickUpFeedback.Broadcast();
+                    PlayerSoundComp.PlayResourcePickUp();
                     break;
                 }
 

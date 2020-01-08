@@ -41,13 +41,19 @@ class UUZPlayerSoundComp : UActorComponent
     UFUNCTION()
     void PlayResourcePickUp()
     {
-
+        Print("Resource Pick Up Sound Played", 5.f);
     }
 
     UFUNCTION()
     void PlayCitizenPickUpSound()
     {
+        Print("Citizen Pick Up Sound Played", 5.f); 
+    }
 
+    UFUNCTION()
+    void StructureReadyForBuildingNotify()
+    {
+        Print("Turret or Bomb ready to build", 5.f); 
     }
 
     //called by player to switch on or off
