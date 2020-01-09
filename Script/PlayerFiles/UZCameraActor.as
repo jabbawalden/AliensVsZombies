@@ -21,7 +21,7 @@ class AUZCameraActor : AActor
     float InterpSpeed = 1.5f;
 
     UPROPERTY()
-    float CamShakeInterpSpeed = 6.3f;
+    float CamShakeInterpSpeed = 7.3f;
 
     UPROPERTY()
     float ZOffset = -14450.f;
@@ -36,9 +36,14 @@ class AUZCameraActor : AActor
     float CurrentShakeMagnitude;
 
     float BombExplosionMagnitude = 140.f;
-    float TurretExplosionMagnitude = 220.f;
     float BombExplosionTime = 0.4f;
+
+    float TurretExplosionMagnitude = 220.f;
     float TurretExplosionTime = 0.7f;
+
+    float LaserMagnitude = 70.f;
+    float LaserTime = 0.45f;
+
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -50,6 +55,7 @@ class AUZCameraActor : AActor
 
         GameMode.EventBombTrapExplosionFeedback.AddUFunction(this, n"CamBombExplosionFeedback");        
         GameMode.EventTurretExplosionFeedback.AddUFunction(this, n"CamTurretExplosionFeedback");
+        GameMode.EventStartLaserBeam.AddUFunction(this, n"CamLaserStartFeedback");
     }
 
     UFUNCTION(BlueprintOverride)
@@ -133,6 +139,12 @@ class AUZCameraActor : AActor
     void CamBombExplosionFeedback()
     {
         TurnCamShakeOn(BombExplosionMagnitude, BombExplosionTime);
+    }
+
+    UFUNCTION()
+    void CamLaserStartFeedback()
+    {
+        TurnCamShakeOn(LaserMagnitude, LaserTime);
     }
 
     //called by player once target view is set

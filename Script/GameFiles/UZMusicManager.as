@@ -33,7 +33,7 @@ class AUZMusicManager : AActor
         AudioComp1.Play();
         AudioComp2.Play();
         FadeLayer(1, true);
-        FadeLayer(2, true);
+        //FadeLayer(2, true);
     }
 
     UFUNCTION(BlueprintOverride)

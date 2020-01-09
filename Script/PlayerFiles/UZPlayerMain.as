@@ -330,6 +330,7 @@ class AUZPlayerMain : APawn
                 LaserBeam.SetFollowTarget(this); 
                 bLaserOn = true;
                 PlayerSoundComp.LaserBeamMode(true);
+                GameMode.EventStartLaserBeam.Broadcast();
             }
         }
     }

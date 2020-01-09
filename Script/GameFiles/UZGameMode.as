@@ -15,8 +15,11 @@ class AUZGameMode : AGameModeBase
     FEnemyKillFeedback EventEnemyKillFeedback;
     FResourcePickUpFeedback EventResourcePickUpFeedback;
     FCitizenPickUpFeedback EventCitizenPickUpFeedback;
+    FStartLaserBeam EventStartLaserBeam;
+
     UUserWidget StartWidgetReference;
     UUserWidget EndWidgetReference;
+
 
     ///Place below values into protection point instead.
     UPROPERTY()
