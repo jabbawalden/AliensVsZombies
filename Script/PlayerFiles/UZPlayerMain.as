@@ -457,6 +457,7 @@ class AUZPlayerMain : APawn
                 NewSpawnStunTrapTime = Gameplay::TimeSeconds + SpawnSunTrapRate;
                 BombTrapRef = SpawnActor(BombTrap, SpawnObjectOrigin.GetWorldLocation());
                 GameMode.AddRemoveResources(-GameMode.StunTrapCost); 
+                Gameplay::PlaySound2D(SpawnTurretSound, 1.f, 1.f, 0.f); 
                 ControllerBuildFeedback();
             }    
         }

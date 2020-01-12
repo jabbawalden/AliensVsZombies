@@ -25,6 +25,9 @@ class AUZBombTrap : AActor
     UUZTraceCheckComp TraceComp;
 
     UPROPERTY()
+    USoundCue ExplosionSound;
+
+    UPROPERTY()
     TSubclassOf<AActor> BombExplosion;
     AActor BombExplosionRef; 
 
@@ -58,6 +61,8 @@ class AUZBombTrap : AActor
 
         if (GameMode != nullptr)
             GameMode.EventBombTrapExplosionFeedback.Broadcast();
+
+        Gameplay::PlaySoundAtLocation(ExplosionSound, ActorLocation, ActorRotation, 1, 1);
 
         DestroyActor();
     }
